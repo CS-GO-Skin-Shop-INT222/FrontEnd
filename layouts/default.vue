@@ -1,5 +1,5 @@
 <template>
-  <v-app dark>
+  <v-app>
           <v-card>
     <v-tabs 
       v-model="tab"
