@@ -53,6 +53,7 @@
 
 <script>
   export default {
+    middleware: 'auth',
     data: () => ({
       sheet: false,
       tiles: [

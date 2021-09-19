@@ -60,14 +60,24 @@
       <v-row dense no-gutters justify="center">
         <v-spacer />
         <v-col lg="4" class="text-md-center"
-          ><v-text-field v-model="Name" label="Name" outlined></v-text-field>
+          ><v-text-field
+            v-model="Name"
+            :rules="[rules.required]"
+            label="Name"
+            outlined
+          ></v-text-field>
         </v-col>
         <v-spacer />
       </v-row>
       <v-row dense no-gutters justify="center">
         <v-spacer />
         <v-col lg="4" class="text-md-center">
-          <v-text-field v-model="Tel" label="Tel" outlined></v-text-field>
+          <v-text-field
+            v-model="Tel"
+            :rules="[rules.required, rules.telnumber]"
+            label="Tel"
+            outlined
+          ></v-text-field>
           <v-checkbox
             v-model="checkbox"
             :rules="[(v) => !!v || 'You must agree to continue!']"
@@ -87,13 +97,56 @@
         </v-row>
       </v-row>
     </v-form>
+    <bottom-sheet />
+
+  <div class="text-center">
+    <v-btn
+      dark
+      color="orange darken-2"
+      @click="snackbar = true"
+    >
+      Open Snackbar
+    </v-btn>
+
+    <v-snackbar
+      v-model="snackbar"
+      :timeout="timeout"
+    >
+    <v-icon
+          dark
+          right
+        >
+          mdi-checkbox-marked-circle
+        </v-icon>
+      Register completed
+
+      <template v-slot:action="{ attrs }">
+        <v-btn
+          color="blue"
+          text
+          v-bind="attrs"
+          @click="snackbar = false"
+        >
+          Close
+        </v-btn>
+      </template>
+    </v-snackbar>
+  </div>
+
+
+
+
   </v-app>
 </template>
 <script>
-import axios from 'axios'
+import BottomSheet from '~/components/BottomSheet.vue'
 export default {
+  components: { BottomSheet },
   data() {
     return {
+      snackbar: false,
+      timeout: 2000,
+      urlserver: process.env.urlserver,
       email: '',
       Tel: '',
       Name: '',
@@ -105,9 +158,11 @@ export default {
       CheckTrue: '',
       UserData: [],
       rules: {
-        required: (value) => !!value || 'Required.',
+        required: (v) => !!v || 'Required.',
         min: (v) => v.length >= 10 || 'Min 10 characters',
         Match: (v) => v === this.password || 'Password not Match',
+        telnumber: (v) =>
+          Number.isInteger(Number(v)) || 'The value must be an integer',
         emailRules: [
           (v) => !!v || 'E-mail is required',
           (v) => /.+@.+\..+/.test(v) || 'E-mail must be valid',
@@ -117,10 +172,11 @@ export default {
   },
   methods: {
     Checkrules() {
+      this.snackbar= true
       const ArrayCheck = [
+        this.Name,
         this.email,
         this.Tel,
-        this.Name,
         this.password,
         this.password === this.ConfirmPassword,
         this.checkbox,
@@ -131,12 +187,28 @@ export default {
         }
       }
       if (this.CheckTrue === false) {
-        alert("please insert data")
-      }this.sendDataUser()
-
+        alert('please insert data')
+      } else {
+        const UserData = {
+          Name: this.Name,
+          Email: this.email,
+          Tel: this.Tel,
+          Password: this.password,
+          Credit: 1,
+        }
+        this.sendDataUser(UserData)
+        
+      }
     },
-    async sendDataUser() {
-      await axios.post(`${this.UserData}api/products/add`, this.UserData)
+    async sendDataUser(UserData) {
+      const PATH_API = '/api/user/register'
+      console.log()
+      const ip = await this.$axios.$post(
+        `${PATH_API}`,
+        UserData
+      )
+      return { ip }
+      // await axios.post(`${this.urlserver}/api/user/register`, this.UserData)
     },
   },
 }

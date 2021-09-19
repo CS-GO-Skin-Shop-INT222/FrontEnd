@@ -1,7 +1,7 @@
 <template>
   <v-form>
     
-    <h1 class="text-md-center ma-6">Login</h1>
+    <h1 class="text-md-center ma-6"> {{ $store.state.url_server }}</h1>
      <v-row>
          <v-spacer></v-spacer>
        <v-col cols="4">
@@ -21,14 +21,23 @@
             Login
           </v-btn>
         </v-row>
+        <p> {{ ip }}</p>
   </v-form>
 </template>
 
 <script>
 export default {
+   async asyncData({ $axios }) {
+  const PATH_API = '/user/users'
+  const ip = await $axios.$get(`${PATH_API}`)
+  return { ip }
+},
   data() {
     return {
+      urlserver:process.env.urlserver,
+      data:[]
        }
-  },
-}
+  }
+  }
+
 </script>

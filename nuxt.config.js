@@ -1,6 +1,9 @@
 import colors from 'vuetify/es5/util/colors'
-
+require('dotenv').config()
 export default {
+  env:{
+    urlserver:'http://localhost:5000'
+  },
   // Disable server-side rendering: https://go.nuxtjs.dev/ssr-mode
   ssr: true,
 
@@ -45,10 +48,44 @@ export default {
   modules: [
     // https://go.nuxtjs.dev/axios
     '@nuxtjs/axios',
+    '@nuxtjs/auth-next',
+    '@nuxtjs/dotenv'
   ],
 
+  auth: {
+    redirect: {
+      login: '/auth/login',
+      logout: '/',
+      callback: '/login',
+      home: '/'
+    },
+    strategies: {
+      local: {
+        token: {
+          property: 'token',
+          global: true,
+          // required: true,
+          // type: 'Bearer'
+        },
+        user: {
+          property: 'user',
+          // autoFetch: true
+        },
+        endpoints: {
+          login: { url: '/api/auth/login', method: 'post' },
+          logout: { url: '/api/auth/logout', method: 'post' },
+          user: { url: '/api/auth/user', method: 'get' }
+        }
+      }
+    }
+  },
+
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
-  axios: {},
+  axios: {
+    baseURL: 'http://localhost:5000/api',
+    proxyHeaders: false,
+    credentials: false
+  },
   telemetry: false,
   // Vuetify module configuration: https://go.nuxtjs.dev/config-vuetify
   vuetify: {
