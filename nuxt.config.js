@@ -2,7 +2,7 @@ import colors from 'vuetify/es5/util/colors'
 require('dotenv').config()
 export default {
   env:{
-    urlserver:'http://localhost:5000'
+    urlserver:'https://backend:5000'
   },
   // Disable server-side rendering: https://go.nuxtjs.dev/ssr-mode
   ssr: true,
@@ -82,7 +82,7 @@ export default {
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
   axios: {
-    baseURL: 'http://backend:5000/api',
+    baseURL: 'https://backend:5000/api',
     proxyHeaders: false,
     credentials: false
   },
