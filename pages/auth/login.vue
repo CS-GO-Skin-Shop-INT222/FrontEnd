@@ -5,37 +5,66 @@
      <v-row>
          <v-spacer></v-spacer>
        <v-col cols="4">
-      <v-text-field label="User" outlined></v-text-field>
+      <v-text-field   v-model="userEmail" label="Email" outlined></v-text-field>
         </v-col>
           <v-spacer></v-spacer>
         </v-row>
      <v-row>
        <v-spacer></v-spacer>
        <v-col cols="4">
-       <v-text-field label="User" outlined></v-text-field>
+       <v-text-field  v-model="password" label="Password" outlined ></v-text-field>
        </v-col>
          <v-spacer></v-spacer>
      </v-row>
              <v-row align="center" justify="space-around">
-          <v-btn  class="py-5" x-large tile color="success" @click="test">
+          <v-btn  class="py-5" x-large tile color="success" @click="userLogin">
             Login
           </v-btn>
         </v-row>
+
+    <div class="text-center">
+      <v-snackbar v-model="snackbar" :timeout="timeout">
+        <v-icon dark right> mdi-checkbox-marked-circle </v-icon>
+        Register completed
+
+        <template v-slot:action="{ attrs }">
+          <v-btn color="blue" text v-bind="attrs" @click="snackbar = false">
+            Close
+          </v-btn>
+        </template>
+      </v-snackbar>
+    </div>
+
   </v-form>
 </template>
 
 <script>
 export default {
-   async asyncData({ $axios }) {
-  const PATH_API = '/user/users'
-  const ip = await $axios.$get(`${PATH_API}`)
-  return { ip }
-},
+//    async asyncData({ $axios }) {
+//   const PATH_API = '/user/users'
+//   const ip = await $axios.$get(`${PATH_API}`)
+//   return { ip }
+// },
   data() {
     return {
-      data:[]
+        snackbar: false,
+        timeout: 2000,
+        userEmail:'',
+        password:''
        }
   },
+  methods:{
+    Datasend(){
+      this.userLogin()
+      this.snackbar = true
+      setTimeout( () => this.$router.replace({  name:'auth-register'}), 2000);
+
+    },
+    async userLogin() {
+        const response = await this.$auth.loginWith('local', { data: {Email:this.userEmail,Password:this.password } })
+        console.log(response)
+    }
+  }
 
   }
 

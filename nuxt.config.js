@@ -68,15 +68,17 @@ export default {
           // type: 'Bearer'
         },
         user: {
-          property: 'user',
+          autoFetch:true
           // autoFetch: true
         },
         endpoints: {
-          login: { url: '/api/auth/login', method: 'post' },
-          logout: { url: '/api/auth/logout', method: 'post' },
-          user: { url: '/api/auth/user', method: 'get' }
+          login: { url: 'http://backend:5000/api/user/login', method: 'post', propertyName:'token' },
+          logout: { url: 'http://backend:5000/api/user/logout', method: 'delete' },
+          user: { url: 'http://backend:5000/api/user/user/5', method: 'get',propertyName:'user'}
         }
-      }
+        , tokenName:'auth-token'
+      },
+     
     }
   },
 
