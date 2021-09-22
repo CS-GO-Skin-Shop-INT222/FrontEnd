@@ -17,7 +17,7 @@
          <v-spacer></v-spacer>
      </v-row>
              <v-row align="center" justify="space-around">
-          <v-btn  class="py-5" x-large tile color="success">
+          <v-btn  class="py-5" x-large tile color="success" @click="test">
             Login
           </v-btn>
         </v-row>
@@ -34,10 +34,16 @@ export default {
 },
   data() {
     return {
-      urlserver:process.env.urlserver,
       data:[]
        }
+  },
+  methods:{
+    test(){
+      
+      }
+    }
   }
-  }
+
+  
 
 </script>

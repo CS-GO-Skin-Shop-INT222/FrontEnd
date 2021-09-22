@@ -16,7 +16,7 @@
       </v-row>
       <v-row dense no-gutters justify="center">
         <v-spacer />
-        <v-col lg="4" class="text-md-center"
+        <v-col sm="6" md="6" lg="4" class="text-md-center"
           ><v-text-field
             v-model="password"
             :append-icon="password1 ? 'mdi-eye' : 'mdi-eye-off'"
@@ -40,7 +40,7 @@
 
       <v-row dense no-gutters justify="center">
         <v-spacer />
-        <v-col lg="4" class="text-md-center"
+        <v-col sm="6" md="6" lg="4" class="text-md-center"
           ><v-text-field
             v-model="ConfirmPassword"
             :append-icon="password2 ? 'mdi-eye' : 'mdi-eye-off'"
@@ -59,7 +59,7 @@
 
       <v-row dense no-gutters justify="center">
         <v-spacer />
-        <v-col lg="4" class="text-md-center"
+        <v-col sm="6" md="6" lg="4" class="text-md-center"
           ><v-text-field
             v-model="Name"
             :rules="[rules.required]"
@@ -71,7 +71,7 @@
       </v-row>
       <v-row dense no-gutters justify="center">
         <v-spacer />
-        <v-col lg="4" class="text-md-center">
+        <v-col sm="6" md="6" lg="4" class="text-md-center">
           <v-text-field
             v-model="Tel"
             :rules="[rules.required, rules.telnumber]"
@@ -97,51 +97,24 @@
         </v-row>
       </v-row>
     </v-form>
-    <bottom-sheet />
 
-  <div class="text-center">
-    <v-btn
-      dark
-      color="orange darken-2"
-      @click="snackbar = true"
-    >
-      Open Snackbar
-    </v-btn>
+    <div class="text-center">
+      <v-snackbar v-model="snackbar" :timeout="timeout">
+        <v-icon dark right> mdi-checkbox-marked-circle </v-icon>
+        Register completed
 
-    <v-snackbar
-      v-model="snackbar"
-      :timeout="timeout"
-    >
-    <v-icon
-          dark
-          right
-        >
-          mdi-checkbox-marked-circle
-        </v-icon>
-      Register completed
-
-      <template v-slot:action="{ attrs }">
-        <v-btn
-          color="blue"
-          text
-          v-bind="attrs"
-          @click="snackbar = false"
-        >
-          Close
-        </v-btn>
-      </template>
-    </v-snackbar>
-  </div>
-
-
-
+        <template v-slot:action="{ attrs }">
+          <v-btn color="blue" text v-bind="attrs" @click="snackbar = false">
+            Close
+          </v-btn>
+        </template>
+      </v-snackbar>
+    </div>
 
   </v-app>
 </template>
 <script>
-import BottomSheet from '~/components/BottomSheet.vue'
 export default {
-  components: { BottomSheet },
   data() {
     return {
       snackbar: false,
@@ -172,7 +145,6 @@ export default {
   },
   methods: {
     Checkrules() {
-      this.snackbar= true
       const ArrayCheck = [
         this.Name,
         this.email,
@@ -197,16 +169,14 @@ export default {
           Credit: 1,
         }
         this.sendDataUser(UserData)
-        
+        this.snackbar = true
+        setTimeout( () => this.$router.replace({  name:'auth-login'}), 2000);
       }
     },
     async sendDataUser(UserData) {
-      const PATH_API = '/api/user/register'
+      const PATH_API = '/user/register'
       console.log()
-      const ip = await this.$axios.$post(
-        `${PATH_API}`,
-        UserData
-      )
+      const ip = await this.$axios.$post(`${PATH_API}`, UserData)
       return { ip }
       // await axios.post(`${this.urlserver}/api/user/register`, this.UserData)
     },
