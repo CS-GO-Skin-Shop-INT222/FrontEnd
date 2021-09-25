@@ -25,7 +25,7 @@
     <div class="text-center">
       <v-snackbar v-model="snackbar" :timeout="timeout">
         <v-icon dark right> mdi-checkbox-marked-circle </v-icon>
-        Register completed
+        Login completed
 
         <template v-slot:action="{ attrs }">
           <v-btn color="blue" text v-bind="attrs" @click="snackbar = false">
@@ -56,14 +56,14 @@ export default {
   methods:{
     Datasend(){
       this.userLogin()
-      this.snackbar = true
-      setTimeout( () => this.$router.replace({  name:'auth-register'}), 2000);
+      this.snackbar= true
 
     },
-    async userLogin() {
+        async userLogin() {
         const response = await this.$auth.loginWith('local', { data: {Email:this.userEmail,Password:this.password } })
         console.log(response)
     }
+
   }
 
   }
