@@ -77,7 +77,7 @@
             </v-icon>
           Profile
       </v-tab>
-            <v-tab  nuxt  class=" red--text text--darken-4 "  href="#tab-6" >
+            <v-tab  nuxt  class=" red--text text--darken-4 "  href="#tab-6" @click="EiEi">
               <v-icon left>
                 mdi-exit-to-app
               </v-icon>
@@ -127,6 +127,11 @@ export default {
       right: true,
       rightDrawer: false,
       title: 'Vuetify.js'
+    }
+  }
+  ,methods:{
+    EiEi(){
+      this.$nuxt.$auth.logout()
     }
   }
 }
