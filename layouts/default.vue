@@ -4,6 +4,7 @@
     <v-tabs 
       v-model="tab"
       background-color="black"
+      height="70"
       fixed-tabs
       v-if="!this.$nuxt.$auth.loggedIn"
       
@@ -131,7 +132,12 @@ export default {
   }
   ,methods:{
     EiEi(){
-      this.$nuxt.$auth.logout()
+      try{
+        this.$nuxt.$auth.logout()
+      }catch{
+
+      }
+      
     }
   }
 }

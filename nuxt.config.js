@@ -2,15 +2,14 @@ import colors from 'vuetify/es5/util/colors'
 require('dotenv').config()
 export default {
     env: {
-        urlserver: 'https://api.blackcarrack.tech'
+        urlserver: 'https://api.blackcarrack.tech/'
     },
     // Disable server-side rendering: https://go.nuxtjs.dev/ssr-mode
     ssr: true,
 
     // Global page headers: https://go.nuxtjs.dev/config-head
     head: {
-        titleTemplate: '%s - Front-End',
-        title: 'Front-End',
+        title: 'CS:GO Skin Shop',
         htmlAttrs: {
             lang: 'en'
         },
@@ -21,7 +20,7 @@ export default {
             { name: 'format-detection', content: 'telephone=no' }
         ],
         link: [
-            { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
+            { rel: 'icon', type: 'image/x-icon', href: '/ms-icon-70x70.png' }
         ]
     },
 
