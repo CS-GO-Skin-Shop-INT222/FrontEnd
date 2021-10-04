@@ -10,7 +10,7 @@
             :rules="rules.emailRules"
             label="Email"
             outlined
-            :disabled="isEdit"
+            disabled
           ></v-text-field>
         </v-col>
         <v-spacer />
@@ -71,7 +71,6 @@
         </template>
       </v-snackbar>
     </div>
-  <p> {{ UserData }}</p>
   </v-app>
 </template>
 
