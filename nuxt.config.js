@@ -69,9 +69,9 @@ export default {
           // autoFetch: true
         },
         endpoints: {
-          login: { url: 'https://api.blackcarrack.tech/apiapi/user/login', method: 'post', propertyName:'token' },
-          logout: { url: 'https://api.blackcarrack.tech/apiapi/user/logout', method: 'delete' },
-          user: { url: 'https://api.blackcarrack.tech/apiapi/user/profile', method: 'get',propertyName:'user'}
+          login: { url: 'https://api.blackcarrack.tech/api/user/login', method: 'post', propertyName:'token' },
+          logout: { url: 'https://api.blackcarrack.tech/api/user/logout', method: 'delete' },
+          user: { url: 'https://api.blackcarrack.tech/api/user/profile', method: 'get',propertyName:'user'}
         }
         , tokenName:'auth-token'
       },
@@ -81,7 +81,7 @@ export default {
 
     // Axios module configuration: https://go.nuxtjs.dev/config-axios
     axios: {
-        baseURL: 'https://api.blackcarrack.tech/apiapi',
+        baseURL: 'https://api.blackcarrack.tech/api',
         proxyHeaders: false,
         credentials: false 
     },
