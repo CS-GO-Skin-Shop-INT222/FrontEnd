@@ -2,7 +2,7 @@ import colors from 'vuetify/es5/util/colors'
 require('dotenv').config()
 export default {
     env: {
-        urlserver: 'https://api.blackcarrack.tech/'
+        urlserver: 'https://api.blackcarrack.tech/api'
     },
     // Disable server-side rendering: https://go.nuxtjs.dev/ssr-mode
     ssr: true,
@@ -69,9 +69,9 @@ export default {
           // autoFetch: true
         },
         endpoints: {
-          login: { url: 'https://api.blackcarrack.tech/api/user/login', method: 'post', propertyName:'token' },
-          logout: { url: 'https://api.blackcarrack.tech/api/user/logout', method: 'delete' },
-          user: { url: 'https://api.blackcarrack.tech/api/user/profile', method: 'get',propertyName:'user'}
+          login: { url: 'https://api.blackcarrack.tech/apiapi/user/login', method: 'post', propertyName:'token' },
+          logout: { url: 'https://api.blackcarrack.tech/apiapi/user/logout', method: 'delete' },
+          user: { url: 'https://api.blackcarrack.tech/apiapi/user/profile', method: 'get',propertyName:'user'}
         }
         , tokenName:'auth-token'
       },
@@ -81,7 +81,7 @@ export default {
 
     // Axios module configuration: https://go.nuxtjs.dev/config-axios
     axios: {
-        baseURL: 'https://api.blackcarrack.tech/api',
+        baseURL: 'https://api.blackcarrack.tech/apiapi',
         proxyHeaders: false,
         credentials: false 
     },

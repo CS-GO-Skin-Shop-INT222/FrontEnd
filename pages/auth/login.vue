@@ -1,27 +1,34 @@
 <template>
   <v-form>
-    
-    <h1 class="text-md-center ma-6"> Login </h1>
-     <v-row>
-         <v-spacer></v-spacer>
-       <v-col cols="4">
-      <v-text-field   v-model="userEmail" label="Email" outlined></v-text-field>
-        </v-col>
-          <v-spacer></v-spacer>
-        </v-row>
-     <v-row>
-       <v-spacer></v-spacer>
-       <v-col cols="4">
-       <v-text-field  v-model="password" label="Password" outlined ></v-text-field>
-       </v-col>
-         <v-spacer></v-spacer>
-     </v-row>
-             <v-row align="center" justify="space-around">
-          <v-btn  class="py-5" x-large tile color="success" @click="userLogin">
-            Login
-          </v-btn>
-        </v-row>
-
+    <h1 class="text-md-center ma-6">Login</h1>
+    <v-row>
+      <v-spacer></v-spacer>
+      <v-col cols="4">
+        <v-text-field v-model="userEmail" label="Email" outlined></v-text-field>
+      </v-col>
+      <v-spacer></v-spacer>
+    </v-row>
+    <v-row>
+      <v-spacer></v-spacer>
+      <v-col cols="4">
+        <v-text-field
+          v-model="password"
+          label="Password"
+          outlined
+        ></v-text-field>
+      </v-col>
+      <v-spacer></v-spacer>
+    </v-row>
+    <v-row align="center" justify="space-around">
+      <v-btn class="py-5" x-large tile color="success" @click="userLogin">
+        Login
+      </v-btn>
+    </v-row>
+    <v-row align="center" justify="space-around">
+      <p v-if="Userpassword" class="red--text text--darken-4">
+        NOT CORRECT USER AND PASSWORD
+      </p>
+    </v-row>
     <div class="text-center">
       <v-snackbar v-model="snackbar" :timeout="timeout">
         <v-icon dark right> mdi-checkbox-marked-circle </v-icon>
@@ -34,40 +41,39 @@
         </template>
       </v-snackbar>
     </div>
-
   </v-form>
 </template>
 
 <script>
 export default {
-//    async asyncData({ $axios }) {
-//   const PATH_API = '/user/users'
-//   const ip = await $axios.$get(`${PATH_API}`)
-//   return { ip }
-// },
+  //    async asyncData({ $axios }) {
+  //   const PATH_API = '/user/users'
+  //   const ip = await $axios.$get(`${PATH_API}`)
+  //   return { ip }
+  // },
   data() {
     return {
-        snackbar: false,
-        timeout: 2000,
-        userEmail:'',
-        password:''
-       }
-  },
-  methods:{
-    Datasend(){
-      this.userLogin()
-      this.snackbar= true
-
-    },
-        async userLogin() {
-        const response = await this.$auth.loginWith('local', { data: {Email:this.userEmail,Password:this.password } })
-        console.log(response)
+      snackbar: false,
+      timeout: 2000,
+      userEmail: '',
+      password: '',
+      Userpassword: false,
     }
-
-  }
-
-  }
-
-  
-
+  },
+  methods: {
+    Datasend() {
+      this.userLogin()
+      this.snackbar = true
+    },
+    async userLogin() {
+      try {
+        await this.$auth.loginWith('local', {
+          data: { Email: this.userEmail, Password: this.password },
+        })
+      } catch (errore) {
+        this.Userpassword = true
+      }
+    },
+  },
+}
 </script>
