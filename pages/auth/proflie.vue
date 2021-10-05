@@ -40,15 +40,6 @@
             outlined
             :disabled="isEdit"
           ></v-text-field>
-          <v-checkbox
-            v-model="checkbox"
-            :rules="[(v) => !!v || 'You must agree to continue!']"
-            label="Do you agree?"
-            class="justify-center text-md-center"
-            justify="center"
-            required
-            disabled
-          ></v-checkbox>
         </v-col>
         <v-spacer />
       </v-row>
