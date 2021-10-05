@@ -23,7 +23,7 @@
             :rules="[rules.required, rules.min]"
             :type="password1 ? 'text' : 'password'"
             name="input-10-1"
-            hint="At least 8 characters"
+            hint="At least 10 characters"
             counter
             label="Password"
             outlined

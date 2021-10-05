@@ -2,12 +2,12 @@ import colors from 'vuetify/es5/util/colors'
 require('dotenv').config()
 export default {
     env: {
-        urlserver: 'https://api.blackcarrack.tech/api'
+        urlserver: 'http://localhost:5000/api'
     },
-    // Disable server-side rendering: https://go.nuxtjs.dev/ssr-mode
+    // Disable server-side rendering: http://go.nuxtjs.dev/ssr-mode
     ssr: true,
 
-    // Global page headers: https://go.nuxtjs.dev/config-head
+    // Global page headers: http://go.nuxtjs.dev/config-head
     head: {
         title: 'CS:GO Skin Shop',
         htmlAttrs: {
@@ -24,26 +24,26 @@ export default {
         ]
     },
 
-    // Global CSS: https://go.nuxtjs.dev/config-css
+    // Global CSS: http://go.nuxtjs.dev/config-css
     css: [],
 
-    // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
+    // Plugins to run before rendering page: http://go.nuxtjs.dev/config-plugins
     plugins: [],
 
-    // Auto import components: https://go.nuxtjs.dev/config-components
+    // Auto import components: http://go.nuxtjs.dev/config-components
     components: true,
 
-    // Modules for dev and build (recommended): https://go.nuxtjs.dev/config-modules
+    // Modules for dev and build (recommended): http://go.nuxtjs.dev/config-modules
     buildModules: [
-        // https://go.nuxtjs.dev/eslint
+        // http://go.nuxtjs.dev/eslint
         '@nuxtjs/eslint-module',
-        // https://go.nuxtjs.dev/vuetify
+        // http://go.nuxtjs.dev/vuetify
         '@nuxtjs/vuetify',
     ],
 
-    // Modules: https://go.nuxtjs.dev/config-modules
+    // Modules: http://go.nuxtjs.dev/config-modules
     modules: [
-        // https://go.nuxtjs.dev/axios
+        // http://go.nuxtjs.dev/axios
         '@nuxtjs/axios',
         '@nuxtjs/auth-next',
         '@nuxtjs/dotenv'
@@ -69,9 +69,9 @@ export default {
           // autoFetch: true
         },
         endpoints: {
-          login: { url: 'https://api.blackcarrack.tech/api/user/login', method: 'post', propertyName:'token' },
-          logout: { url: 'https://api.blackcarrack.tech/api/user/logout', method: 'delete' },
-          user: { url: 'https://api.blackcarrack.tech/api/user/profile', method: 'get',propertyName:'user'}
+          login: { url: 'http://localhost:5000/api/user/login', method: 'post', propertyName:'token' },
+          logout: { url: 'http://localhost:5000/api/user/logout', method: 'delete' },
+          user: { url: 'http://localhost:5000/api/user/profile', method: 'get',propertyName:'user'}
         }
         , tokenName:'auth-token'
       },
@@ -85,14 +85,14 @@ export default {
       }
     }
   },
-    // Axios module configuration: https://go.nuxtjs.dev/config-axios
+    // Axios module configuration: http://go.nuxtjs.dev/config-axios
     axios: {
-        baseURL: 'https://api.blackcarrack.tech/api',
+        baseURL: 'http://localhost:5000/api',
         proxyHeaders: false,
         credentials: false 
     },
     telemetry: false,
-    // Vuetify module configuration: https://go.nuxtjs.dev/config-vuetify
+    // Vuetify module configuration: http://go.nuxtjs.dev/config-vuetify
     vuetify: {
         customVariables: ['~/assets/variables.scss'],
         theme: {
@@ -111,6 +111,6 @@ export default {
         }
     },
 
-    // Build Configuration: https://go.nuxtjs.dev/config-build
+    // Build Configuration: http://go.nuxtjs.dev/config-build
     build: {}
 }
