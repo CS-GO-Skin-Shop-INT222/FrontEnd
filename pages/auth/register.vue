@@ -90,11 +90,13 @@
         <v-spacer />
       </v-row>
       <v-row>
+        <v-spacer />
         <v-row align="center" justify="space-around">
           <v-btn class="py-5" x-large color="success" @click="Checkrules">
             Register
           </v-btn>
         </v-row>
+        <v-spacer />
       </v-row>
     </v-form>
 
@@ -175,7 +177,6 @@ export default {
     },
     async sendDataUser(UserData) {
       const PATH_API = '/user/register'
-      console.log()
       const ip = await this.$axios.$post(`${PATH_API}`, UserData)
       return { ip }
       // await axios.post(`${this.urlserver}/api/user/register`, this.UserData)

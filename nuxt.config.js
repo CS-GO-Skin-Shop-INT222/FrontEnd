@@ -78,7 +78,13 @@ export default {
      
     }
   },
-
+  loaders: {
+    vue: {
+      compilerOptions: {
+        preserveWhitespace: false
+      }
+    }
+  },
     // Axios module configuration: https://go.nuxtjs.dev/config-axios
     axios: {
         baseURL: 'https://api.blackcarrack.tech/api',

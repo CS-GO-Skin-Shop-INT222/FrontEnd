@@ -1,20 +1,25 @@
 <template>
+<v-app>
   <v-form>
-    <h1 class="text-md-center ma-6">Login</h1>
+    <h1 class="text-center ma-6">Login</h1>
     <v-row>
       <v-spacer></v-spacer>
-      <v-col cols="4">
+      <v-col xs="2" sm="8"  md="4">
         <v-text-field v-model="userEmail" label="Email" outlined></v-text-field>
       </v-col>
       <v-spacer></v-spacer>
     </v-row>
     <v-row>
       <v-spacer></v-spacer>
-      <v-col cols="4">
+      <v-col xs="2" sm="8"  md="4">
         <v-text-field
           v-model="password"
-          label="Password"
+          :append-icon="password2 ? 'mdi-eye' : 'mdi-eye-off'"
+                    label="Password"
           outlined
+          :type="password2 ? 'text' : 'password'"
+          @click:append="password2 = !password2"
+
         ></v-text-field>
       </v-col>
       <v-spacer></v-spacer>
@@ -42,6 +47,7 @@
       </v-snackbar>
     </div>
   </v-form>
+  </v-app>
 </template>
 
 <script>
@@ -58,6 +64,7 @@ export default {
       userEmail: '',
       password: '',
       Userpassword: false,
+      password2:false
     }
   },
   methods: {

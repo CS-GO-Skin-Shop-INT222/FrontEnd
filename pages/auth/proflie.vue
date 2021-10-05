@@ -1,11 +1,13 @@
 <template>
-      <v-app>
+  <v-app>
     <v-form>
-      <h1 class="text-center ma-6">Profile <v-icon @click="isEdit =!isEdit">mdi-account-edit</v-icon></h1>
+      <h1 class="text-center ma-6">
+        Profile <v-icon @click="isEdit = !isEdit">mdi-account-edit</v-icon>
+      </h1>
       <v-row dense justify="center" no-gutters>
         <v-spacer />
         <v-col sm="6" md="6" lg="4" class="text-md-center"
-          ><v-text-field 
+          ><v-text-field
             v-model="UserData.Email"
             :rules="rules.emailRules"
             label="Email"
@@ -18,7 +20,7 @@
       <v-row dense no-gutters justify="center">
         <v-spacer />
         <v-col sm="6" md="6" lg="4" class="text-md-center"
-          ><v-text-field 
+          ><v-text-field
             v-model="UserData.Name"
             :rules="[rules.required]"
             label="Name"
@@ -31,21 +33,21 @@
       <v-row dense no-gutters justify="center">
         <v-spacer />
         <v-col sm="6" md="6" lg="4" class="text-md-center">
-          <v-text-field 
+          <v-text-field
             v-model="UserData.Tel"
             :rules="[rules.required, rules.telnumber]"
             label="Tel"
             outlined
             :disabled="isEdit"
           ></v-text-field>
-          <v-checkbox 
+          <v-checkbox
             v-model="checkbox"
             :rules="[(v) => !!v || 'You must agree to continue!']"
             label="Do you agree?"
             class="justify-center text-md-center"
             justify="center"
             required
-                        disabled
+            disabled
           ></v-checkbox>
         </v-col>
         <v-spacer />
@@ -77,10 +79,10 @@
 
 <script>
 export default {
-    async asyncData({ $axios }) {
-  const ip = await $axios.$get('/user/profile')
-  return { UserData:ip.user }
-},
+  async asyncData({ $axios }) {
+    const ip = await $axios.$get('/user/profile')
+    return { UserData: ip.user }
+  },
   data() {
     return {
       snackbar: false,
@@ -96,7 +98,7 @@ export default {
       ConfirmPassword: '',
       CheckTrue: '',
       UserData: {},
-      isEdit:true,
+      isEdit: true,
       rules: {
         required: (v) => !!v || 'Required.',
         min: (v) => v.length >= 10 || 'Min 10 characters',
@@ -137,22 +139,23 @@ export default {
         }
         console.log(UserData)
         this.snackbar = true
-        setTimeout( () => this.$router.replace({  name:'auth-login'}), 2000);
+        setTimeout(() => this.$router.replace({ name: 'auth-login' }), 2000)
       }
     },
-    async saveData(){
+    async saveData() {
       const newData = {
-        UserID:this.UserData.UserID,
+        UserID: this.UserData.UserID,
         Name: this.UserData.Name,
         Email: this.UserData.Email,
         Tel: this.UserData.Tel,
         Password: this.UserData.Password,
       }
-    const ips = await this.$axios.$put(`/user/edituser/${this.UserData.UserID}`, newData)
-    return { ips }
-    }
-
+      const ips = await this.$axios.$put(
+        `/user/edituser/${this.UserData.UserID}`,
+        newData
+      )
+      return { ips }
+    },
   },
-  
-  }
+}
 </script>
