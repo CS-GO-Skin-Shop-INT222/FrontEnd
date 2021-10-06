@@ -20,7 +20,7 @@
           ><v-text-field
             v-model="password"
             :append-icon="password1 ? 'mdi-eye' : 'mdi-eye-off'"
-            :rules="[rules.required, rules.min]"
+            :rules="[rules.required, rules.min,rules.max]"
             :type="password1 ? 'text' : 'password'"
             name="input-10-1"
             hint="At least 10 characters"
@@ -31,7 +31,7 @@
           >
           </v-text-field>
           <p class="text-caption text--secondary">
-            Must include 10-16 capital & lower case English letters, numbers,
+            Must include 10-20 capital & lower case English letters, numbers,
             and special characters
           </p>
         </v-col>
@@ -47,7 +47,7 @@
             :rules="[rules.required, rules.Match]"
             :type="password2 ? 'text' : 'password'"
             name="input-10-1"
-            hint="Password not Match"
+            hint="Password must match"
             counter
             label="Confirm Password"
             outlined
@@ -135,23 +135,42 @@ export default {
       rules: {
         required: (v) => !!v || 'Required.',
         min: (v) => v.length >= 10 || 'Min 10 characters',
-        Match: (v) => v === this.password || 'Password not Match',
+        max: (v) => v.length <= 20 || 'Max 20 characters',
+        Match: (v) => v === this.password || 'Password not match',
         telnumber: (v) =>
           Number.isInteger(Number(v)) || 'The value must be an integer',
         emailRules: [
           (v) => !!v || 'E-mail is required',
-          (v) => /.+@.+\..+/.test(v) || 'E-mail must be valid',
+          (v) => /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(v) || 'E-mail must be valid',
         ],
       },
     }
   },
   methods: {
+    validateEmail(email) {
+    const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(String(email).toLowerCase());
+},
+    validatePassword(password) {
+    const re = /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{10,20}$/;
+    return re.test(String(password).toLowerCase());
+},
+    validateTelephone(tel){
+     if(Number.isInteger(Number(tel)) && tel.length === 10 )  {
+       return true
+     }
+      return false
+    },
+        validateName(name){
+      const re = /^[A-Za-z]+$/
+        return re.test(String(name).toLowerCase());
+    },
     Checkrules() {
       const ArrayCheck = [
-        this.Name,
-        this.email,
-        this.Tel,
-        this.password,
+        this.validateName(this.Name),
+        this.validateEmail(this.email),
+        this.validateTelephone(this.Tel),
+        this.validatePassword(this.password),
         this.password === this.ConfirmPassword,
         this.checkbox,
       ]
@@ -161,25 +180,27 @@ export default {
         }
       }
       if (this.CheckTrue === false) {
-        alert('please insert data')
+
+        alert('Please check your data')
+        this.CheckTrue = true
       } else {
-        const UserData = {
-          Name: this.Name,
-          Email: this.email,
-          Tel: this.Tel,
-          Password: this.password,
-          Credit: 1,
-        }
-        this.sendDataUser(UserData)
+         const UserData = {
+           Name: this.Name,
+           Email: this.email,
+           Tel: this.Tel,
+           Password: this.password,
+           Credit: 1,
+         }
+         this.sendDataUser(UserData)
         this.snackbar = true
-        setTimeout( () => this.$router.replace({  name:'auth-login'}), 2000);
+        console.log(UserData)
+        //  setTimeout( () => this.$router.replace({  name:'auth-login'}), 2000);
       }
     },
     async sendDataUser(UserData) {
       const PATH_API = '/user/register'
       const ip = await this.$axios.$post(`${PATH_API}`, UserData)
       return { ip }
-      // await axios.post(`${this.urlserver}/api/user/register`, this.UserData)
     },
   },
 }

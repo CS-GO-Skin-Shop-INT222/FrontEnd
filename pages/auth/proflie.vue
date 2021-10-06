@@ -70,6 +70,7 @@
 
 <script>
 export default {
+  middleware: 'auth',
   async asyncData({ $axios }) {
     const ip = await $axios.$get('/user/profile')
     return { UserData: ip.user }
@@ -103,7 +104,17 @@ export default {
       },
     }
   },
-  methods: {
+  methods: {   
+    validateTelephone(tel){
+     if(Number.isInteger(Number(tel)) && tel.length === 10 )  {
+       return true
+     }
+      return false
+    },
+    validateName(name){
+      const re = /^[A-Za-z]+$/
+        return re.test(String(name).toLowerCase());
+    },
     Checkrules() {
       const ArrayCheck = [
         this.Name,
