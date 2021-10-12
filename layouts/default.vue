@@ -26,10 +26,10 @@
       <v-tab to="/auth/inventory" nuxt class=" red--text text--darken-4"  href="#tab-4">
         SELL
       </v-tab>
-            <v-tab to="/auth/login" nuxt class=" red--text text--darken-4"  href="#tab-5">
+            <v-tab to="/admin/login" nuxt class=" red--text text--darken-4"  href="#tab-5">
           Login
       </v-tab>
-            <v-tab to="/auth/register" nuxt class=" red--text text--darken-4"  href="#tab-6">
+            <v-tab to="/admin/register" nuxt class=" red--text text--darken-4"  href="#tab-6">
           Register
       </v-tab>
 

@@ -43,11 +43,18 @@ export default {
 
     // Modules: http://go.nuxtjs.dev/config-modules
     modules: [
+      'nuxt-healthcheck',
         // http://go.nuxtjs.dev/axios
         '@nuxtjs/axios',
         '@nuxtjs/auth-next',
-        '@nuxtjs/dotenv'
     ],
+    healthcheck: {
+      path: '/healthcheck',
+      contentType: 'application/json',
+      healthy: () => {
+        return JSON.stringify({ result: 'application/json' })
+      }
+    },
 
   auth: {
     redirect: {
