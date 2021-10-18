@@ -175,6 +175,7 @@ export default {
         this.password === this.ConfirmPassword,
         this.checkbox,
       ]
+      console.log(ArrayCheck)
       for (let index = 0; index < ArrayCheck.length; index++) {
         if (Boolean(ArrayCheck[index]) === false) {
           this.CheckTrue = false

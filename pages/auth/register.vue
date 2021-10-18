@@ -174,6 +174,7 @@ export default {
         this.password === this.ConfirmPassword,
         this.checkbox,
       ]
+            console.log(ArrayCheck)
       for (let index = 0; index < ArrayCheck.length; index++) {
         if (Boolean(ArrayCheck[index]) === false) {
           this.CheckTrue = false
@@ -194,7 +195,7 @@ export default {
          this.sendDataUser(UserData)
         this.snackbar = true
         console.log(UserData)
-        //  setTimeout( () => this.$router.replace({  name:'auth-login'}), 2000);
+         setTimeout( () => this.$router.replace({  name:'auth-login'}), 2000);
       }
     },
     async sendDataUser(UserData) {
