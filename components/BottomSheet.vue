@@ -29,27 +29,60 @@
                       outlined
                     ></v-select>
                     <v-select
-                      v-if="selectType"
                       v-model="selectWeapon"
                       :items="weaponsFilter"
                       item-text="WeaponName"
                       label="Weapon"
                       outlined
+                      :disabled="selectType === ''"
                       @click="filterWeapons"
                     ></v-select>
                     <v-select
-                      v-if="selectWeapon"
+                      v-model="selectSkin"
                       :items="skinFilter"
                       item-text="Skin.SkinName"
                       label="Skin"
-                      @click="filterSkin"
                       outlined
+                      :disabled="selectWeapon === ''"
+                      @click="filterSkin"
                     ></v-select>
                   </v-col>
                 </v-row>
                 <v-row>
                   <v-col cols="8">
-
+                    <v-row>
+                      <v-col>
+                        <v-select
+                          :items="stickerSet"
+                          item-text="StickerName"
+                          label="Sticker"
+                          outlined
+                          :disabled="selectSkin === ''"
+                          @click="filterSkin"
+                        ></v-select>
+                      </v-col>
+                      <v-col>
+                        <v-select
+                          :items="stickerSet"
+                          item-text="StickerName"
+                          label="Sticker"
+                          outlined
+                          :disabled="selectSkin === ''"
+                          @click="filterSkin"
+                        ></v-select>
+                      </v-col>
+                      <v-col>
+                        <v-select
+                          :items="stickerSet"
+                          item-text="StickerName"
+                          label="Sticker"
+                          outlined
+                          :disabled="selectSkin === ''"
+                          @click="filterSkin"
+                        ></v-select>
+                      </v-col>
+                    </v-row>
+                    <v-row> </v-row>
                   </v-col>
                   <v-col cols="4">
                     <v-text-field
@@ -77,6 +110,7 @@ export default {
   data: () => ({
     selectType: '',
     selectWeapon: '',
+    selectSkin:'',
 
     typeId: '',
     typeSet: [],
@@ -89,7 +123,7 @@ export default {
     skinFilter: [],
     test: '',
 
-    stickerSet:'',
+    stickerSet: [],
 
     price: '',
     sheet: false,
@@ -104,16 +138,15 @@ export default {
     },
 
     async test1() {
-      const weapons = await this.$axios.$get('/item/weapon')
-      const type = await this.$axios.$get('/item/type')
-      const skin = await this.$axios.$get('/item/skin')
-      const sticker = await this.$axios.$get('/Sticker/sticker')
+      const weapons = await this.$axios.$get('/item/allweapon')
+      const type = await this.$axios.$get('/item/alltype')
+      const skin = await this.$axios.$get('/item/allskin')
+      const sticker = await this.$axios.$get('/stickeritem/sticker')
       this.stickerSet = sticker
       this.typeSet = type
       this.weaponsSet = weapons
       this.skinSet = skin
       this.setArray(type)
-      console.log(sticker)
     },
     checkType() {
       const dataSelect = this.selectType
