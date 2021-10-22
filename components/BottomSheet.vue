@@ -1,104 +1,136 @@
 <template>
   <div class="text-center">
-    <v-bottom-sheet v-model="sheet" inset>
-      <template v-slot:activator="{ on, attrs }">
-        <v-btn color="orange" dark v-bind="attrs" v-on="on" @click="test1">
-          Add Item
-        </v-btn>
-      </template>
-      <v-sheet height="800px">
-        <div class="ma-8">
-          <div class="text-right">
-            <v-btn class="mt-6" color="error " @click="sheet = !sheet">
-              X
-            </v-btn>
-          </div>
-          <v-container>
-            <div class="my-3">
-              <div class="text-center">
-                <v-row>
-                  <v-col cols="8">
-                    <p>Hello</p>
-                  </v-col>
-                  <v-col cols="4">
-                    <v-select
-                      v-model="selectType"
-                      :items="typeSet"
-                      item-text="TypeName"
-                      label="Type weapons"
-                      outlined
-                    ></v-select>
-                    <v-select
-                      v-model="selectWeapon"
-                      :items="weaponsFilter"
-                      item-text="WeaponName"
-                      label="Weapon"
-                      outlined
-                      :disabled="selectType === ''"
-                      @click="filterWeapons"
-                    ></v-select>
-                    <v-select
-                      v-model="selectSkin"
-                      :items="skinFilter"
-                      item-text="Skin.SkinName"
-                      label="Skin"
-                      outlined
-                      :disabled="selectWeapon === ''"
-                      @click="filterSkin"
-                    ></v-select>
-                  </v-col>
-                </v-row>
-                <v-row>
-                  <v-col cols="8">
+
+    <v-row justify="center">
+      <v-dialog
+        v-model="dialog"
+        max-width="1200px"
+        max-height="100px"
+      >
+        <template v-slot:activator="{ on, attrs }">
+          <v-btn color="primary" dark v-bind="attrs" v-on="on" @click="test1">
+            Add Item
+          </v-btn>
+        </template>
+        <v-card>
+          <v-card-title>
+            <span class="text-h5">Item</span>
+          </v-card-title>
+          <v-card-text>
+            <div class="ma-8">
+              <div class="text-right"></div>
+              <v-container>
+                <div class="my-3">
+                  <div class="text-center">
                     <v-row>
-                      <v-col>
-                        <v-select
-                          :items="stickerSet"
-                          item-text="StickerName"
-                          label="Sticker"
-                          outlined
-                          :disabled="selectSkin === ''"
-                          @click="filterSkin"
-                        ></v-select>
+                      <v-col cols="8">
+                        <p>Hello</p>
                       </v-col>
-                      <v-col>
+                      <v-col cols="4">
                         <v-select
-                          :items="stickerSet"
-                          item-text="StickerName"
-                          label="Sticker"
+                          v-model="selectType"
+                          :items="typeSet"
+                          item-text="TypeName"
+                          label="Type weapons"
                           outlined
-                          :disabled="selectSkin === ''"
-                          @click="filterSkin"
                         ></v-select>
-                      </v-col>
-                      <v-col>
                         <v-select
-                          :items="stickerSet"
-                          item-text="StickerName"
-                          label="Sticker"
+                          v-model="selectWeapon"
+                          :items="weaponsFilter"
+                          item-text="WeaponName"
+                          label="Weapon"
                           outlined
-                          :disabled="selectSkin === ''"
+                          :disabled="selectType === ''"
+                          @click="filterWeapons"
+                        ></v-select>
+                        <v-select
+                          v-model="selectSkin"
+                          :items="skinFilter"
+                          item-text="Skin.SkinName"
+                          label="Skin"
+                          outlined
+                          :disabled="selectWeapon === ''"
                           @click="filterSkin"
                         ></v-select>
                       </v-col>
                     </v-row>
-                    <v-row> </v-row>
-                  </v-col>
-                  <v-col cols="4">
-                    <v-text-field
-                      v-model="price"
-                      label="Price"
-                      outlined
-                    ></v-text-field>
-                    <v-textarea label="Description" outlined></v-textarea>
-                  </v-col>
-                </v-row>
-              </div>
+                    <v-row>
+                      <v-col cols="8">
+                        <v-row>
+                          <v-col>
+                            <v-select
+                              :items="stickerSet"
+                              item-text="StickerName"
+                              label="Sticker"
+                              outlined
+                              :disabled="selectSkin === ''"
+                              @click="filterSkin"
+                            ></v-select>
+                          </v-col>
+                          <v-col>
+                            <v-select
+                              :items="stickerSet"
+                              item-text="StickerName"
+                              label="Sticker"
+                              outlined
+                              :disabled="selectSkin === ''"
+                              @click="filterSkin"
+                            ></v-select>
+                          </v-col>
+                          <v-col>
+                            <v-select
+                              :items="stickerSet"
+                              item-text="StickerName"
+                              label="Sticker"
+                              outlined
+                              :disabled="selectSkin === ''"
+                              @click="filterSkin"
+                            ></v-select>
+                          </v-col>
+                        </v-row>
+                        <v-row> </v-row>
+                      </v-col>
+                      <v-col cols="4">
+                        <v-text-field
+                          v-model.number="price"
+                          label="Price"
+                          outlined
+                          :rules="[
+                            rules.numberCheck,
+                            rules.required,
+                            rules.positiveCheck,
+                          ]"
+                        ></v-text-field>
+                        <v-textarea
+                          v-model="description"
+                          label="Description"
+                          outlined
+                          :rules="[rules.required]"
+                        ></v-textarea>
+                        <v-btn
+                          color="blue darken-1"
+                          text
+                          @click="dialog = false"
+                        >
+                          Close
+                        </v-btn>
+                        <v-btn
+                          color="blue darken-1"
+                          text
+                          @click="sendItem"
+                        >
+                          Save
+                        </v-btn>
+                      </v-col>
+                    </v-row>
+                  </div>
+                </div>
+              </v-container>
             </div>
-          </v-container>
-        </div>
-      </v-sheet>
-    </v-bottom-sheet>
+          </v-card-text>
+        </v-card>
+      </v-dialog>
+    </v-row>
   </div>
 </template>
 <script>
@@ -110,7 +142,7 @@ export default {
   data: () => ({
     selectType: '',
     selectWeapon: '',
-    selectSkin:'',
+    selectSkin: '',
 
     typeId: '',
     typeSet: [],
@@ -119,6 +151,7 @@ export default {
     weaponsSet: '',
     weaponsFilter: [],
 
+    skinId:'',
     skinSet: '',
     skinFilter: [],
     test: '',
@@ -126,7 +159,20 @@ export default {
     stickerSet: [],
 
     price: '',
+    description:'',
     sheet: false,
+    dialog: false,
+
+    Stickers1:'',
+    Stickers2:'',
+    Stickers3:'',
+
+    rules: {
+      required: (v) => !!v || 'Required.',
+      numberCheck: (v) =>
+        Number.isInteger(Number(v)) || 'The value must be an integer',
+      positiveCheck: (v) => v > 0 || 'The value must be positive',
+    },
   }),
   methods: {
     setArray(data) {
@@ -156,13 +202,11 @@ export default {
       })
       this.typeId = id[0].TypeID
     },
-    filterWeapons() {
+   async filterWeapons() {
       this.checkType()
-      const filterWeapons = this.weaponsSet.Weapon
       const typeId = this.typeId
-      this.weaponsFilter = filterWeapons.filter(function (item) {
-        return item.TypeID === typeId
-      })
+      const weaponSet = await this.$axios.$get(`/item/weapon/${typeId}`)
+      this.weaponsFilter = weaponSet.Weapon
     },
     checkWeapons() {
       const dataWeaponSelect = this.selectWeapon
@@ -172,13 +216,53 @@ export default {
       })
       this.weaponsId = id[0].WeaponID
     },
-
     async filterSkin() {
       this.checkWeapons()
       const weaponsId = this.weaponsId
       const skinSet = await this.$axios.$get(`/item/skin/${weaponsId}`)
       this.skinFilter = skinSet.Skin
     },
+    checkSkin() {
+      const dataSkinSelect = this.selectSkin
+      const filterType = this.skinFilter
+      const id = filterType.filter(function (item) {
+        return item.Skin.SkinName === dataSkinSelect
+      })
+      this.skinId = id[0].SkinID
+    },
+    validateNumber(num) {
+      if (Number.isInteger(Number(num)) && num > 0) {
+        return true
+      }
+      return false
+    },
+    sendItem(){
+      if(this.validateNumber(this.price) === true && this.description !== ''){
+              this.checkSkin()
+              const Item = {
+        Price:this.price,
+        Description:this.description,
+        WeaponSkinID:this.skinId,
+        UserID:this.$nuxt.$auth.user.UserID,
+        Pubish:'N',
+        Stickers:[{
+            id:'STICKER8032871776'
+        },
+        {
+          id:'STICKER8032871776'
+        },{
+          id:'STICKER8032871776'
+        }
+        ]
+      }
+      this.$axios.$post('/inventory/addItem',Item)
+
+      }else{
+      alert("wtf")
+      }
+
+
+    }
   },
 }
 </script>
