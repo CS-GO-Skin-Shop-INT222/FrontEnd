@@ -1,7 +1,7 @@
 <template>
   <div class="text-center">
 
-    <v-row justify="center">
+    <v-row justify="center" class="ma-10">
       <v-dialog
         v-model="dialog"
         max-width="1200px"
