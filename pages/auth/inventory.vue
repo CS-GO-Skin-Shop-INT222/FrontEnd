@@ -73,7 +73,7 @@ export default {
   data() {
     return {
       itemInventory: '',
-      dataimage: '../../assets/weapons/Hello.png',
+      dataimage: '/usr/src/app/assets/weapons/Hello.png',
       data: {
         WeaponSkin: {
           Weapon: { WeaponName: '' },
