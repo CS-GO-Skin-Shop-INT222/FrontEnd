@@ -13,7 +13,19 @@
             >
               <v-card>
                 <v-img
-                  :src="`${dataimage}`"
+                  v-if="item.Description !== ''"
+                  :src="`https://api.lorem.space/image/game?w=200&h=200`"
+                  class="white--text align-end"
+                  gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
+                  height="200px"
+                >
+                  <v-card-title
+                    v-text="item.WeaponSkin.Skin.SkinName"
+                  ></v-card-title>
+                </v-img>
+                <v-img
+                  v-if="item.Description === ''"
+                  :src="`kuy`"
                   class="white--text align-end"
                   gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
                   height="200px"
@@ -28,18 +40,18 @@
         </v-col>
         <v-col v-if="!check" class="grey darken-3" cols="4">
           <v-img
-            :src="`${dataimage}`"
+            :src="`https://api.lorem.space/image/game?w=400&h=400`"
             class="white--text align-end"
             gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
-            height="200px"
+            height="400px"
           />
         </v-col>
         <v-col v-if="check" class="grey darken-3" cols="4">
           <v-img
-            :src="`${dataimage}`"
+            :src="`https://api.lorem.space/image/game?w=300&h=300`"
             class="white--text align-end"
             gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
-            height="200px"
+            height="300px"
           />
           <p>| {{ data.WeaponSkin.Weapon.WeaponName }} |</p>
           <p>{{ data.WeaponSkin.Skin.SkinName }}</p>
@@ -101,11 +113,10 @@ export default {
   },
   methods: {
     setData(data1) {
-      if(data1.ItemID !== ''){
-      this.data = data1
-      this.check = true
+      if (data1.ItemID !== '') {
+        this.data = data1
+        this.check = true
       }
-
     },
     setArrayItem() {
       for (let index = 0; index < 9; index++) {
