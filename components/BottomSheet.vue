@@ -1,12 +1,7 @@
 <template>
   <div class="text-center">
-
     <v-row justify="center" class="ma-10">
-      <v-dialog
-        v-model="dialog"
-        max-width="1200px"
-        max-height="100px"
-      >
+      <v-dialog v-model="dialog" max-width="1200px" max-height="100px">
         <template v-slot:activator="{ on, attrs }">
           <v-btn color="primary" dark v-bind="attrs" v-on="on" @click="test1">
             Add Item
@@ -33,7 +28,9 @@
                           item-text="TypeName"
                           label="Type weapons"
                           outlined
+                          @click="clearData(1)"
                         ></v-select>
+
                         <v-select
                           v-model="selectWeapon"
                           :items="weaponsFilter"
@@ -41,8 +38,12 @@
                           label="Weapon"
                           outlined
                           :disabled="selectType === ''"
-                          @click="filterWeapons"
+                          @click="
+                            filterWeapons()
+                            clearData(2)
+                          "
                         ></v-select>
+
                         <v-select
                           v-model="selectSkin"
                           :items="skinFilter"
@@ -59,33 +60,54 @@
                         <v-row>
                           <v-col>
                             <v-select
+                              v-model="Stickers1"
                               :items="stickerSet"
                               item-text="StickerName"
                               label="Sticker"
                               outlined
                               :disabled="selectSkin === ''"
-                              @click="filterSkin"
+                              @change="stickerImage(1);checkSticker(1);"
                             ></v-select>
+                            <v-img
+                              class="mx-auto"
+                              :src="`${simg1}`"
+                              max-height="200"
+                              max-width="200"
+                            ></v-img>
                           </v-col>
                           <v-col>
                             <v-select
+                              v-model="Stickers2"
                               :items="stickerSet"
                               item-text="StickerName"
                               label="Sticker"
                               outlined
                               :disabled="selectSkin === ''"
-                              @click="filterSkin"
+                              @change="stickerImage(2);checkSticker(2);"
                             ></v-select>
+                            <v-img
+                              class="mx-auto"
+                              :src="`${simg2}`"
+                              max-height="200"
+                              max-width="200"
+                            ></v-img>
                           </v-col>
                           <v-col>
                             <v-select
+                              v-model="Stickers3"
                               :items="stickerSet"
                               item-text="StickerName"
                               label="Sticker"
                               outlined
                               :disabled="selectSkin === ''"
-                              @click="filterSkin"
+                              @change="stickerImage(3);checkSticker(3);"
                             ></v-select>
+                            <v-img
+                              class="mx-auto"
+                              :src="`${simg3}`"
+                              max-height="200"
+                              max-width="200"
+                            ></v-img>
                           </v-col>
                         </v-row>
                         <v-row> </v-row>
@@ -114,11 +136,7 @@
                         >
                           Close
                         </v-btn>
-                        <v-btn
-                          color="blue darken-1"
-                          text
-                          @click="sendItem"
-                        >
+                        <v-btn color="blue darken-1" text @click="sendItem">
                           Save
                         </v-btn>
                       </v-col>
@@ -151,7 +169,7 @@ export default {
     weaponsSet: '',
     weaponsFilter: [],
 
-    skinId:'',
+    skinId: '',
     skinSet: '',
     skinFilter: [],
     test: '',
@@ -159,13 +177,18 @@ export default {
     stickerSet: [],
 
     price: '',
-    description:'',
+    description: '',
     sheet: false,
     dialog: false,
 
-    Stickers1:'',
-    Stickers2:'',
-    Stickers3:'',
+    Stickers1: '',
+    Stickers2: '',
+    Stickers3: '',
+
+    simg1: '',
+    simg2: '',
+    simg3: '',
+    weaponTrueFalse: false,
 
     rules: {
       required: (v) => !!v || 'Required.',
@@ -202,7 +225,7 @@ export default {
       })
       this.typeId = id[0].TypeID
     },
-   async filterWeapons() {
+    async filterWeapons() {
       this.checkType()
       const typeId = this.typeId
       const weaponSet = await this.$axios.$get(`/item/weapon/${typeId}`)
@@ -225,10 +248,11 @@ export default {
     checkSkin() {
       const dataSkinSelect = this.selectSkin
       const filterType = this.skinFilter
+      console.log(filterType)
       const id = filterType.filter(function (item) {
         return item.Skin.SkinName === dataSkinSelect
       })
-      this.skinId = id[0].SkinID
+      this.skinId = id[0].WeaponSkinID
     },
     validateNumber(num) {
       if (Number.isInteger(Number(num)) && num > 0) {
@@ -236,33 +260,80 @@ export default {
       }
       return false
     },
-    sendItem(){
-      if(this.validateNumber(this.price) === true && this.description !== ''){
-              this.checkSkin()
-              const Item = {
-        Price:this.price,
-        Description:this.description,
-        WeaponSkinID:this.skinId,
-        UserID:this.$nuxt.$auth.user.UserID,
-        Pubish:'N',
-        Stickers:[{
-            id:'STICKER8032871776'
-        },
-        {
-          id:'STICKER8032871776'
-        },{
-          id:'STICKER8032871776'
+    clearData(number) {
+      switch (number) {
+        case 1:
+          this.selectWeapon = ''
+          this.selectSkin = ''
+          break
+        case 2:
+          this.selectSkin = ''
+          break
+      }
+    },
+    stickerImage(number) {
+      switch (number) {
+        case 1:
+          this.simg1 = `https://api.blackcarrack.tech/api/stickeritem/stickerimage/${this.Stickers1}`
+
+          break
+        case 2:
+          this.simg2 = `https://api.blackcarrack.tech/api/stickeritem/stickerimage/${this.Stickers2}`
+          break
+        case 3:
+          this.simg3 = `https://api.blackcarrack.tech/api/stickeritem/stickerimage/${this.Stickers3}`
+          break
+      }
+    },
+
+    checkSticker(number) {
+      let dataStickerSelect=''
+      switch(number){
+        case 1:
+          dataStickerSelect = this.Stickers1
+          break;
+        case 2:
+          dataStickerSelect = this.Stickers2
+          break;
+        case 3:
+          dataStickerSelect = this.Stickers3
+          break;
+      }
+      const filterType = this.stickerSet
+      const id = filterType.filter(function (item) {
+        return item.StickerName === dataStickerSelect
+      })
+      return(id[0].StickerID)
+
+    },
+    sendItem() {
+      if (this.validateNumber(this.price) === true && this.description !== '') {
+        this.checkSkin()
+        const Item = {
+          Price: this.price,
+          Description: this.description,
+          UserID: this.$nuxt.$auth.user.UserID,
+          WeaponSkinID: this.skinId,
+          Stickers: [
+            {
+              id: this.checkSticker(1),
+            },
+            {
+              id: this.checkSticker(2),
+            },
+            {
+              id: this.checkSticker(3),
+            },
+          ],
         }
-        ]
+        console.log(Item)
+        this.$axios.$post('/inventory/addItem', Item)
+        this.dialog = false
+        location.reload()
+      } else {
+        alert('wtf')
       }
-      this.$axios.$post('/inventory/addItem',Item)
-
-      }else{
-      alert("wtf")
-      }
-
-
-    }
+    },
   },
 }
 </script>

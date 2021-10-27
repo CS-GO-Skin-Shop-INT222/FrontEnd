@@ -6,8 +6,8 @@
         <v-col class="grey darken-2" cols="8">
           <v-row>
             <v-col
-              v-for="item in itemInventory"
-              :key="item.ItemID"
+              v-for="(item,index) in itemInventory"
+              :key="index"
               cols="4"
               @click="setData(item)"
             >
@@ -64,11 +64,46 @@
           <p>User : {{ data.Users.Name }}</p>
           <p>$ {{ data.Price }}</p>
           <v-btn color="primary" dark> Edit </v-btn>
-          <v-btn color="primary" dark> Delete </v-btn>
+          <v-btn color="primary" dark @click="deleteItem"> Delete </v-btn>
         </v-col>
       </v-row>
     </v-container>
     <bottom-sheet></bottom-sheet>
+    <div>
+      <v-row justify="center">
+        <v-dialog v-model="dialog" max-width="290">
+          <v-card>
+            <v-card-title class="text-h5"> Delete this item ? </v-card-title>
+            <v-card-text
+              >Let Google help apps determine location. This means sending
+              anonymous location data to Google, even when no apps are
+              running.</v-card-text
+            >
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn color="green darken-1" text @click="dialog = false">
+                Disagree
+              </v-btn>
+              <v-btn color="green darken-1" text @click="dialog = false">
+                Agree
+              </v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
+      </v-row>
+    </div>
+    <div class="text-center">
+      <v-snackbar v-model="snackbar" :timeout="2000">
+        <v-icon dark right> mdi-checkbox-marked-circle </v-icon>
+        Register completed
+
+        <template v-slot:action="{ attrs }">
+          <v-btn color="blue" text v-bind="attrs" @click="snackbar = false">
+            Close
+          </v-btn>
+        </template>
+      </v-snackbar>
+    </div>
   </v-app>
 </template>
 
@@ -86,6 +121,7 @@ export default {
     return {
       itemInventory: '',
       dataimage: '../../assets/weapons/Hello.png',
+      dialog: false,
       data: {
         WeaponSkin: {
           Weapon: { WeaponName: '' },
@@ -95,6 +131,7 @@ export default {
         Users: { Name: '' },
         Price: '',
       },
+      snackbar:false,
       check: false,
       setForItem: [],
     }
@@ -144,6 +181,14 @@ export default {
         }
       }
       this.itemInventory = this.setForItem
+    },
+    deleteItem() {
+      console.log(this.data.ItemID)
+      if (confirm('Sure to delete ?')) {
+        this.$axios.$delete(`/inventory/deleteItem/${this.data.ItemID}`)
+        this.snackbar = true
+        location.reload();
+      }
     },
   },
 }
