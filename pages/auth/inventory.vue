@@ -3,12 +3,14 @@
     <h1 class="text-center ma-6">Inventory</h1>
     <v-container>
       <v-row>
-        <v-col class="grey darken-2" cols="8">
+        <v-col class="grey darken-2 justify-sm-center" md="8" cols="auto" >
           <v-row>
             <v-col
               v-for="(item,index) in itemInventory"
               :key="index"
-              cols="4"
+              cols="12"
+              md="4"
+              sm="6"
               @click="setData(item)"
             >
               <v-card>
@@ -38,15 +40,7 @@
             </v-col>
           </v-row>
         </v-col>
-        <v-col v-if="!check" class="grey darken-3" cols="4">
-          <v-img
-            :src="`https://api.lorem.space/image/game?w=400&h=400`"
-            class="white--text align-end"
-            gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
-            height="400px"
-          />
-        </v-col>
-        <v-col v-if="check" class="grey darken-3" cols="4">
+        <v-col v-if="check" class="grey darken-3 	d-none d-sm-none d-md-inline-block" cols="4">
           <v-img
             :src="`https://api.lorem.space/image/game?w=300&h=300`"
             class="white--text align-end"

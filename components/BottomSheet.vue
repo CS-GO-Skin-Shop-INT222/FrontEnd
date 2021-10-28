@@ -18,10 +18,10 @@
                 <div class="my-3">
                   <div class="text-center">
                     <v-row>
-                      <v-col cols="8">
+                      <v-col cols="12" md="8" sm="12">
                         <p>Hello</p>
                       </v-col>
-                      <v-col cols="4">
+                      <v-col cols="12" xs="12" md="4" sm="12">
                         <v-select
                           v-model="selectType"
                           :items="typeSet"
@@ -56,9 +56,9 @@
                       </v-col>
                     </v-row>
                     <v-row>
-                      <v-col cols="8">
+                      <v-col cols="12" md="8" sm="12">
                         <v-row>
-                          <v-col>
+                          <v-col cols="auto" md="4" sm="12" >
                             <v-select
                               v-model="Stickers1"
                               :items="stickerSet"
@@ -66,7 +66,10 @@
                               label="Sticker"
                               outlined
                               :disabled="selectSkin === ''"
-                              @change="stickerImage(1);checkSticker(1);"
+                              @change="
+                                stickerImage(1)
+                                checkSticker(1)
+                              "
                             ></v-select>
                             <v-img
                               class="mx-auto"
@@ -75,7 +78,7 @@
                               max-width="200"
                             ></v-img>
                           </v-col>
-                          <v-col>
+                          <v-col cols="auto" md="4" sm="12">
                             <v-select
                               v-model="Stickers2"
                               :items="stickerSet"
@@ -83,7 +86,10 @@
                               label="Sticker"
                               outlined
                               :disabled="selectSkin === ''"
-                              @change="stickerImage(2);checkSticker(2);"
+                              @change="
+                                stickerImage(2)
+                                checkSticker(2)
+                              "
                             ></v-select>
                             <v-img
                               class="mx-auto"
@@ -92,7 +98,7 @@
                               max-width="200"
                             ></v-img>
                           </v-col>
-                          <v-col>
+                          <v-col cols="auto" md="4" sm="12">
                             <v-select
                               v-model="Stickers3"
                               :items="stickerSet"
@@ -100,7 +106,10 @@
                               label="Sticker"
                               outlined
                               :disabled="selectSkin === ''"
-                              @change="stickerImage(3);checkSticker(3);"
+                              @change="
+                                stickerImage(3)
+                                checkSticker(3)
+                              "
                             ></v-select>
                             <v-img
                               class="mx-auto"
@@ -112,7 +121,7 @@
                         </v-row>
                         <v-row> </v-row>
                       </v-col>
-                      <v-col cols="4">
+                      <v-col cols="12" xs="12" md="4" sm="12">
                         <v-text-field
                           v-model.number="price"
                           label="Price"
@@ -190,6 +199,7 @@ export default {
     simg3: '',
     weaponTrueFalse: false,
 
+    baseURL: 'https://api.blackcarrack.tech',
     rules: {
       required: (v) => !!v || 'Required.',
       numberCheck: (v) =>
@@ -274,37 +284,36 @@ export default {
     stickerImage(number) {
       switch (number) {
         case 1:
-          this.simg1 = `https://api.blackcarrack.tech/api/stickeritem/stickerimage/${this.Stickers1}`
+          this.simg1 = `${this.baseURL}/api/stickeritem/stickerimage/${this.Stickers1}`
 
           break
         case 2:
-          this.simg2 = `https://api.blackcarrack.tech/api/stickeritem/stickerimage/${this.Stickers2}`
+          this.simg2 = `${this.baseURL}/api/stickeritem/stickerimage/${this.Stickers2}`
           break
         case 3:
-          this.simg3 = `https://api.blackcarrack.tech/api/stickeritem/stickerimage/${this.Stickers3}`
+          this.simg3 = `${this.baseURL}/api/stickeritem/stickerimage/${this.Stickers3}`
           break
       }
     },
 
     checkSticker(number) {
-      let dataStickerSelect=''
-      switch(number){
+      let dataStickerSelect = ''
+      switch (number) {
         case 1:
           dataStickerSelect = this.Stickers1
-          break;
+          break
         case 2:
           dataStickerSelect = this.Stickers2
-          break;
+          break
         case 3:
           dataStickerSelect = this.Stickers3
-          break;
+          break
       }
       const filterType = this.stickerSet
       const id = filterType.filter(function (item) {
         return item.StickerName === dataStickerSelect
       })
-      return(id[0].StickerID)
-
+      return id[0].StickerID
     },
     sendItem() {
       if (this.validateNumber(this.price) === true && this.description !== '') {
