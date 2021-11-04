@@ -16,7 +16,7 @@
               <v-card>
                 <v-img
                   v-if="item.Description !== ''"
-                  :src="`https://api.lorem.space/image/game?w=200&h=200`"
+                  :src="`${item.WeaponSkin.imageURL}`"
                   class="white--text align-end"
                   gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
                   height="200px"
@@ -42,7 +42,7 @@
         </v-col>
         <v-col v-if="check" class="grey darken-3 	d-none d-sm-none d-md-inline-block" cols="4">
           <v-img
-            :src="`https://api.lorem.space/image/game?w=300&h=300`"
+            :src="`${data.WeaponSkin.imageURL}`"
             class="white--text align-end"
             gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
             height="300px"
@@ -134,6 +134,7 @@ export default {
     this.itemInventory = await this.$axios.$get(
       `/inventory/MyItem/${this.$nuxt.$auth.user.UserID}`
     )
+
     this.data = this.itemInventory[0]
     if (this.data !== undefined) {
       this.check = true
