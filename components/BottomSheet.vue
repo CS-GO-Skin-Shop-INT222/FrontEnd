@@ -19,7 +19,13 @@
                   <div class="text-center">
                     <v-row>
                       <v-col cols="12" md="8" sm="12">
-                        <p>Hello</p>
+                        <v-img
+                        :src="`${imageURL}`"
+                        class="white--text align-end"
+                        gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
+                        height="300px"
+                        weight="300px"
+                      />
                       </v-col>
                       <v-col cols="12" xs="12" md="4" sm="12">
                         <v-select
@@ -52,6 +58,7 @@
                           outlined
                           :disabled="selectWeapon === ''"
                           @click="filterSkin"
+                          @change="changeImage"
                         ></v-select>
                       </v-col>
                     </v-row>
@@ -199,6 +206,8 @@ export default {
     simg3: '',
     weaponTrueFalse: false,
 
+    imageURL:'',
+
     baseURL: 'https://api.blackcarrack.tech',
     rules: {
       required: (v) => !!v || 'Required.',
@@ -252,8 +261,8 @@ export default {
     async filterSkin() {
       this.checkWeapons()
       const weaponsId = this.weaponsId
-      const skinSet = await this.$axios.$get(`/item/skin/${weaponsId}`)
-      this.skinFilter = skinSet.Skin
+      const skinSet = await this.$axios.$get(`/item/showweapon/${weaponsId}`)
+      this.skinFilter = skinSet.Weapon
     },
     checkSkin() {
       const dataSkinSelect = this.selectSkin
@@ -280,6 +289,11 @@ export default {
           this.selectSkin = ''
           break
       }
+    },
+     async changeImage(){
+       this.checkSkin()
+      const dataWeaponSkin = await this.$axios.$get(`/item/showskin/${this.skinId}`)
+      this.imageURL = dataWeaponSkin.Weapon[0].imageURL
     },
     stickerImage(number) {
       switch (number) {
@@ -338,7 +352,7 @@ export default {
         console.log(Item)
         this.$axios.$post('/inventory/addItem', Item)
         this.dialog = false
-        location.reload()
+        // location.reload()
       } else {
         alert('wtf')
       }

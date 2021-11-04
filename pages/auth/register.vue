@@ -20,7 +20,7 @@
           ><v-text-field
             v-model="password"
             :append-icon="password1 ? 'mdi-eye' : 'mdi-eye-off'"
-            :rules="[rules.required, rules.min,rules.max]"
+            :rules="[rules.required, rules.min,rules.max, validatePassword]"
             :type="password1 ? 'text' : 'password'"
             name="input-10-1"
             hint="At least 10 characters"
@@ -153,7 +153,7 @@ export default {
 },
     validatePassword(password) {
     const re = /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{10,20}$/;
-    return re.test(String(password).toLowerCase());
+    return re.test(String(password).toLowerCase()) || 'Password must English letters, numbers, and special characters';
 },
     validateTelephone(tel){
      if(Number.isInteger(Number(tel)) && tel.length === 10 )  {

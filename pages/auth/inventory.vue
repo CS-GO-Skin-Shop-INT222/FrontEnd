@@ -1,12 +1,12 @@
 <template>
   <v-app class="text-center">
-    <h1 class="text-center ma-6">Inventory</h1>
+    <h1 class="text-center ma-6">Inventory <bottom-sheet></bottom-sheet></h1>
     <v-container>
       <v-row>
-        <v-col class="grey darken-2 justify-sm-center" md="8" cols="auto" >
+        <v-col class="grey darken-2 justify-sm-center" md="8" cols="auto">
           <v-row>
             <v-col
-              v-for="(item,index) in itemInventory"
+              v-for="(item, index) in itemInventory"
               :key="index"
               cols="12"
               md="4"
@@ -24,23 +24,39 @@
                   <v-card-title
                     v-text="item.WeaponSkin.Skin.SkinName"
                   ></v-card-title>
+                  <v-row>
+                  <v-col
+                    v-for="(stickerincol, index) in item.Item_Sticker"
+                    :key="index"
+                    cols="4"
+                  >   <v-img
+                      height="60px"
+                      width="60px"
+                      :src="`https://api.blackcarrack.tech/api/stickeritem/stickerimage/${stickerincol.Sticker.StickerName}`"
+                    >
+                    </v-img
+                  ></v-col>
+                  </v-row>
                 </v-img>
                 <v-img
                   v-if="item.Description === ''"
-                  :src="`kuy`"
+                  :src="``"
                   class="white--text align-end"
                   gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
                   height="200px"
                 >
-                  <v-card-title
-                    v-text="item.WeaponSkin.Skin.SkinName"
-                  ></v-card-title>
+                  <v-card-title v-text="item.WeaponSkin.Skin.SkinName">
+                  </v-card-title>
                 </v-img>
               </v-card>
             </v-col>
           </v-row>
         </v-col>
-        <v-col v-if="check" class="grey darken-3 	d-none d-sm-none d-md-inline-block" cols="4">
+        <v-col
+          v-if="check"
+          class="grey darken-3 d-none d-sm-none d-md-inline-block"
+          cols="4"
+        >
           <v-img
             :src="`${data.WeaponSkin.imageURL}`"
             class="white--text align-end"
@@ -62,17 +78,11 @@
         </v-col>
       </v-row>
     </v-container>
-    <bottom-sheet></bottom-sheet>
     <div>
       <v-row justify="center">
         <v-dialog v-model="dialog" max-width="290">
           <v-card>
             <v-card-title class="text-h5"> Delete this item ? </v-card-title>
-            <v-card-text
-              >Let Google help apps determine location. This means sending
-              anonymous location data to Google, even when no apps are
-              running.</v-card-text
-            >
             <v-card-actions>
               <v-spacer></v-spacer>
               <v-btn color="green darken-1" text @click="dialog = false">
@@ -125,9 +135,10 @@ export default {
         Users: { Name: '' },
         Price: '',
       },
-      snackbar:false,
+      snackbar: false,
       check: false,
       setForItem: [],
+      baseURL: 'https://api.blackcarrack.tech',
     }
   },
   async fetch() {
@@ -142,6 +153,7 @@ export default {
       this.check = false
     }
     this.setArrayItem()
+    console.log(this.itemInventory[0])
   },
   methods: {
     setData(data1) {
@@ -182,7 +194,7 @@ export default {
       if (confirm('Sure to delete ?')) {
         this.$axios.$delete(`/inventory/deleteItem/${this.data.ItemID}`)
         this.snackbar = true
-        location.reload();
+        location.reload()
       }
     },
   },
