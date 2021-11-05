@@ -1,9 +1,9 @@
 <template>
-  <v-app class="text-center">
+  <v-app class="text-center mb-10">
     <h1 class="text-center ma-6">Inventory <bottom-sheet></bottom-sheet></h1>
     <v-container>
       <v-row>
-        <v-col class="grey darken-2 justify-sm-center" md="8" cols="auto">
+        <v-col class="justify-sm-center" md="8" cols="auto">
           <v-row>
             <v-col
               v-for="(item, index) in itemInventory"
@@ -13,7 +13,8 @@
               sm="6"
               @click="setData(item)"
             >
-              <v-card>
+              <v-card outlined 
+              > 
                 <v-img
                   v-if="item.Description !== ''"
                   :src="`${item.WeaponSkin.imageURL}`"
@@ -25,17 +26,18 @@
                     v-text="item.WeaponSkin.Skin.SkinName"
                   ></v-card-title>
                   <v-row>
-                  <v-col
-                    v-for="(stickerincol, index) in item.Item_Sticker"
-                    :key="index"
-                    cols="4"
-                  >   <v-img
-                      height="60px"
-                      width="60px"
-                      :src="`https://api.blackcarrack.tech/api/stickeritem/stickerimage/${stickerincol.Sticker.StickerName}`"
+                    <v-col
+                      v-for="(stickerincol, index) in item.Item_Sticker"
+                      :key="index"
+                      cols="4"
                     >
-                    </v-img
-                  ></v-col>
+                      <v-img
+                        height="60px"
+                        width="60px"
+                        :src="`https://api.blackcarrack.tech/api/stickeritem/stickerimage/${stickerincol.Sticker.StickerName}`"
+                      >
+                      </v-img
+                    ></v-col>
                   </v-row>
                 </v-img>
                 <v-img
@@ -73,7 +75,7 @@
           ></v-textarea>
           <p>User : {{ data.Users.Name }}</p>
           <p>$ {{ data.Price }}</p>
-          <v-btn color="primary" dark> Edit </v-btn>
+          <v-btn color="primary" dark @click="sellItem"> Sell </v-btn>
           <v-btn color="primary" dark @click="deleteItem"> Delete </v-btn>
         </v-col>
       </v-row>
@@ -193,6 +195,14 @@ export default {
       console.log(this.data.ItemID)
       if (confirm('Sure to delete ?')) {
         this.$axios.$delete(`/inventory/deleteItem/${this.data.ItemID}`)
+        this.snackbar = true
+        location.reload()
+      }
+    },
+    sellItem() {
+      console.log(this.data.ItemID)
+      if (confirm('Sure to delete ?')) {
+        this.$axios.$put(`/inventory/sellItem/${this.data.ItemID}`)
         this.snackbar = true
         location.reload()
       }
