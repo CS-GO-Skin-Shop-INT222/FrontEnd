@@ -110,6 +110,7 @@
         </template>
       </v-snackbar>
     </div>
+
   </v-app>
 </template>
 
@@ -201,7 +202,7 @@ export default {
     },
     sellItem() {
       console.log(this.data.ItemID)
-      if (confirm('Sure to delete ?')) {
+      if (confirm('Sure to sell ?')) {
         this.$axios.$put(`/inventory/sellItem/${this.data.ItemID}`)
         this.snackbar = true
         location.reload()

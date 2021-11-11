@@ -12,19 +12,19 @@
             <span class="text-h5">Item</span>
           </v-card-title>
           <v-card-text>
-            <div class="ma-8">
+            <div class="ma-2 ma-xs-2 ma-sm-2 ma-md-2">
               <div class="text-right"></div>
               <v-container>
                 <div class="my-3">
                   <div class="text-center">
                     <v-row>
-                      <v-col cols="12" md="8" sm="12">
+                      <v-col cols="12" md="8" sm="12" justify="center">
                         <v-img
+                        class="mx-auto"
                         :src="`${imageURL}`"
-                        class="white--text align-end"
                         gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
-                        height="300px"
-                        weight="300px"
+                        max-height="300px"
+                        max-width="400px"
                       />
                       </v-col>
                       <v-col cols="12" xs="12" md="4" sm="12">
@@ -36,7 +36,6 @@
                           outlined
                           @click="clearData(1)"
                         ></v-select>
-
                         <v-select
                           v-model="selectWeapon"
                           :items="weaponsFilter"
@@ -132,6 +131,7 @@
                         <v-text-field
                           v-model.number="price"
                           label="Price"
+                          type="number"
                           outlined
                           :rules="[
                             rules.numberCheck,
@@ -352,9 +352,9 @@ export default {
         console.log(Item)
         this.$axios.$post('/inventory/addItem', Item)
         this.dialog = false
-        // location.reload()
+        location.reload()
       } else {
-        alert('wtf')
+        alert('Check Data')
       }
     },
   },

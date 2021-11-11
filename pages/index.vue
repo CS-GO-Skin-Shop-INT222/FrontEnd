@@ -26,21 +26,32 @@
             label="Weapon"
             outlined
             :disabled="selectType === ''"
+            @change="checkWeapons"
           ></v-select>
-          <v-btn class="mx-2" v-for="(itemss,index) in totalpage" :key="index" elevation="2">{{ index+1 }}</v-btn>
+          <v-btn
+            v-for="(itemss, index) in totalpage"
+            :key="index"
+            class="mx-2"
+            elevation="2"
+            >{{ index + 1 }}</v-btn
+          >
         </v-col>
-        <v-col class="justify-sm-center" md="9" cols="auto">
-          <v-row>
+        <v-col class="justify-sm-center" md="9" cols="auto" id="Marketitem">
+          <v-row id="MarketFalse">
             <v-col
-              v-for="(item, index) in itemMarket"
-              :key="index"
+              v-for="item in itemMarket"
+              :key="item.ItemID"
               cols="12"
               md="4"
               sm="6"
             >
-              <v-card outlined hover>
+              <v-card
+                outlined
+                hover
+                :disabled="item.Description === ''"
+                @click="getDetailItem(item)"
+              >
                 <v-img
-                  v-if="item.Description !== ''"
                   :src="`${item.WeaponSkin.imageURL}`"
                   class="white--text align-end"
                   gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
@@ -51,8 +62,8 @@
                   ></v-card-title>
                   <v-row>
                     <v-col
-                      v-for="(stickerincol, index) in item.Item_Sticker"
-                      :key="index"
+                      v-for="(stickerincol, indexsticker) in item.Item_Sticker"
+                      :key="indexsticker"
                       cols="4"
                     >
                       <v-img
@@ -64,22 +75,76 @@
                     ></v-col>
                   </v-row>
                 </v-img>
-                <v-img
-                  v-if="item.Description === ''"
-                  :src="``"
-                  class="white--text align-end"
-                  gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
-                  height="200px"
-                >
-                  <v-card-title v-text="item.WeaponSkin.Skin.SkinName">
-                  </v-card-title>
-                </v-img>
               </v-card>
             </v-col>
           </v-row>
         </v-col>
       </v-row>
     </v-container>
+    <div class="text-center">
+      <v-row justify="center" class="ma-10">
+        <v-dialog v-model="dialog" dark max-width="1200px" max-height="500px">
+          <v-card>
+            <v-container>
+              <v-row dense class="ma-5">
+                <v-col cols="12" md="8" sm="12">
+                  <v-img
+                    v-if="detailData.Description !== ''"
+                    :src="`${detailData.WeaponSkin.imageURL}`"
+                    class="white--text align-end"
+                    gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
+                    max-height="600px"
+                    max-width="700px"
+                  />
+                </v-col>
+                <v-col cols="12" xs="12" md="4" sm="12">
+                  <v-card-subtitle class="text-h5 pl-2 py-0">{{
+                    detailData.WeaponSkin.Weapon.WeaponName
+                  }}</v-card-subtitle>
+                  <v-card-title class="text-h4 pl-2 py-0">{{
+                    detailData.WeaponSkin.Skin.SkinName
+                  }}</v-card-title>
+                  <v-card-text>
+                    {{ detailData.Description }}
+                  </v-card-text>
+                  <v-card-text>
+                    User : {{ detailData.Users.Name }}
+                  </v-card-text>
+                  <v-row justify="center" class="px-10">
+                    <v-col
+                      v-for="(stickerincol, index) in detailData.Item_Sticker"
+                      :key="index"
+                      cols="4"
+                    >
+                      <v-img
+                        v-if="stickerincol !== undefined"
+                        height="80px"
+                        width="80px"
+                        :src="`https://api.blackcarrack.tech/api/stickeritem/stickerimage/${stickerincol.Sticker.StickerName}`"
+                      >
+                      </v-img
+                    ></v-col>
+                  </v-row>
+                  <v-row justify="center">
+                    <v-card-text class="text-center text-h5">
+                      $ {{ detailData.Price }}
+                    </v-card-text>
+                    <v-btn
+                      class="justify-center"
+                      color="primary"
+                      dark
+                      elevation="2"
+                      @click="buyItem"
+                      >Buy Item</v-btn
+                    >
+                  </v-row>
+                </v-col>
+              </v-row>
+            </v-container>
+          </v-card>
+        </v-dialog>
+      </v-row>
+    </div>
   </v-app>
 </template>
 
@@ -93,6 +158,10 @@ export default {
     return {
       ip: '',
       itemMarket: '',
+      itemMarket2: '',
+
+      switchItem: false,
+
       setForItem: [],
       check: false,
       data: '',
@@ -105,6 +174,27 @@ export default {
 
       weaponsFilter: [],
       totalpage: '',
+
+      dialog: false,
+
+      detailData: {
+        ItemID: '',
+        Price: '',
+        Description: '',
+        Date: '',
+        WeaponSkinID: '',
+        UserID: '',
+        Publish: '',
+        WeaponSkin: {
+          WeaponSkinID: '',
+          SkinID: '',
+          WeaponID: '',
+          Skin: { SkinName: '' },
+          Weapon: { WeaponName: '' },
+        },
+        Users: { Name: '', Email: '' },
+        Item_Sticker: [],
+      },
     }
   },
   async fetch() {
@@ -115,43 +205,48 @@ export default {
     this.weaponsSet = weapons.Weapon
     this.itemMarket = data.data
     this.totalpage = data.totalpage
-    console.log(this.itemMarket)
-    this.data = this.itemMarket[0]
-    if (this.data !== undefined) {
-      this.check = true
-    } else {
-      this.check = false
-    }
-    this.setArrayItem()
-    console.log(this.itemMarket[0])
+    this.setArrayItem(1)
   },
   methods: {
-    setArrayItem() {
-      for (let index = 0; index < 9; index++) {
-        if (this.itemMarket[index] === undefined) {
-          this.setForItem.push({
-            ItemID: '',
-            Price: '',
-            Description: '',
-            Date: '',
-            WeaponSkinID: '',
-            UserID: '',
-            Publish: '',
-            WeaponSkin: {
-              WeaponSkinID: '',
-              SkinID: '',
-              WeaponID: '',
-              Skin: { SkinName: '' },
-              Weapon: { WeaponName: '' },
-            },
-            Users: { Name: '', Email: '' },
-            Item_Sticker: [],
-          })
-        } else {
-          this.setForItem.push(this.itemMarket[index])
-        }
+    setArrayItem(number) {
+      const blankdata = {
+        ItemID: '',
+        Price: '',
+        Description: '',
+        Date: '',
+        WeaponSkinID: '',
+        UserID: '',
+        Publish: '',
+        WeaponSkin: {
+          WeaponSkinID: '',
+          SkinID: '',
+          WeaponID: '',
+          Skin: { SkinName: '' },
+          Weapon: { WeaponName: '' },
+        },
+        Users: { Name: '', Email: '' },
+        Item_Sticker: [],
       }
-      this.itemMarket = this.setForItem
+      this.detailData = blankdata
+      if (number === 1) {
+        for (let index = 0; index < 9; index++) {
+          if (this.itemMarket[index] === undefined) {
+            this.setForItem.push(blankdata)
+          } else {
+            this.setForItem.push(this.itemMarket[index])
+          }
+        }
+        this.itemMarket = this.setForItem
+      } else {
+        for (let index = 0; index < 9; index++) {
+          if (this.itemMarket2[index] === undefined) {
+            this.setForItem.push(blankdata)
+          } else {
+            this.setForItem.push(this.itemMarket2[index])
+          }
+        }
+        this.itemMarket2 = this.setForItem
+      }
     },
     clearData(number) {
       switch (number) {
@@ -174,6 +269,36 @@ export default {
       const typeId = this.typeId
       const weaponSet = await this.$axios.$get(`/item/weapon/${typeId}`)
       this.weaponsFilter = weaponSet.Weapon
+      const datatype = await this.$axios.$get(
+        `/marketitem/filterType/${typeId}/1`
+      )
+      this.totalpage = datatype.totalpage
+      this.itemMarket = []
+      this.itemMarket = datatype.data
+    },
+    async checkWeapons() {
+      const dataWeaponSelect = this.selectWeapon
+      const filterType = this.weaponsSet
+      const id = filterType.filter(function (item) {
+        return item.WeaponName === dataWeaponSelect
+      })
+      const dataweapon = await this.$axios.$get(
+        `/marketitem/filterWeapon/${id[0].WeaponID}/1`
+      )
+      this.totalpage = dataweapon.totalpage
+      this.itemMarket = []
+      this.itemMarket = dataweapon.data
+    },
+    getDetailItem(item) {
+      this.dialog = true
+      this.detailData = item
+    },
+    buyItem() {
+      if (this.$nuxt.$auth.loggedIn === false) {
+        console.log('false')
+      } else {
+        console.log('true')
+      }
     },
   },
 }

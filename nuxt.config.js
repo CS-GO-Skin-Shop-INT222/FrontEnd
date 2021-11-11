@@ -65,6 +65,24 @@ export default {
     },
     strategies: {
       local: {
+        scheme: 'local',
+        token: {
+          maxAge:3600,
+          property: 'token',
+          global: true,
+        },
+        user: {
+          autoFetch:true
+        },
+        endpoints: {
+          login: { url: 'https://api.blackcarrack.tech/api/user/login', method: 'post', propertyName:'token' },
+          logout: { url: 'https://api.blackcarrack.tech/api/user/logout', method: 'delete' },
+          user: { url: 'https://api.blackcarrack.tech/api/user/profile', method: 'get',propertyName:'user'}
+        }
+        , tokenName:'auth-token'
+      },
+      admin: {
+        scheme: 'local',
         token: {
           maxAge:3600,
           property: 'token',
@@ -77,13 +95,14 @@ export default {
           // autoFetch: true
         },
         endpoints: {
-          login: { url: 'https://api.blackcarrack.tech/api/user/login', method: 'post', propertyName:'token' },
-          logout: { url: 'https://api.blackcarrack.tech/api/user/logout', method: 'delete' },
-          user: { url: 'https://api.blackcarrack.tech/api/user/profile', method: 'get',propertyName:'user'}
+          login: { url: 'https://api.blackcarrack.tech/api/admins/login', method: 'post', propertyName:'token' },
+          logout: { url: 'https://api.blackcarrack.tech/api/admins/logout', method: 'delete' },
+          user: { url: 'https://api.blackcarrack.tech/api/admins/admin', method: 'get',propertyName:false}
         }
         , tokenName:'auth-token'
       },
      
+      
     }
   },
   loaders: {
@@ -106,6 +125,14 @@ export default {
         theme: {
             dark: true,
             themes: {
+              light: {
+                primary: colors.purple,
+                secondary: colors.grey.darken1,
+                accent: colors.shades.black,
+                error: colors.red.accent3,
+                background: colors.indigo.lighten5, // Not automatically applied
+              
+              },
                 dark: {
                     primary: colors.blue.darken2,
                     accent: colors.grey.darken3,
@@ -114,7 +141,7 @@ export default {
                     warning: colors.amber.base,
                     error: colors.deepOrange.accent4,
                     success: colors.green.accent3
-                }
+                },
             }
         }
     },
