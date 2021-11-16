@@ -20,12 +20,12 @@
                     <v-row>
                       <v-col cols="12" md="8" sm="12" justify="center">
                         <v-img
-                        class="mx-auto"
-                        :src="`${imageURL}`"
-                        gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
-                        max-height="300px"
-                        max-width="400px"
-                      />
+                          class="mx-auto"
+                          :src="`${imageURL}`"
+                          gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
+                          max-height="300px"
+                          max-width="400px"
+                        />
                       </v-col>
                       <v-col cols="12" xs="12" md="4" sm="12">
                         <v-select
@@ -64,7 +64,7 @@
                     <v-row>
                       <v-col cols="12" md="8" sm="12">
                         <v-row>
-                          <v-col cols="auto" md="4" sm="12" >
+                          <v-col cols="auto" md="4" sm="12">
                             <v-select
                               v-model="Stickers1"
                               :items="stickerSet"
@@ -206,7 +206,7 @@ export default {
     simg3: '',
     weaponTrueFalse: false,
 
-    imageURL:'',
+    imageURL: '',
 
     baseURL: 'https://api.blackcarrack.tech',
     rules: {
@@ -290,9 +290,11 @@ export default {
           break
       }
     },
-     async changeImage(){
-       this.checkSkin()
-      const dataWeaponSkin = await this.$axios.$get(`/item/showskin/${this.skinId}`)
+    async changeImage() {
+      this.checkSkin()
+      const dataWeaponSkin = await this.$axios.$get(
+        `/item/showskin/${this.skinId}`
+      )
       this.imageURL = dataWeaponSkin.Weapon[0].imageURL
     },
     stickerImage(number) {
@@ -323,13 +325,16 @@ export default {
           dataStickerSelect = this.Stickers3
           break
       }
-      const filterType = this.stickerSet
-      const id = filterType.filter(function (item) {
-        return item.StickerName === dataStickerSelect
-      })
-      return id[0].StickerID
+      if (dataStickerSelect !== '') {
+        const filterType = this.stickerSet
+        const id = filterType.filter(function (item) {
+          return item.StickerName === dataStickerSelect
+        })
+        return id[0].StickerID
+      }
+      return ''
     },
-    sendItem() {
+   async sendItem() {
       if (this.validateNumber(this.price) === true && this.description !== '') {
         this.checkSkin()
         const Item = {
@@ -350,7 +355,7 @@ export default {
           ],
         }
         console.log(Item)
-        this.$axios.$post('/inventory/addItem', Item)
+        await this.$axios.$post('/inventory/addItem', Item)
         this.dialog = false
         location.reload()
       } else {

@@ -2,24 +2,26 @@
   <v-app>
     <v-row class="ma-10">
       <v-col md="6" cols="12">
-        <div class="text-center mx-6">
+        <div justify="center" class="text-center mx-6">
           <h1 class="text-center mx-6">
             User Image <v-icon large> mdi-account-box</v-icon>
           </h1>
-          <img
+          <div v-if="checkImage !== false">
+          <v-img
             v-if="selectedFile"
             :src="imagePreview"
             alt="Upload Image"
-            height="400"
-            width="400"
+            max-height="400"
+            max-width="400"
           />
-          <img
+          <v-img
             v-else
-            :src="imageURL"
+            :src="`https://api.blackcarrack.tech/api/imageusers/getImage/${idUser}`"
             alt="Upload Image"
-            height="400"
-            width="400"
+            max-height="400"
+            max-width="400"
           />
+          </div>
           <!-- <input @change="onFileChanged" id="upload-photo" type="file" />
           <label for="upload-photo">Upload File</label> -->
           <v-file-input
@@ -29,6 +31,9 @@
             label="Avatar"
             @change="onFileChanged"
           ></v-file-input>
+          <v-btn class="py-5" x-large color="success" @click="sendImage()">
+            Save Image
+          </v-btn>
         </div>
       </v-col>
       <v-col md="6" cols="12">
@@ -117,9 +122,12 @@ export default {
   },
   data() {
     return {
+      checkImage:false,
       imagePreview: null,
       selectedFile: null,
-      imageURL: '',
+      imageURL: 'https://api.blackcarrack.tech/api/imageusers/getImage',
+
+      idUser: '',
 
       snackbar: false,
       timeout: 2000,
@@ -151,17 +159,22 @@ export default {
       },
     }
   },
-  async fetch() {
-    console.log(this.UserData)
-    try {
-      this.imageURL = await this.$axios.$get('/imageusers/getImage')
-      console.log(this.imageURL)
-    } catch (error) {
-      console.log('error')
-      console.log(error)
-    }
+ async fetch() {
+   try{
+    const datauser = this.$nuxt.$auth.user
+    this.idUser = datauser.UserID
+    await this.$axios.get(`https://api.blackcarrack.tech/api/imageusers/getImage/${this.idUser}`)
+    this.checkImage = true
+   }catch(error){
+     this.checkImage = false
+   }
+
   },
+
   methods: {
+    // async getImage(){
+    //   return await this.$axios.$get('/imageusers/getImage')
+    // },
     validateTelephone(tel) {
       if (Number.isInteger(Number(tel)) && tel.length === 10) {
         return true

@@ -71,8 +71,8 @@
                         width="60px"
                         :src="`https://api.blackcarrack.tech/api/stickeritem/stickerimage/${stickerincol.Sticker.StickerName}`"
                       >
-                      </v-img
-                    ></v-col>
+                      </v-img>
+                    </v-col>
                   </v-row>
                 </v-img>
               </v-card>
@@ -122,8 +122,8 @@
                         width="80px"
                         :src="`https://api.blackcarrack.tech/api/stickeritem/stickerimage/${stickerincol.Sticker.StickerName}`"
                       >
-                      </v-img
-                    ></v-col>
+                      </v-img>
+                    </v-col>
                   </v-row>
                   <v-row justify="center">
                     <v-card-text class="text-center text-h5">
@@ -145,6 +145,16 @@
         </v-dialog>
       </v-row>
     </div>
+    <v-snackbar v-model="snackbar" :timeout="timeout">
+      <v-icon dark right> mdi-checkbox-marked-circle </v-icon>
+      {{ snackbarWord }}
+
+      <template v-slot:action="{ attrs }">
+        <v-btn color="blue" text v-bind="attrs" @click="snackbar = false">
+          Close
+        </v-btn>
+      </template>
+    </v-snackbar>
   </v-app>
 </template>
 
@@ -156,6 +166,8 @@ export default {
   },
   data() {
     return {
+      snackbar: false,
+      timeout: 2000,
       ip: '',
       itemMarket: '',
       itemMarket2: '',
@@ -195,12 +207,15 @@ export default {
         Users: { Name: '', Email: '' },
         Item_Sticker: [],
       },
+
+      snackbarWord: '',
     }
   },
   async fetch() {
     const weapons = await this.$axios.$get('/item/allweapon')
     const type = await this.$axios.$get('/item/alltype')
     const data = await this.$axios.$get('/marketitem/allmarket/1')
+
     this.typeSet = type.Type
     this.weaponsSet = weapons.Weapon
     this.itemMarket = data.data
@@ -209,7 +224,7 @@ export default {
   },
   methods: {
     setArrayItem(number) {
-      const blankdata = {
+      this.detailData = {
         ItemID: '',
         Price: '',
         Description: '',
@@ -223,14 +238,33 @@ export default {
           WeaponID: '',
           Skin: { SkinName: '' },
           Weapon: { WeaponName: '' },
+          imageURL: '',
         },
         Users: { Name: '', Email: '' },
         Item_Sticker: [],
       }
-      this.detailData = blankdata
       if (number === 1) {
         for (let index = 0; index < 9; index++) {
           if (this.itemMarket[index] === undefined) {
+            const blankdata = {
+              ItemID: index,
+              Price: '',
+              Description: '',
+              Date: '',
+              WeaponSkinID: '',
+              UserID: '',
+              Publish: '',
+              WeaponSkin: {
+                WeaponSkinID: '',
+                SkinID: '',
+                WeaponID: '',
+                Skin: { SkinName: '' },
+                Weapon: { WeaponName: '' },
+                imageURL: '',
+              },
+              Users: { Name: '', Email: '' },
+              Item_Sticker: [],
+            }
             this.setForItem.push(blankdata)
           } else {
             this.setForItem.push(this.itemMarket[index])
@@ -240,6 +274,25 @@ export default {
       } else {
         for (let index = 0; index < 9; index++) {
           if (this.itemMarket2[index] === undefined) {
+            const blankdata = {
+              ItemID: index,
+              Price: '',
+              Description: '',
+              Date: '',
+              WeaponSkinID: '',
+              UserID: '',
+              Publish: '',
+              WeaponSkin: {
+                WeaponSkinID: '',
+                SkinID: '',
+                WeaponID: '',
+                Skin: { SkinName: '' },
+                Weapon: { WeaponName: '' },
+                imageURL: '',
+              },
+              Users: { Name: '', Email: '' },
+              Item_Sticker: [],
+            }
             this.setForItem.push(blankdata)
           } else {
             this.setForItem.push(this.itemMarket2[index])
@@ -293,11 +346,20 @@ export default {
       this.dialog = true
       this.detailData = item
     },
-    buyItem() {
+    async buyItem() {
       if (this.$nuxt.$auth.loggedIn === false) {
-        console.log('false')
+        alert('Please Login')
       } else {
-        console.log('true')
+        try {
+          await this.$axios.put(`/marketitem/buyItem/${this.detailData.ItemID}`)
+          this.snackbarWord = 'Buy item completed'
+          this.snackbar = true
+          this.dialog = false
+          location.reload()
+        } catch (errore) {
+          this.snackbarWord = 'Credit is not enough'
+          this.snackbar = true
+        }
       }
     },
   },

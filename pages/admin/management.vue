@@ -57,15 +57,12 @@ export default {
       const user = filterUser.filter(function (item) {
         return item.Name === dataSelect
       })
-      console.log(user)
       this.presentCredit = user[0].Credit
       this.userId = user[0].UserID
     },
     async addCredit() {
-      console.log(this.userId)
-      console.log(typeof this.numberAddCredit)
       if (this.numberAddCredit <= 0) {
-        console.log('Credit cant less than 0 ')
+        alert("Credit cant less than 0 ")
       }
       await this.$axios.$put(`/admins/addcredit/${this.userId}`, {
         Credit: parseInt(this.numberAddCredit),
