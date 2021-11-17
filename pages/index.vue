@@ -160,6 +160,7 @@
 
 <script>
 export default {
+
   async asyncData({ $axios }) {
     const ip = await $axios.$get('/marketitem/allmarket/1')
     return { ip }

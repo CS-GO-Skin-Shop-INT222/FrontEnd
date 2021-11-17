@@ -143,7 +143,7 @@
                           v-model="description"
                           label="Description"
                           outlined
-                          :rules="[rules.required]"
+                          :rules="[rules.required,validateDescription]"
                         ></v-textarea>
                         <v-btn
                           color="blue darken-1"
@@ -273,6 +273,14 @@ export default {
       })
       this.skinId = id[0].WeaponSkinID
     },
+    validateDescription(description) {
+    if (description.length > 100) {
+      return 'Please decrease text'
+    }
+    return true;
+}
+,
+
     validateNumber(num) {
       if (Number.isInteger(Number(num)) && num > 0) {
         return true
@@ -335,7 +343,7 @@ export default {
       return ''
     },
    async sendItem() {
-      if (this.validateNumber(this.price) === true && this.description !== '') {
+      if (this.validateNumber(this.price) === true && this.description !== '' && this.validateDescription(this.description) === true ) {
         this.checkSkin()
         const Item = {
           Price: this.price,

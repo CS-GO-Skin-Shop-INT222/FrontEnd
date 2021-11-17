@@ -86,6 +86,7 @@ export default {
           data: { Email: this.userEmail, Password: this.password },
         })
       } catch (errore) {
+        console.log(errore)
         this.Userpassword = true
       }
     },

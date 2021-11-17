@@ -33,6 +33,11 @@
         </v-btn>
       </v-row>
       <v-row align="center" justify="space-around">
+        <nuxt-link to="/admin/login" class="ma-2">
+          <v-btn class="py-5" tile color="primary"> Admin </v-btn>
+        </nuxt-link>
+      </v-row>
+      <v-row align="center" justify="space-around">
         <p v-if="Userpassword" class="red--text text--darken-4">
           NOT CORRECT USER AND PASSWORD
         </p>
