@@ -62,7 +62,7 @@
         <v-col sm="6" md="6" lg="4" class="text-md-center"
           ><v-text-field
             v-model="Name"
-            :rules="[rules.required]"
+            :rules="[rules.required,validateName]"
             label="Name"
             outlined
           ></v-text-field>
@@ -162,7 +162,7 @@ export default {
      }
       return false
     },
-        validateName(name){
+    validateName(name){
       const re = /^[A-Za-z]+$/
         return re.test(String(name).toLowerCase());
     },

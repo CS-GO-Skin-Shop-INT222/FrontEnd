@@ -145,10 +145,11 @@ export default {
     }
   },
   async fetch() {
-    this.itemInventory = await this.$axios.$get(
-      `/inventory/MyItem/${this.$nuxt.$auth.user.UserID}`
+    const dataset = await this.$axios.$get(
+      `/inventory/MyItem/${this.$nuxt.$auth.user.UserID}/1`
     )
-
+    this.itemInventory = dataset.data
+    console.log(dataset)
     this.data = this.itemInventory[0]
     if (this.data !== undefined) {
       this.check = true
@@ -156,7 +157,6 @@ export default {
       this.check = false
     }
     this.setArrayItem()
-    console.log(this.itemInventory[0])
   },
   methods: {
     setData(data1) {
