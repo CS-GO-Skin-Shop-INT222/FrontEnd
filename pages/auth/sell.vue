@@ -1,19 +1,20 @@
 <template>
   <v-app class="text-center mb-10">
-    <h1 class="text-center ma-6">Inventory <bottom-sheet></bottom-sheet></h1>
+    <h1 class="text-center ma-6">Sell Item</h1>
     <v-container>
       <v-row>
         <v-col class="justify-sm-center" md="8" cols="auto">
           <v-row>
             <v-col
-              v-for="item in itemInventory"
-              :key="item.ItemID"
+              v-for="(item, index) in itemInventory"
+              :key="index"
               cols="12"
               md="4"
               sm="6"
               @click="setData(item)"
             >
-              <v-card outlined>
+              <v-card outlined 
+              > 
                 <v-img
                   v-if="item.Description !== ''"
                   :src="`${item.WeaponSkin.imageURL}`"
@@ -51,16 +52,7 @@
                 </v-img>
               </v-card>
             </v-col>
-            <v-col cols="12">
-            <v-btn
-              v-for="(itemss,index) in totalpage"
-              :key="index"
-              class="mx-2"
-              elevation="2"
-              @click="inventoryChangePage(index + 1)"
-              >{{ index + 1 }}</v-btn
-            >
-            </v-col>
+            
           </v-row>
         </v-col>
         <v-col
@@ -84,8 +76,7 @@
           ></v-textarea>
           <p>User : {{ data.Users.Name }}</p>
           <p>$ {{ data.Price }}</p>
-          <v-btn color="primary" dark @click="sellItem"> Sell </v-btn>
-          <v-btn color="primary" dark @click="deleteItem"> Delete </v-btn>
+          <v-btn color="primary" dark @click="cancelsalesItem"> Cancel </v-btn>
         </v-col>
       </v-row>
     </v-container>
@@ -110,7 +101,7 @@
     <div class="text-center">
       <v-snackbar v-model="snackbar" :timeout="2000">
         <v-icon dark right> mdi-checkbox-marked-circle </v-icon>
-        Register completed
+        Cancel completed
 
         <template v-slot:action="{ attrs }">
           <v-btn color="blue" text v-bind="attrs" @click="snackbar = false">
@@ -119,22 +110,21 @@
         </template>
       </v-snackbar>
     </div>
+
   </v-app>
 </template>
 
+
+
 <script>
-import BottomSheet from '~/components/BottomSheet.vue'
 export default {
   //   async asyncData({ $axios }) {
   //   const ip = await $axios.$get(`/inventory/getitem/${this.$nuxt.$auth.user.UserID}`)
   //   return { ip }
   // },
-
-  components: { BottomSheet },
   middleware: 'auth',
   data() {
     return {
-      totalpage: '',
       itemInventory: '',
       dataimage: '../../assets/weapons/Hello.png',
       dialog: false,
@@ -155,10 +145,10 @@ export default {
   },
   async fetch() {
     const dataset = await this.$axios.$get(
-      `/inventory/MyItem/${this.$nuxt.$auth.user.UserID}/1`
+      `/inventory/MyItemselling/${this.$nuxt.$auth.user.UserID}/1`
     )
     this.itemInventory = dataset.data
-    this.totalpage = dataset.totalpage
+    console.log(dataset)
     this.data = this.itemInventory[0]
     if (this.data !== undefined) {
       this.check = true
@@ -209,20 +199,13 @@ export default {
         location.reload()
       }
     },
-    sellItem() {
+    cancelsalesItem() {
       console.log(this.data.ItemID)
-      if (confirm('Sure to sell ?')) {
-        this.$axios.$put(`/inventory/sellItem/${this.data.ItemID}`)
+      if (confirm('Sure to cancelsales ?')) {
+        this.$axios.$put(`/inventory/cancelsales/${this.data.ItemID}`)
         this.snackbar = true
         location.reload()
       }
-    },
-    async inventoryChangePage(number) {
-      const dataset = await this.$axios.$get(
-        `/inventory/MyItem/${this.$nuxt.$auth.user.UserID}/${number}`
-      )
-      this.itemInventory = dataset.data
-      this.totalpage = dataset.totalpage
     },
   },
 }

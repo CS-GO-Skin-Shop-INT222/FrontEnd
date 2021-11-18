@@ -208,6 +208,8 @@ export default {
 
     imageURL: '',
 
+    dataStickerSet:[],
+
     baseURL: 'https://api.blackcarrack.tech',
     rules: {
       required: (v) => !!v || 'Required.',
@@ -342,6 +344,19 @@ export default {
       }
       return ''
     },
+  setSticker(){
+    for (let index = 1; index < 4; index++) {
+      if (this.checkSticker(index) !== '') {
+        this.dataStickerSet.push({
+          id:this.checkSticker(index)
+        })
+      }
+    }
+    return this.dataStickerSet
+  },
+
+
+
    async sendItem() {
       if (this.validateNumber(this.price) === true && this.description !== '' && this.validateDescription(this.description) === true ) {
         this.checkSkin()
@@ -350,17 +365,7 @@ export default {
           Description: this.description,
           UserID: this.$nuxt.$auth.user.UserID,
           WeaponSkinID: this.skinId,
-          Stickers: [
-            {
-              id: this.checkSticker(1),
-            },
-            {
-              id: this.checkSticker(2),
-            },
-            {
-              id: this.checkSticker(3),
-            },
-          ],
+          Stickers: this.setSticker()
         }
         console.log(Item)
         await this.$axios.$post('/inventory/addItem', Item)

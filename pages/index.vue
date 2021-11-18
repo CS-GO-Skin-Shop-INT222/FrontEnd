@@ -33,8 +33,10 @@
             :key="index"
             class="mx-2"
             elevation="2"
+            @click="changePage(index+1)"
             >{{ index + 1 }}</v-btn
           >
+          
         </v-col>
         <v-col class="justify-sm-center" md="9" cols="auto" id="Marketitem">
           <v-row id="MarketFalse">
@@ -210,6 +212,8 @@ export default {
       },
 
       snackbarWord: '',
+      stateFilter:'market',
+      idWeapon:'',
     }
   },
   async fetch() {
@@ -326,6 +330,7 @@ export default {
       const datatype = await this.$axios.$get(
         `/marketitem/filterType/${typeId}/1`
       )
+      this.stateFilter = 'type'
       this.totalpage = datatype.totalpage
       this.itemMarket = []
       this.itemMarket = datatype.data
@@ -336,9 +341,11 @@ export default {
       const id = filterType.filter(function (item) {
         return item.WeaponName === dataWeaponSelect
       })
+      this.idWeapon = id[0].WeaponID
       const dataweapon = await this.$axios.$get(
-        `/marketitem/filterWeapon/${id[0].WeaponID}/1`
+        `/marketitem/filterWeapon/${this.idWeapon}/1`
       )
+      this.stateFilter = 'weapon'
       this.totalpage = dataweapon.totalpage
       this.itemMarket = []
       this.itemMarket = dataweapon.data
@@ -346,6 +353,26 @@ export default {
     getDetailItem(item) {
       this.dialog = true
       this.detailData = item
+    },
+   async changePage(number){
+     let dataset = ''
+      switch (this.stateFilter){
+        case 'market':
+        dataset =  await this.$axios.$get(`/marketitem/allmarket/${number}`)
+        this.itemMarket = dataset.data
+        this.totalpage = dataset.totalpage
+        break
+        case 'type':
+          dataset =await this.$axios.$get(`/marketitem/filterType/${this.typeId}/${number}`)
+        this.itemMarket = dataset.data
+        this.totalpage = dataset.totalpage
+        break
+        case 'weapon':
+          dataset =await this.$axios.$get(`/marketitem/filterWeapon/${this.idWeapon}/${number}`)
+        this.itemMarket=  dataset.data
+        this.totalpage = dataset.totalpage
+        break
+      }
     },
     async buyItem() {
       if (this.$nuxt.$auth.loggedIn === false) {

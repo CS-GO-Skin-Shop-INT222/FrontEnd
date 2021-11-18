@@ -23,7 +23,7 @@
         INVENTORY
       </v-tab>
 
-      <v-tab to="/auth/inventory" nuxt class=" red--text text--darken-4"  href="#tab-4">
+      <v-tab to="/auth/sell" nuxt class=" red--text text--darken-4"  href="#tab-4">
         SELL
       </v-tab>
             <v-tab to="/auth/login" nuxt class=" red--text text--darken-4"  href="#tab-5">
@@ -69,7 +69,7 @@
         INVENTORY
       </v-tab>
 
-      <v-tab to="/auth/inventory" nuxt  class=" red--text text--darken-4 " href="#tab-4">
+      <v-tab to="/auth/sell" nuxt  class=" red--text text--darken-4 " href="#tab-4">
         SELL
       </v-tab>
             <v-tab to="/auth/proflie" nuxt  class=" red--text text--darken-4 " href="#tab-5">
