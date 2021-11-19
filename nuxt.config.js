@@ -61,7 +61,7 @@ export default {
       login: '/auth/login',
       logout: '/',
       callback: '/login',
-      home: '/',
+      home: '/dummy',
       admin:'/admin/management'
     },
     strategies: {

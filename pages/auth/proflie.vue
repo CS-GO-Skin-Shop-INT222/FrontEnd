@@ -8,6 +8,7 @@
           </h1>
           <div v-if="checkImage !== false">
           <v-img
+          class="ma-auto"
             v-if="selectedFile"
             :src="imagePreview"
             alt="Upload Image"
@@ -15,6 +16,7 @@
             max-width="400"
           />
           <v-img
+            class="ma-auto"
             v-else
             :src="`https://api.blackcarrack.tech/api/imageusers/getImage/${idUser}`"
             alt="Upload Image"
@@ -100,7 +102,7 @@
     <div class="text-center">
       <v-snackbar v-model="snackbar" :timeout="timeout">
         <v-icon dark right> mdi-checkbox-marked-circle </v-icon>
-        SaveData completed
+      {{snackbarText}}
 
         <template v-slot:action="{ attrs }">
           <v-btn color="blue" text v-bind="attrs" @click="snackbar = false">
@@ -122,6 +124,8 @@ export default {
   },
   data() {
     return {
+      snackbarText:'',
+
       checkImage:false,
       imagePreview: null,
       selectedFile: null,
@@ -210,6 +214,7 @@ export default {
           Credit: 1,
         }
         console.log(UserData)
+        this.snackbarText = 'SaveData Complete'
         this.snackbar = true
         setTimeout(() => this.$router.replace({ name: 'auth-login' }), 2000)
       }
@@ -242,7 +247,8 @@ export default {
     async sendImage() {
       const formData = new FormData()
       formData.append('avatar', this.selectedFile)
-      console.log(formData)
+      this.snackbarText = 'UploadImage Complete'
+      this.snackbar = true
       await this.$axios.$post(`/imageusers/uploadImage`, formData)
     },
   },
