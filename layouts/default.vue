@@ -12,8 +12,8 @@
       <v-tabs-slider
       color="red darken-4"
       ></v-tabs-slider>
-      <v-tab to="/" nuxt class=" red--text text--darken-4" href="#tab-1" >
-          Logo
+      <v-tab class=" red--text text--darken-4" href="#tab-1" >
+          BlackCarrack
       </v-tab>
       <v-tab  to="/" nuxt class=" red--text text--darken-4"  href="#tab-2">
         MARKET
@@ -58,8 +58,8 @@
       <v-tabs-slider
       color="red darken-4" 
       ></v-tabs-slider>
-      <v-tab  to="/" nuxt class=" red--text text--darken-4 " href="#tab-1" >
-          Logo
+      <v-tab class=" red--text text--darken-4 " href="#tab-1" >
+          BlackCarrack
       </v-tab>
       <v-tab  to="/" nuxt  class=" red--text text--darken-4 "  href="#tab-2">
         MARKET

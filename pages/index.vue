@@ -33,10 +33,9 @@
             :key="index"
             class="mx-2"
             elevation="2"
-            @click="changePage(index+1)"
+            @click="changePage(index + 1)"
             >{{ index + 1 }}</v-btn
           >
-          
         </v-col>
         <v-col class="justify-sm-center" md="9" cols="auto" id="Marketitem">
           <v-row id="MarketFalse">
@@ -62,7 +61,7 @@
                   <v-card-title
                     v-text="item.WeaponSkin.Skin.SkinName"
                   ></v-card-title>
-                  <v-row>
+                  <v-row dense>
                     <v-col
                       v-for="(stickerincol, indexsticker) in item.Item_Sticker"
                       :key="indexsticker"
@@ -162,7 +161,6 @@
 
 <script>
 export default {
-
   async asyncData({ $axios }) {
     const ip = await $axios.$get('/marketitem/allmarket/1')
     return { ip }
@@ -188,7 +186,7 @@ export default {
       selectType: '',
 
       weaponsFilter: [],
-      totalpage: '',
+      totalpage: [],
 
       dialog: false,
 
@@ -212,8 +210,8 @@ export default {
       },
 
       snackbarWord: '',
-      stateFilter:'market',
-      idWeapon:'',
+      stateFilter: 'market',
+      idWeapon: '',
     }
   },
   async fetch() {
@@ -224,10 +222,16 @@ export default {
     this.typeSet = type.Type
     this.weaponsSet = weapons.Weapon
     this.itemMarket = data.data
-    this.totalpage = data.totalpage
+    this.setTotalPage('all',data.totalpage - 1)
+    // this.totalpage = data.totalpage - 1
     this.setArrayItem(1)
   },
   methods: {
+    setTotalPage(text,number){
+      for (let index = 0; index < number; index++) {
+        this.totalpage.push({id:index,code:text+index})
+      }
+    },
     setArrayItem(number) {
       this.detailData = {
         ItemID: '',
@@ -331,7 +335,8 @@ export default {
         `/marketitem/filterType/${typeId}/1`
       )
       this.stateFilter = 'type'
-      this.totalpage = datatype.totalpage
+      this.totalpage.splice(datatype.totalpage - 1)
+      this.totalpage = datatype.totalpage - 1
       this.itemMarket = []
       this.itemMarket = datatype.data
     },
@@ -346,7 +351,8 @@ export default {
         `/marketitem/filterWeapon/${this.idWeapon}/1`
       )
       this.stateFilter = 'weapon'
-      this.totalpage = dataweapon.totalpage
+      this.totalpage.splice(dataweapon.totalpage - 1)
+      // this.totalpage = dataweapon.totalpage - 1
       this.itemMarket = []
       this.itemMarket = dataweapon.data
     },
@@ -354,24 +360,31 @@ export default {
       this.dialog = true
       this.detailData = item
     },
-   async changePage(number){
-     let dataset = ''
-      switch (this.stateFilter){
+    async changePage(number) {
+      let dataset = ''
+       const eiei =[this.totalpage]
+      switch (this.stateFilter) {
         case 'market':
-        dataset =  await this.$axios.$get(`/marketitem/allmarket/${number}`)
-        this.itemMarket = dataset.data
-        this.totalpage = dataset.totalpage
-        break
+          dataset = await this.$axios.$get(`/marketitem/allmarket/${number}`)
+          this.itemMarket = dataset.data
+          eiei[0].splice(dataset.totalpage - 1)
+          // this.totalpage.splice(dataset.totalpage - 1)
+          // this.totalpage = dataset.totalpage - 1
+          break
         case 'type':
-          dataset =await this.$axios.$get(`/marketitem/filterType/${this.typeId}/${number}`)
-        this.itemMarket = dataset.data
-        this.totalpage = dataset.totalpage
-        break
+          dataset = await this.$axios.$get(
+            `/marketitem/filterType/${this.typeId}/${number}`
+          )
+          this.itemMarket = dataset.data
+          eiei[0].splice(dataset.totalpage - 1)
+          break
         case 'weapon':
-          dataset =await this.$axios.$get(`/marketitem/filterWeapon/${this.idWeapon}/${number}`)
-        this.itemMarket=  dataset.data
-        this.totalpage = dataset.totalpage
-        break
+          dataset = await this.$axios.$get(
+            `/marketitem/filterWeapon/${this.idWeapon}/${number}`
+          )
+          this.itemMarket = dataset.data
+          eiei[0].splice(dataset.totalpage - 1)
+          break
       }
     },
     async buyItem() {
@@ -379,14 +392,21 @@ export default {
         alert('Please Login')
       } else {
         try {
-          await this.$axios.put(`/marketitem/buyItem/${this.detailData.ItemID}`)
+          await this.$axios.put(
+            `/marketitem/buyItem/${this.detailData.ItemID}`
+          )
           this.snackbarWord = 'Buy item completed'
           this.snackbar = true
           this.dialog = false
-          location.reload()
+          // location.reload()
         } catch (errore) {
-          this.snackbarWord = 'Credit is not enough'
-          this.snackbar = true
+          if (errore.response.data.msg === 'Credit is not enough') {
+            this.snackbarWord = 'Credit is not enough'
+            this.snackbar = true
+          } else if (errore.response.data.msg === 'item is your') {
+            this.snackbarWord = 'item is your'
+            this.snackbar = true
+          }
         }
       }
     },

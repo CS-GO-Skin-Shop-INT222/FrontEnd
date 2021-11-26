@@ -24,15 +24,16 @@
                   <v-card-title
                     v-text="item.WeaponSkin.Skin.SkinName"
                   ></v-card-title>
-                  <v-row>
+                  <v-row dense>
                     <v-col
+                      class="d-flex justify-center"
                       v-for="(stickerincol, index) in item.Item_Sticker"
                       :key="index"
                       cols="4"
                     >
                       <v-img
-                        height="60px"
-                        width="60px"
+                        max-height="60px"
+                        max-width="60px"
                         :src="`https://api.blackcarrack.tech/api/stickeritem/stickerimage/${stickerincol.Sticker.StickerName}`"
                       >
                       </v-img
@@ -52,14 +53,14 @@
               </v-card>
             </v-col>
             <v-col cols="12">
-            <v-btn
-              v-for="(itemss,index) in totalpage"
-              :key="index"
-              class="mx-2"
-              elevation="2"
-              @click="inventoryChangePage(index + 1)"
-              >{{ index + 1 }}</v-btn
-            >
+              <v-btn
+                v-for="(itemss, index) in totalpage"
+                :key="index"
+                class="mx-2"
+                elevation="2"
+                @click="inventoryChangePage(index + 1)"
+                >{{ index + 1 }}</v-btn
+              >
             </v-col>
           </v-row>
         </v-col>
@@ -158,7 +159,7 @@ export default {
       `/inventory/MyItem/${this.$nuxt.$auth.user.UserID}/1`
     )
     this.itemInventory = dataset.data
-    this.totalpage = dataset.totalpage
+    this.totalpage = dataset.totalpage - 1
     this.data = this.itemInventory[0]
     if (this.data !== undefined) {
       this.check = true
@@ -169,7 +170,7 @@ export default {
   },
   methods: {
     setData(data1) {
-      if (data1.ItemID !== '') {
+      if (data1.Description !== '') {
         this.data = data1
         this.check = true
       }
@@ -178,7 +179,7 @@ export default {
       for (let index = 0; index < 9; index++) {
         if (this.itemInventory[index] === undefined) {
           this.setForItem.push({
-            ItemID: '',
+            ItemID: index,
             Price: '',
             Description: '',
             Date: '',
@@ -191,6 +192,7 @@ export default {
               WeaponID: '',
               Skin: { SkinName: '' },
               Weapon: { WeaponName: '' },
+              imageURL: '',
             },
             Users: { Name: '', Email: '' },
             Item_Sticker: [],
@@ -222,7 +224,7 @@ export default {
         `/inventory/MyItem/${this.$nuxt.$auth.user.UserID}/${number}`
       )
       this.itemInventory = dataset.data
-      this.totalpage = dataset.totalpage
+      this.totalpage = dataset.totalpage - 1
     },
   },
 }

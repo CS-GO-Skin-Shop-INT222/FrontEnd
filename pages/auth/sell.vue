@@ -25,7 +25,7 @@
                   <v-card-title
                     v-text="item.WeaponSkin.Skin.SkinName"
                   ></v-card-title>
-                  <v-row>
+                  <v-row dense>
                     <v-col
                       v-for="(stickerincol, index) in item.Item_Sticker"
                       :key="index"

@@ -9,12 +9,10 @@
         v-if="this.$nuxt.$auth.loggedIn"
       >
         <v-tabs-slider color="blue darken-1"></v-tabs-slider>
-        <v-tab to="/" nuxt class="blue--text text--darken-1" href="#tab-1">
-          Logo
+        <v-tab  class="blue--text text--darken-1" href="#tab-1">
+          Black Carrack
         </v-tab>
-        <v-tab to="/" nuxt class="blue--text text--darken-1" href="#tab-2">
-          MARKET
-        </v-tab>
+
 
 
         <v-tab
