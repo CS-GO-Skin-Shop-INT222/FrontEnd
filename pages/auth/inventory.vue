@@ -26,9 +26,9 @@
                   ></v-card-title>
                   <v-row dense>
                     <v-col
-                      class="d-flex justify-center"
                       v-for="(stickerincol, index) in item.Item_Sticker"
                       :key="index"
+                      class="d-flex justify-center"
                       cols="4"
                     >
                       <v-img
@@ -52,15 +52,13 @@
                 </v-img>
               </v-card>
             </v-col>
-            <v-col cols="12">
-              <v-btn
-                v-for="(itemss, index) in totalpage"
-                :key="index"
-                class="mx-2"
-                elevation="2"
-                @click="inventoryChangePage(index + 1)"
-                >{{ index + 1 }}</v-btn
-              >
+            <v-col class="d-flex justify-center" cols="12">
+              <v-col cols="2">
+                <select-page
+                  :pageNumber="totalpage"
+                  @numberPage="inventoryChangePage"
+                />
+              </v-col>
             </v-col>
           </v-row>
         </v-col>
@@ -132,7 +130,7 @@ export default {
   // },
 
   components: { BottomSheet },
-  middleware: 'auth',
+  middleware: ['auth', 'adminCant'],
   data() {
     return {
       totalpage: '',
@@ -159,7 +157,7 @@ export default {
       `/inventory/MyItem/${this.$nuxt.$auth.user.UserID}/1`
     )
     this.itemInventory = dataset.data
-    this.totalpage = dataset.totalpage - 1
+    this.totalpage = Array.from(Array(dataset.totalpage).keys())
     this.data = this.itemInventory[0]
     if (this.data !== undefined) {
       this.check = true
@@ -204,7 +202,6 @@ export default {
       this.itemInventory = this.setForItem
     },
     deleteItem() {
-      console.log(this.data.ItemID)
       if (confirm('Sure to delete ?')) {
         this.$axios.$delete(`/inventory/deleteItem/${this.data.ItemID}`)
         this.snackbar = true
@@ -212,7 +209,6 @@ export default {
       }
     },
     sellItem() {
-      console.log(this.data.ItemID)
       if (confirm('Sure to sell ?')) {
         this.$axios.$put(`/inventory/sellItem/${this.data.ItemID}`)
         this.snackbar = true
@@ -224,7 +220,7 @@ export default {
         `/inventory/MyItem/${this.$nuxt.$auth.user.UserID}/${number}`
       )
       this.itemInventory = dataset.data
-      this.totalpage = dataset.totalpage - 1
+      this.totalpage = Array.from(Array(dataset.totalpage).keys())
     },
   },
 }

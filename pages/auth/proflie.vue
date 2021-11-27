@@ -8,18 +8,20 @@
           </h1>
           <div v-if="checkImage !== false">
           <v-img
-          class="ma-auto"
+          
             v-if="selectedFile"
             :src="imagePreview"
+            class="ma-auto"
             alt="Upload Image"
             max-height="400"
             max-width="400"
           />
           <v-img
-            class="ma-auto"
+            
             v-else
             :src="`https://api.blackcarrack.tech/api/imageusers/getImage/${idUser}`"
             alt="Upload Image"
+            class="ma-auto"
             max-height="400"
             max-width="400"
           />
@@ -117,7 +119,7 @@
 
 <script>
 export default {
-  middleware: 'auth',
+  middleware: ['auth','adminCant'],
   async asyncData({ $axios }) {
     const ip = await $axios.$get('/user/profile')
     return { UserData: ip.user }
@@ -206,14 +208,13 @@ export default {
       if (this.CheckTrue === false) {
         alert('please insert data')
       } else {
-        const UserData = {
-          Name: this.Name,
-          Email: this.email,
-          Tel: this.Tel,
-          Password: this.password,
-          Credit: 1,
-        }
-        console.log(UserData)
+        // const UserData = {
+        //   Name: this.Name,
+        //   Email: this.email,
+        //   Tel: this.Tel,
+        //   Password: this.password,
+        //   Credit: 1,
+        // }
         this.snackbarText = 'SaveData Complete'
         this.snackbar = true
         setTimeout(() => this.$router.replace({ name: 'auth-login' }), 2000)
@@ -234,9 +235,7 @@ export default {
       return { ips }
     },
     onFileChanged(event) {
-      console.log(event)
       if (event !== '' && event !== null) {
-        console.log('asdasdasd')
         this.selectedFile = event
         this.imagePreview = URL.createObjectURL(event)
       } else {

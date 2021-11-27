@@ -1,7 +1,7 @@
 <template>
   <div justify="center">
     <v-container>
-      <v-col class="ma-auto" md="6" cols="10">
+      <v-col class="ma-auto" md="6" cols="12">
         <v-card justify="center" class="ma-5" color="blue darken-1">
           <v-card-title class="text-center">Add Credit</v-card-title>
           <div class="ma-5">
@@ -14,19 +14,22 @@
               outlined
               @change="checkCredit"
             ></v-select>
-            <v-card-text class="ma-2" v-show="selectedUser"
-              >Credit : {{ presentCredit }}</v-card-text
+            <v-card-text v-show="selectedUser" class="ma-2"
+              >Credit now : {{ presentCredit }}</v-card-text
             >
             <v-text-field
-              type="number"
               v-show="selectedUser"
               v-model="numberAddCredit"
+              type="number"
               label="Add Credit For this user"
               color="white"
+              outlined
             ></v-text-field>
-            <v-btn class="ma-4" color="blue darken-1" @click="addCredit"
-              >Add</v-btn
-            >
+            <v-col class="d-flex justify-center">
+              <v-btn class="ma-4" color="blue darken-1" @click="addCredit"
+                >Add</v-btn
+              >
+            </v-col>
           </div>
         </v-card>
       </v-col>
@@ -35,8 +38,9 @@
 </template>
 <script>
 export default {
-  middleware: ['adminRedirect','auth'],
   layout: 'admin',
+  middleware: ['adminRedirect', 'auth'],
+
   async asyncData({ $axios }) {
     const ip = await $axios.$get('/admins/users')
     return { userDataSet: ip }
@@ -62,7 +66,7 @@ export default {
     },
     async addCredit() {
       if (this.numberAddCredit <= 0) {
-        alert("Credit cant less than 0 ")
+        alert('Credit cant less than 0 ')
       }
       await this.$axios.$put(`/admins/addcredit/${this.userId}`, {
         Credit: parseInt(this.numberAddCredit),

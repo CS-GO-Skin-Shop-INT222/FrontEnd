@@ -27,8 +27,8 @@
                   ></v-card-title>
                   <v-row dense>
                     <v-col
-                      v-for="(stickerincol, index) in item.Item_Sticker"
-                      :key="index"
+                      v-for="(stickerincol, index2) in item.Item_Sticker"
+                      :key="index2"
                       cols="4"
                     >
                       <v-img
@@ -122,7 +122,7 @@ export default {
   //   const ip = await $axios.$get(`/inventory/getitem/${this.$nuxt.$auth.user.UserID}`)
   //   return { ip }
   // },
-  middleware: 'auth',
+  middleware: ['auth','adminCant'],
   data() {
     return {
       itemInventory: '',
@@ -148,7 +148,6 @@ export default {
       `/inventory/MyItemselling/${this.$nuxt.$auth.user.UserID}/1`
     )
     this.itemInventory = dataset.data
-    console.log(dataset)
     this.data = this.itemInventory[0]
     if (this.data !== undefined) {
       this.check = true
@@ -192,7 +191,6 @@ export default {
       this.itemInventory = this.setForItem
     },
     deleteItem() {
-      console.log(this.data.ItemID)
       if (confirm('Sure to delete ?')) {
         this.$axios.$delete(`/inventory/deleteItem/${this.data.ItemID}`)
         this.snackbar = true
@@ -200,7 +198,6 @@ export default {
       }
     },
     cancelsalesItem() {
-      console.log(this.data.ItemID)
       if (confirm('Sure to cancelsales ?')) {
         this.$axios.$put(`/inventory/cancelsales/${this.data.ItemID}`)
         this.snackbar = true

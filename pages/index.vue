@@ -28,16 +28,9 @@
             :disabled="selectType === ''"
             @change="checkWeapons"
           ></v-select>
-          <v-btn
-            v-for="(itemss, index) in totalpage"
-            :key="index"
-            class="mx-2"
-            elevation="2"
-            @click="changePage(index + 1)"
-            >{{ index + 1 }}</v-btn
-          >
+          <select-page :pageNumber="totalpage" @numberPage="changePage" />
         </v-col>
-        <v-col class="justify-sm-center" md="9" cols="auto" id="Marketitem">
+        <v-col id="Marketitem" class="justify-sm-center" md="9" cols="auto" >
           <v-row id="MarketFalse">
             <v-col
               v-for="item in itemMarket"
@@ -160,7 +153,10 @@
 </template>
 
 <script>
+import selectPage from '~/components/selectPage.vue'
 export default {
+    components: { selectPage },
+  middleware:'adminCant',
   async asyncData({ $axios }) {
     const ip = await $axios.$get('/marketitem/allmarket/1')
     return { ip }
@@ -218,20 +214,14 @@ export default {
     const weapons = await this.$axios.$get('/item/allweapon')
     const type = await this.$axios.$get('/item/alltype')
     const data = await this.$axios.$get('/marketitem/allmarket/1')
-
     this.typeSet = type.Type
     this.weaponsSet = weapons.Weapon
     this.itemMarket = data.data
-    this.setTotalPage('all',data.totalpage - 1)
-    // this.totalpage = data.totalpage - 1
+
+    this.totalpage = Array.from(Array(data.totalpage).keys())
     this.setArrayItem(1)
   },
   methods: {
-    setTotalPage(text,number){
-      for (let index = 0; index < number; index++) {
-        this.totalpage.push({id:index,code:text+index})
-      }
-    },
     setArrayItem(number) {
       this.detailData = {
         ItemID: '',
@@ -335,8 +325,7 @@ export default {
         `/marketitem/filterType/${typeId}/1`
       )
       this.stateFilter = 'type'
-      this.totalpage.splice(datatype.totalpage - 1)
-      this.totalpage = datatype.totalpage - 1
+      this.totalpage = Array.from(Array(datatype.totalpage).keys())
       this.itemMarket = []
       this.itemMarket = datatype.data
     },
@@ -351,8 +340,7 @@ export default {
         `/marketitem/filterWeapon/${this.idWeapon}/1`
       )
       this.stateFilter = 'weapon'
-      this.totalpage.splice(dataweapon.totalpage - 1)
-      // this.totalpage = dataweapon.totalpage - 1
+      this.totalpage = Array.from(Array(dataweapon.totalpage).keys())
       this.itemMarket = []
       this.itemMarket = dataweapon.data
     },
@@ -362,28 +350,27 @@ export default {
     },
     async changePage(number) {
       let dataset = ''
-       const eiei =[this.totalpage]
       switch (this.stateFilter) {
         case 'market':
           dataset = await this.$axios.$get(`/marketitem/allmarket/${number}`)
           this.itemMarket = dataset.data
-          eiei[0].splice(dataset.totalpage - 1)
-          // this.totalpage.splice(dataset.totalpage - 1)
-          // this.totalpage = dataset.totalpage - 1
+          this.totalpage = Array.from(Array(dataset.totalpage).keys())
+          // this.totalpage.splice(dataset.totalpage)
+          // this.totalpage = dataset.totalpage
           break
         case 'type':
           dataset = await this.$axios.$get(
             `/marketitem/filterType/${this.typeId}/${number}`
           )
           this.itemMarket = dataset.data
-          eiei[0].splice(dataset.totalpage - 1)
+          this.totalpage = Array.from(Array(dataset.totalpage).keys())
           break
         case 'weapon':
           dataset = await this.$axios.$get(
             `/marketitem/filterWeapon/${this.idWeapon}/${number}`
           )
           this.itemMarket = dataset.data
-          eiei[0].splice(dataset.totalpage - 1)
+          this.totalpage = Array.from(Array(dataset.totalpage).keys())
           break
       }
     },
