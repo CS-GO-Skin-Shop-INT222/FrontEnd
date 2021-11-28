@@ -29,8 +29,9 @@
             @change="checkWeapons"
           ></v-select>
           <select-page :pageNumber="totalpage" @numberPage="changePage" />
+          <v-btn @click="resetButton">Reset</v-btn>
         </v-col>
-        <v-col id="Marketitem" class="justify-sm-center" md="9" cols="auto" >
+        <v-col id="Marketitem" class="justify-sm-center" md="9" cols="auto">
           <v-row id="MarketFalse">
             <v-col
               v-for="item in itemMarket"
@@ -155,8 +156,8 @@
 <script>
 import selectPage from '~/components/selectPage.vue'
 export default {
-    components: { selectPage },
-  middleware:'adminCant',
+  components: { selectPage },
+  middleware: 'adminCant',
   async asyncData({ $axios }) {
     const ip = await $axios.$get('/marketitem/allmarket/1')
     return { ip }
@@ -379,9 +380,7 @@ export default {
         alert('Please Login')
       } else {
         try {
-          await this.$axios.put(
-            `/marketitem/buyItem/${this.detailData.ItemID}`
-          )
+          await this.$axios.put(`/marketitem/buyItem/${this.detailData.ItemID}`)
           this.snackbarWord = 'Buy item completed'
           this.snackbar = true
           this.dialog = false
@@ -395,6 +394,26 @@ export default {
             this.snackbar = true
           }
         }
+      }
+    },
+    async resetButton() {
+      if (this.selectType !== '' || this.selectWeapon !== '') {
+        const weapons = await this.$axios.$get('/item/allweapon')
+        const type = await this.$axios.$get('/item/alltype')
+        const data = await this.$axios.$get('/marketitem/allmarket/1')
+        this.typeSet = type.Type
+        this.weaponsSet = weapons.Weapon
+        this.itemMarket = data.data
+
+        this.totalpage = Array.from(Array(data.totalpage).keys())
+        // this.setArrayItem(1)
+        this.selectWeapon = ''
+        this.selectType = ''
+        this.stateFilter = 'market'
+        this.changePage(1)
+      }else{
+        this.snackbarWord = 'This is default'
+        this.snackbar = true
       }
     },
   },

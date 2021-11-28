@@ -12,8 +12,7 @@
 export default {
     props: {
     pageNumber: {
-        type: Array,
-        default: () => []
+        default: () => [0]
     }
 },
   data(){
