@@ -3,33 +3,42 @@
     <h1 class="text-center ma-6">Market</h1>
     <v-container class="mb-10">
       <v-row>
-        <v-col
-          outlined
-          class="d-none d-sm-none d-md-inline-block text-center"
-          cols="3"
-        >
+        <v-col outlined class="text-center" cols="12" sm="12" md="3">
           <h2>Filter</h2>
-          <h4>Price</h4>
-          <v-select
-            v-model="selectType"
-            :items="typeSet"
-            item-text="TypeName"
-            label="Type weapons"
-            outlined
-            @click="clearData(1)"
-            @change="filterWeapons()"
-          ></v-select>
-          <v-select
-            v-model="selectWeapon"
-            :items="weaponsFilter"
-            item-text="WeaponName"
-            label="Weapon"
-            outlined
-            :disabled="selectType === ''"
-            @change="checkWeapons"
-          ></v-select>
-          <select-page :pageNumber="totalpage" @numberPage="changePage" />
-          <v-btn @click="resetButton">Reset</v-btn>
+          <v-row dense>
+            <v-col sm="4" md="12" cols="4">
+              <h4>Type</h4>
+              <v-select
+                v-model="selectType"
+                :items="typeSet"
+                item-text="TypeName"
+                label="Type weapons"
+                outlined
+                @click="clearData(1)"
+                @change="filterWeapons()"
+              ></v-select>
+            </v-col>
+            <v-col sm="4" md="12" cols="4">
+              <h4>Weapon</h4>
+              <v-select
+                v-model="selectWeapon"
+                :items="weaponsFilter"
+                item-text="WeaponName"
+                label="Weapon"
+                outlined
+                :disabled="selectType === ''"
+                @change="checkWeapons"
+              ></v-select>
+            </v-col>
+            <v-col sm="4" md="12" cols="4">
+              <h4>Page</h4>
+              <select-page :pageNumber="totalpage" @numberPage="changePage" />
+            </v-col>
+           <v-col sm="12" md="12" cols="12">
+              <v-btn
+                @click="resetButton"
+                >Reset</v-btn></v-col>
+          </v-row>
         </v-col>
         <v-col id="Marketitem" class="justify-sm-center" md="9" cols="auto">
           <v-row id="MarketFalse">
@@ -40,12 +49,14 @@
               md="4"
               sm="6"
             >
+            <dialog-item  :detailData="detailData">
               <v-card
                 outlined
                 hover
                 :disabled="item.Description === ''"
                 @click="getDetailItem(item)"
               >
+              
                 <v-img
                   :src="`${item.WeaponSkin.imageURL}`"
                   class="white--text align-end"
@@ -70,13 +81,15 @@
                     </v-col>
                   </v-row>
                 </v-img>
+                
               </v-card>
+              </dialog-item>
             </v-col>
           </v-row>
         </v-col>
       </v-row>
     </v-container>
-    <div class="text-center">
+    <!-- <div class="text-center">
       <v-row justify="center" class="ma-10">
         <v-dialog v-model="dialog" dark max-width="1200px" max-height="500px">
           <v-card>
@@ -139,7 +152,8 @@
           </v-card>
         </v-dialog>
       </v-row>
-    </div>
+    </div> -->
+    <dialog-item :check="dialog" :detailData="detailData"></dialog-item>
     <v-snackbar v-model="snackbar" :timeout="timeout">
       <v-icon dark right> mdi-checkbox-marked-circle </v-icon>
       {{ snackbarWord }}
@@ -154,9 +168,10 @@
 </template>
 
 <script>
+import DialogItem from '~/components/dialogItem.vue'
 import selectPage from '~/components/selectPage.vue'
 export default {
-  components: { selectPage },
+  components: { selectPage, DialogItem },
   middleware: 'adminCant',
   async asyncData({ $axios }) {
     const ip = await $axios.$get('/marketitem/allmarket/1')
@@ -411,7 +426,7 @@ export default {
         this.selectType = ''
         this.stateFilter = 'market'
         this.changePage(1)
-      }else{
+      } else {
         this.snackbarWord = 'This is default'
         this.snackbar = true
       }

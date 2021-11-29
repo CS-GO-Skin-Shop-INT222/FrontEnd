@@ -14,6 +14,56 @@
               md="4"
               sm="6"
               @click="setData(item)"
+              class="d-sm-flex d-md-none"
+            >
+            <dialog-item :detailData="data" :stateItem="stateItem" @sell="sellItem" @edit="editItem" @cancelsellitem="cancelsalesItem" @delete="deleteItem">
+              <v-card outlined>
+                <v-img
+                  v-if="item.Description !== ''"
+                  :src="`${item.WeaponSkin.imageURL}`"
+                  class="white--text align-end"
+                  gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
+                  height="200px"
+                >
+                  <v-card-title
+                    v-text="item.WeaponSkin.Skin.SkinName"
+                  ></v-card-title>
+                  <v-row dense>
+                    <v-col
+                      v-for="(stickerincol, index2) in item.Item_Sticker"
+                      :key="index2"
+                      cols="4"
+                    >
+                      <v-img
+                        height="60px"
+                        width="60px"
+                        :src="`https://api.blackcarrack.tech/api/stickeritem/stickerimage/${stickerincol.Sticker.StickerName}`"
+                      >
+                      </v-img
+                    ></v-col>
+                  </v-row>
+                </v-img>
+                <v-img
+                  v-if="item.Description === ''"
+                  :src="``"
+                  class="white--text align-end"
+                  gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
+                  height="200px"
+                >
+                  <v-card-title v-text="item.WeaponSkin.Skin.SkinName">
+                  </v-card-title>
+                </v-img>
+              </v-card>
+              </dialog-item>
+            </v-col>
+                        <v-col
+              v-for="(item, index) in itemInventory"
+              :key="index+'s'"
+              cols="12"
+              md="4"
+              sm="6"
+              @click="setData(item)"
+              class="d-none d-sm-none d-md-inline-block "
             >
               <v-card outlined>
                 <v-img
@@ -54,7 +104,7 @@
               </v-card>
             </v-col>
             <v-col class="d-flex justify-center" cols="12">
-              <v-col cols="2">
+              <v-col cols="6" sm="2" md="2">
                 <select-page
                   :pageNumber="totalpage"
                   @numberPage="changeItemPage"
@@ -117,7 +167,7 @@
             v-if="stateItem === 'inventory' && editState !== true"
             color="primary"
             dark
-            @click="sellItem"
+            @click="sellItem(data.ItemID)"
           >
             Sell
           </v-btn>
@@ -125,7 +175,7 @@
             v-if="stateItem === 'inventory' && editState !== true"
             color="primary"
             dark
-            @click="deleteItem"
+            @click="deleteItem(data.ItemID)"
           >
             Delete
           </v-btn>
@@ -133,7 +183,7 @@
             v-if="stateItem === 'inventory' && editState === true"
             color="primary"
             dark
-            @click="editItem"
+            @click="editItem({id:data.ItemID,description:editDescription,price:editPrice})"
           >
             Confirm
           </v-btn>
@@ -150,14 +200,14 @@
             v-if="stateItem === 'sell' && editState !== true"
             color="primary"
             dark
-            @click="cancelsalesItem"
+            @click="cancelsalesItem(data.ItemID)"
           >
             Cancel Sell
           </v-btn>
         </v-col>
       </v-row>
     </v-container>
-    <div>
+    <!-- <div>
       <v-row justify="center">
         <v-dialog v-model="dialog" max-width="290">
           <v-card>
@@ -174,7 +224,7 @@
           </v-card>
         </v-dialog>
       </v-row>
-    </div>
+    </div> -->
     <div class="text-center">
       <v-snackbar v-model="snackbar" :timeout="2000">
         <v-icon dark right> mdi-checkbox-marked-circle </v-icon>
@@ -235,7 +285,7 @@ export default {
       const dataset = await this.$axios.$get(
         `/inventory/MyItem/${this.$nuxt.$auth.user.UserID}/1`
       )
-      this.topic = 'inventory'
+      this.topic = 'Inventory'
       this.itemInventory = dataset.data
       this.totalpage = Array.from(Array(dataset.totalpage).keys())
       this.data = this.itemInventory[0]
@@ -246,7 +296,7 @@ export default {
       }
       this.setArrayItem()
     } else if (this.stateItem === 'sell') {
-      this.topic = 'SellItem'
+      this.topic = 'Sell Item'
       const dataset = await this.$axios.$get(
         `/inventory/MyItemselling/${this.$nuxt.$auth.user.UserID}/1`
       )
@@ -307,25 +357,25 @@ export default {
       }
       this.itemInventory = this.setForItem
     },
-    deleteItem() {
+    deleteItem(number) {
       if (confirm('Sure to delete ?')) {
-        this.$axios.$delete(`/inventory/deleteItem/${this.data.ItemID}`)
+        this.$axios.$delete(`/inventory/deleteItem/${number}`)
         this.snackbartext = 'Delete item completed'
         this.snackbar = true
         location.reload()
       }
     },
-    sellItem() {
+    sellItem(number) {
       if (confirm('Sure to sell ?')) {
-        this.$axios.$put(`/inventory/sellItem/${this.data.ItemID}`)
+        this.$axios.$put(`/inventory/sellItem/${number}`)
         this.snackbar = true
         this.snackbartext = 'Sell completed'
         location.reload()
       }
     },
-    cancelsalesItem() {
+    cancelsalesItem(number) {
       if (confirm('Sure to cancelsales ?')) {
-        this.$axios.$put(`/inventory/cancelsales/${this.data.ItemID}`)
+        this.$axios.$put(`/inventory/cancelsales/${number}`)
         this.snackbar = true
         this.snackbartext = 'Cancel sell completed'
         location.reload()
@@ -347,18 +397,19 @@ export default {
         this.totalpage = Array.from(Array(dataset.totalpage).keys())
       }
     },
-    editItem() {
+    editItem(arrayget) {
+      console.log(arrayget)
       if (
-        this.validateNumber(this.editPrice) === true &&
-        this.editDescription !== '' &&
-        this.validateDescription(this.editDescription) === true
+        this.validateNumber(arrayget.price) === true &&
+        this.description !== '' &&
+        this.validateDescription(arrayget.description) === true
       ) {
         const data = {
-          Price: this.editPrice,
-          Description: this.editDescription,
+          Price: arrayget.price,
+          Description: arrayget.description,
         }
         if (confirm('Sure to edit Item ?')) {
-          this.$axios.$put(`/inventory/editItem/${this.data.ItemID}`, data)
+          this.$axios.$put(`/inventory/editItem/${arrayget.id}`, data)
           this.snackbartext = 'Edit item completed'
           this.snackbar = true
           location.reload()
