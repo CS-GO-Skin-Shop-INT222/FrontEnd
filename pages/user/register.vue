@@ -1,7 +1,7 @@
 <template>
   <v-app>
     <v-form>
-      <h1 class="text-center ma-6">Admin Register</h1>
+      <h1 class="text-center ma-6">Register</h1>
       <v-row dense justify="center" no-gutters>
         <v-spacer />
         <v-col sm="6" md="6" lg="4" class="text-md-center"
@@ -20,7 +20,7 @@
           ><v-text-field
             v-model="password"
             :append-icon="password1 ? 'mdi-eye' : 'mdi-eye-off'"
-            :rules="[rules.required, rules.min,rules.max]"
+            :rules="[rules.required, rules.min,rules.max, validatePassword]"
             :type="password1 ? 'text' : 'password'"
             name="input-10-1"
             hint="At least 10 characters"
@@ -72,10 +72,10 @@
       <v-row dense no-gutters justify="center">
         <v-spacer />
         <v-col sm="6" md="6" lg="4" class="text-md-center">
-            <v-text-field
-            v-model="AdminKey"
-            :rules="[rules.required]"
-            label="AdminKey"
+          <v-text-field
+            v-model="Tel"
+            :rules="[rules.required, rules.telnumber]"
+            label="Tel"
             outlined
           ></v-text-field>
           <v-checkbox
@@ -117,9 +117,9 @@
 </template>
 <script>
 export default {
+   middleware:'statusLogin',
   data() {
     return {
-      AdminKey:'',
       snackbar: false,
       timeout: 2000,
       urlserver: process.env.urlserver,
@@ -154,7 +154,7 @@ export default {
 },
     validatePassword(password) {
     const re = /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{10,20}$/;
-    return re.test(String(password).toLowerCase());
+    return re.test(String(password).toLowerCase()) || 'Password must English letters, numbers, and special characters';
 },
     validateTelephone(tel){
      if(Number.isInteger(Number(tel)) && tel.length === 10 )  {
@@ -162,9 +162,9 @@ export default {
      }
       return false
     },
-    validateName(name){
+        validateName(name){
       const re = /^[A-Za-z]+$/
-        return re.test(String(name).toLowerCase());
+        return re.test(String(name).toLowerCase()) || 'Name must have only letters ';
     },
     Checkrules() {
       const ArrayCheck = [
@@ -175,7 +175,7 @@ export default {
         this.password === this.ConfirmPassword,
         this.checkbox,
       ]
-      console.log(ArrayCheck)
+            console.log(ArrayCheck)
       for (let index = 0; index < ArrayCheck.length; index++) {
         if (Boolean(ArrayCheck[index]) === false) {
           this.CheckTrue = false
@@ -196,7 +196,7 @@ export default {
          this.sendDataUser(UserData)
         this.snackbar = true
         console.log(UserData)
-        //  setTimeout( () => this.$router.replace({  name:'auth-login'}), 2000);
+         setTimeout( () => this.$router.replace({  name:'user-login'}), 2000);
       }
     },
     async sendDataUser(UserData) {

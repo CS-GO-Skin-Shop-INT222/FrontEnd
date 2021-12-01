@@ -367,7 +367,6 @@ export default {
           WeaponSkinID: this.skinId,
           Stickers: this.setSticker()
         }
-        console.log(Item)
         await this.$axios.$post('/inventory/addItem', Item)
         this.dialog = false
         location.reload()

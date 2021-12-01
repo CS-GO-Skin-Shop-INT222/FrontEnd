@@ -217,7 +217,7 @@ export default {
         // }
         this.snackbarText = 'SaveData Complete'
         this.snackbar = true
-        setTimeout(() => this.$router.replace({ name: 'auth-login' }), 2000)
+        // setTimeout(() => this.$router.replace({ name: 'auth-login' }), 2000)
       }
     },
     async saveData() {

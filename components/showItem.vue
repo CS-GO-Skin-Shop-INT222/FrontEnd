@@ -207,24 +207,6 @@
         </v-col>
       </v-row>
     </v-container>
-    <!-- <div>
-      <v-row justify="center">
-        <v-dialog v-model="dialog" max-width="290">
-          <v-card>
-            <v-card-title class="text-h5"> Delete this item ? </v-card-title>
-            <v-card-actions>
-              <v-spacer></v-spacer>
-              <v-btn color="green darken-1" text @click="dialog = false">
-                Disagree
-              </v-btn>
-              <v-btn color="green darken-1" text @click="dialog = false">
-                Agree
-              </v-btn>
-            </v-card-actions>
-          </v-card>
-        </v-dialog>
-      </v-row>
-    </div> -->
     <div class="text-center">
       <v-snackbar v-model="snackbar" :timeout="2000">
         <v-icon dark right> mdi-checkbox-marked-circle </v-icon>

@@ -65,7 +65,9 @@ export default {
   //   const ip = await $axios.$get(`${PATH_API}`)
   //   return { ip }
   // },
+    middleware:'statusLogin',
   data() {
+    
     return {
       snackbar: false,
       timeout: 2000,

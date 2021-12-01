@@ -58,7 +58,7 @@ export default {
 
   auth: {
     redirect: {
-      login: '/auth/login',
+      login: '/user/login',
       logout: '/',
       callback: '/login',
       home: '/dummy',

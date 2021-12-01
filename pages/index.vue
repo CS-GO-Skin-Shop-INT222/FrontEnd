@@ -34,10 +34,9 @@
               <h4>Page</h4>
               <select-page :pageNumber="totalpage" @numberPage="changePage" />
             </v-col>
-           <v-col sm="12" md="12" cols="12">
-              <v-btn
-                @click="resetButton"
-                >Reset</v-btn></v-col>
+            <v-col sm="12" md="12" cols="12">
+              <v-btn @click="resetButton">Reset</v-btn></v-col
+            >
           </v-row>
         </v-col>
         <v-col id="Marketitem" class="justify-sm-center" md="9" cols="auto">
@@ -49,40 +48,40 @@
               md="4"
               sm="6"
             >
-            <dialog-item  :detailData="detailData">
-              <v-card
-                outlined
-                hover
-                :disabled="item.Description === ''"
-                @click="getDetailItem(item)"
-              >
-              
-                <v-img
-                  :src="`${item.WeaponSkin.imageURL}`"
-                  class="white--text align-end"
-                  gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
-                  height="200px"
+              <dialog-item :detailData="detailData">
+                <v-card
+                  outlined
+                  hover
+                  :disabled="item.Description === ''"
+                  @click="getDetailItem(item)"
                 >
-                  <v-card-title
-                    v-text="item.WeaponSkin.Skin.SkinName"
-                  ></v-card-title>
-                  <v-row dense>
-                    <v-col
-                      v-for="(stickerincol, indexsticker) in item.Item_Sticker"
-                      :key="indexsticker"
-                      cols="4"
-                    >
-                      <v-img
-                        height="60px"
-                        width="60px"
-                        :src="`https://api.blackcarrack.tech/api/stickeritem/stickerimage/${stickerincol.Sticker.StickerName}`"
+                  <v-img
+                    :src="`${item.WeaponSkin.imageURL}`"
+                    class="white--text align-end"
+                    gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
+                    height="200px"
+                  >
+                    <v-card-title
+                      v-text="item.WeaponSkin.Skin.SkinName"
+                    ></v-card-title>
+                    <v-row dense>
+                      <v-col
+                        v-for="(
+                          stickerincol, indexsticker
+                        ) in item.Item_Sticker"
+                        :key="indexsticker"
+                        cols="4"
                       >
-                      </v-img>
-                    </v-col>
-                  </v-row>
-                </v-img>
-                
-              </v-card>
+                        <v-img
+                          height="60px"
+                          width="60px"
+                          :src="`https://api.blackcarrack.tech/api/stickeritem/stickerimage/${stickerincol.Sticker.StickerName}`"
+                        >
+                        </v-img>
+                      </v-col>
+                    </v-row>
+                  </v-img>
+                </v-card>
               </dialog-item>
             </v-col>
           </v-row>
