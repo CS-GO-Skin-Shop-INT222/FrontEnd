@@ -48,12 +48,13 @@
               md="4"
               sm="6"
             >
-              <dialog-item :detailData="detailData">
+            <dialog-item :stateItem="'index'" :detailData="detailData">
                 <v-card
                   outlined
                   hover
                   :disabled="item.Description === ''"
                   @click="getDetailItem(item)"
+                  justify="center"
                 >
                   <v-img
                     :src="`${item.WeaponSkin.imageURL}`"
@@ -64,7 +65,7 @@
                     <v-card-title
                       v-text="item.WeaponSkin.Skin.SkinName"
                     ></v-card-title>
-                    <v-row dense>
+                    <v-row dense justify="center">
                       <v-col
                         v-for="(
                           stickerincol, indexsticker
@@ -73,6 +74,7 @@
                         cols="4"
                       >
                         <v-img
+                        class="ma-auto"
                           height="60px"
                           width="60px"
                           :src="`https://api.blackcarrack.tech/api/stickeritem/stickerimage/${stickerincol.Sticker.StickerName}`"

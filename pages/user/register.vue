@@ -1,10 +1,10 @@
 <template>
   <v-app>
-    <v-form>
+    <v-form class="mb-10">
+    <v-container>
       <h1 class="text-center ma-6">Register</h1>
       <v-row dense justify="center" no-gutters>
-        <v-spacer />
-        <v-col sm="6" md="6" lg="4" class="text-md-center"
+        <v-col sm="8" md="8" lg="4" class="text-md-center"
           ><v-text-field
             v-model="email"
             :rules="rules.emailRules"
@@ -12,15 +12,13 @@
             outlined
           ></v-text-field>
         </v-col>
-        <v-spacer />
       </v-row>
       <v-row dense no-gutters justify="center">
-        <v-spacer />
-        <v-col sm="6" md="6" lg="4" class="text-md-center"
+        <v-col sm="8" md="8" lg="4" class="text-md-center"
           ><v-text-field
             v-model="password"
             :append-icon="password1 ? 'mdi-eye' : 'mdi-eye-off'"
-            :rules="[rules.required, rules.min,rules.max, validatePassword]"
+            :rules="[rules.required, rules.min, rules.max, validatePassword]"
             :type="password1 ? 'text' : 'password'"
             name="input-10-1"
             hint="At least 10 characters"
@@ -35,12 +33,10 @@
             and special characters
           </p>
         </v-col>
-        <v-spacer />
       </v-row>
 
       <v-row dense no-gutters justify="center">
-        <v-spacer />
-        <v-col sm="6" md="6" lg="4" class="text-md-center"
+        <v-col sm="8" md="8" lg="4" class="text-md-center"
           ><v-text-field
             v-model="ConfirmPassword"
             :append-icon="password2 ? 'mdi-eye' : 'mdi-eye-off'"
@@ -54,24 +50,20 @@
             @click:append="password2 = !password2"
           ></v-text-field>
         </v-col>
-        <v-spacer />
       </v-row>
 
       <v-row dense no-gutters justify="center">
-        <v-spacer />
-        <v-col sm="6" md="6" lg="4" class="text-md-center"
+        <v-col sm="8" md="8" lg="4" class="text-md-center"
           ><v-text-field
             v-model="Name"
-            :rules="[rules.required,validateName]"
+            :rules="[rules.required, validateName]"
             label="Name"
             outlined
           ></v-text-field>
         </v-col>
-        <v-spacer />
       </v-row>
       <v-row dense no-gutters justify="center">
-        <v-spacer />
-        <v-col sm="6" md="6" lg="4" class="text-md-center">
+        <v-col sm="8" md="8" lg="4" class="text-md-center">
           <v-text-field
             v-model="Tel"
             :rules="[rules.required, rules.telnumber]"
@@ -87,19 +79,13 @@
             required
           ></v-checkbox>
         </v-col>
-        <v-spacer />
       </v-row>
-      <v-row>
-        <v-spacer />
-        <v-row align="center" justify="space-around">
-          <v-btn class="py-5" x-large color="success" @click="Checkrules">
+      <v-row >
+          <v-btn class="ma-auto" x-large color="success" @click="Checkrules">
             Register
           </v-btn>
-        </v-row>
-        <v-spacer />
       </v-row>
-    </v-form>
-
+    </v-container>
     <div class="text-center">
       <v-snackbar v-model="snackbar" :timeout="timeout">
         <v-icon dark right> mdi-checkbox-marked-circle </v-icon>
@@ -112,12 +98,12 @@
         </template>
       </v-snackbar>
     </div>
-
+    </v-form>
   </v-app>
 </template>
 <script>
 export default {
-   middleware:'statusLogin',
+  middleware: 'statusLogin',
   data() {
     return {
       snackbar: false,
@@ -142,29 +128,38 @@ export default {
           Number.isInteger(Number(v)) || 'The value must be an integer',
         emailRules: [
           (v) => !!v || 'E-mail is required',
-          (v) => /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(v) || 'E-mail must be valid',
+          (v) =>
+            /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(
+              v
+            ) || 'E-mail must be valid',
         ],
       },
     }
   },
   methods: {
     validateEmail(email) {
-    const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    return re.test(String(email).toLowerCase());
-},
+      const re =
+        /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+      return re.test(String(email).toLowerCase())
+    },
     validatePassword(password) {
-    const re = /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{10,20}$/;
-    return re.test(String(password).toLowerCase()) || 'Password must English letters, numbers, and special characters';
-},
-    validateTelephone(tel){
-     if(Number.isInteger(Number(tel)) && tel.length === 10 )  {
-       return true
-     }
+      const re = /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{10,20}$/
+      return (
+        re.test(String(password).toLowerCase()) ||
+        'Password must English letters, numbers, and special characters'
+      )
+    },
+    validateTelephone(tel) {
+      if (Number.isInteger(Number(tel)) && tel.length === 10) {
+        return true
+      }
       return false
     },
-        validateName(name){
+    validateName(name) {
       const re = /^[A-Za-z]+$/
-        return re.test(String(name).toLowerCase()) || 'Name must have only letters ';
+      return (
+        re.test(String(name).toLowerCase()) || 'Name must have only letters '
+      )
     },
     Checkrules() {
       const ArrayCheck = [
@@ -175,28 +170,27 @@ export default {
         this.password === this.ConfirmPassword,
         this.checkbox,
       ]
-            console.log(ArrayCheck)
+      console.log(ArrayCheck)
       for (let index = 0; index < ArrayCheck.length; index++) {
         if (Boolean(ArrayCheck[index]) === false) {
           this.CheckTrue = false
         }
       }
       if (this.CheckTrue === false) {
-
         alert('Please check your data')
         this.CheckTrue = true
       } else {
-         const UserData = {
-           Name: this.Name,
-           Email: this.email,
-           Tel: this.Tel,
-           Password: this.password,
-           Credit: 1,
-         }
-         this.sendDataUser(UserData)
+        const UserData = {
+          Name: this.Name,
+          Email: this.email,
+          Tel: this.Tel,
+          Password: this.password,
+          Credit: 1,
+        }
+        this.sendDataUser(UserData)
         this.snackbar = true
         console.log(UserData)
-         setTimeout( () => this.$router.replace({  name:'user-login'}), 2000);
+        setTimeout(() => this.$router.replace({ name: 'user-login' }), 2000)
       }
     },
     async sendDataUser(UserData) {

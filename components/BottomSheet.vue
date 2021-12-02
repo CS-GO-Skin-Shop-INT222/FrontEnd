@@ -1,6 +1,6 @@
 <template>
   <div class="text-center">
-    <v-row justify="center" class="ma-10">
+    <v-row justify="center" class="ma-2">
       <v-dialog v-model="dialog" max-width="1200px" max-height="100px">
         <template v-slot:activator="{ on, attrs }">
           <v-btn color="primary" dark v-bind="attrs" v-on="on" @click="test1">
@@ -143,7 +143,7 @@
                           v-model="description"
                           label="Description"
                           outlined
-                          :rules="[rules.required,validateDescription]"
+                          :rules="[rules.required, validateDescription]"
                         ></v-textarea>
                         <v-btn
                           color="blue darken-1"
@@ -208,7 +208,7 @@ export default {
 
     imageURL: '',
 
-    dataStickerSet:[],
+    dataStickerSet: [],
 
     baseURL: 'https://api.blackcarrack.tech',
     rules: {
@@ -276,13 +276,11 @@ export default {
       this.skinId = id[0].WeaponSkinID
     },
     validateDescription(description) {
-    if (description.length > 100) {
-      return 'Please decrease text'
-    }
-    return true;
-}
-,
-
+      if (description.length > 100) {
+        return 'Please decrease text'
+      }
+      return true
+    },
     validateNumber(num) {
       if (Number.isInteger(Number(num)) && num > 0) {
         return true
@@ -344,28 +342,30 @@ export default {
       }
       return ''
     },
-  setSticker(){
-    for (let index = 1; index < 4; index++) {
-      if (this.checkSticker(index) !== '') {
-        this.dataStickerSet.push({
-          id:this.checkSticker(index)
-        })
+    setSticker() {
+      for (let index = 1; index < 4; index++) {
+        if (this.checkSticker(index) !== '') {
+          this.dataStickerSet.push({
+            id: this.checkSticker(index),
+          })
+        }
       }
-    }
-    return this.dataStickerSet
-  },
+      return this.dataStickerSet
+    },
 
-
-
-   async sendItem() {
-      if (this.validateNumber(this.price) === true && this.description !== '' && this.validateDescription(this.description) === true ) {
+    async sendItem() {
+      if (
+        this.validateNumber(this.price) === true &&
+        this.description !== '' &&
+        this.validateDescription(this.description) === true
+      ) {
         this.checkSkin()
         const Item = {
           Price: this.price,
           Description: this.description,
           UserID: this.$nuxt.$auth.user.UserID,
           WeaponSkinID: this.skinId,
-          Stickers: this.setSticker()
+          Stickers: this.setSticker(),
         }
         await this.$axios.$post('/inventory/addItem', Item)
         this.dialog = false

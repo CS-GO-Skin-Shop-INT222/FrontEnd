@@ -7,12 +7,12 @@
           <v-dialog v-model="dialog" dark max-width="1200px" max-height="500px">
             <v-card>
               <v-container>
-                <v-row dense class="ma-5">
+                <v-row dense class="ma-2" >
                   <v-col cols="12" md="8" sm="12">
                     <v-img
                       v-if="detailData.Description !== ''"
                       :src="`${detailData.WeaponSkin.imageURL}`"
-                      class="white--text align-end"
+                      class="white--text align-end ma-auto"
                       gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
                       max-height="600px"
                       max-width="700px"
@@ -43,9 +43,12 @@
                         v-for="(stickerincol, index) in detailData.Item_Sticker"
                         :key="index"
                         cols="4"
+                        justify="center"
+                        class="ma-auto"
                       >
                         <v-img
                           v-if="stickerincol !== undefined"
+                          class="ma-auto"
                           height="80px"
                           width="80px"
                           :src="`https://api.blackcarrack.tech/api/stickeritem/stickerimage/${stickerincol.Sticker.StickerName}`"

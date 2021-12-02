@@ -2,20 +2,18 @@
   <v-app>
     <v-form>
       <h1 class="text-center ma-6">Login</h1>
-      <v-row>
-        <v-spacer></v-spacer>
-        <v-col xs="2" sm="8" md="4">
+      <v-container>
+      <v-row justify="center">
+        <v-col xs="4" sm="8" md="4">
           <v-text-field
             v-model="userEmail"
             label="Email"
             outlined
           ></v-text-field>
         </v-col>
-        <v-spacer></v-spacer>
       </v-row>
-      <v-row>
-        <v-spacer></v-spacer>
-        <v-col xs="2" sm="8" md="4">
+      <v-row justify="center">
+        <v-col xs="4" sm="8" md="4">
           <v-text-field
             v-model="password"
             :append-icon="password2 ? 'mdi-eye' : 'mdi-eye-off'"
@@ -25,19 +23,18 @@
             @click:append="password2 = !password2"
           ></v-text-field>
         </v-col>
-        <v-spacer></v-spacer>
       </v-row>
-      <v-row align="center" justify="space-around">
+      <v-row justify="center">
         <v-btn class="py-5" x-large tile color="success" @click="userLogin">
           Login
         </v-btn>
       </v-row>
-      <v-row align="center" justify="space-around">
+      <v-row justify="center">
         <nuxt-link to="/admin/login" class="ma-2">
           <v-btn class="py-5" tile color="primary"> Admin </v-btn>
         </nuxt-link>
       </v-row>
-      <v-row align="center" justify="space-around">
+      <v-row  justify="center">
         <p v-if="Userpassword" class="red--text text--darken-4">
           NOT CORRECT USER AND PASSWORD
         </p>
@@ -54,17 +51,13 @@
           </template>
         </v-snackbar>
       </div>
+      </v-container>
     </v-form>
   </v-app>
 </template>
 
 <script>
 export default {
-  //    async asyncData({ $axios }) {
-  //   const PATH_API = '/user/users'
-  //   const ip = await $axios.$get(`${PATH_API}`)
-  //   return { ip }
-  // },
     middleware:'statusLogin',
   data() {
     

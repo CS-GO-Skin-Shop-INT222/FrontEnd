@@ -1,11 +1,11 @@
 <template>
   <v-app class="text-center mb-10">
     <h1 class="text-center ma-6">
-      {{ topic }}<bottom-sheet v-if="topic === 'inventory'"></bottom-sheet>
+      {{ topic }}<bottom-sheet v-if="topic === 'Inventory'"></bottom-sheet>
     </h1>
-    <v-container>
+    <v-container class="my-0">
       <v-row>
-        <v-col class="justify-sm-center" md="8" cols="auto">
+        <v-col class="justify-sm-center" md="8" sm="12" cols="auto">
           <v-row>
             <v-col
               v-for="(item, index) in itemInventory"
@@ -14,7 +14,7 @@
               md="4"
               sm="6"
               @click="setData(item)"
-              class="d-sm-flex d-md-none"
+              class="d-sm-block d-md-none"
             >
             <dialog-item :detailData="data" :stateItem="stateItem" @sell="sellItem" @edit="editItem" @cancelsellitem="cancelsalesItem" @delete="deleteItem">
               <v-card outlined>
@@ -35,8 +35,8 @@
                       cols="4"
                     >
                       <v-img
-                        height="60px"
-                        width="60px"
+                        max-height="60px"
+                        max-width="60px"
                         :src="`https://api.blackcarrack.tech/api/stickeritem/stickerimage/${stickerincol.Sticker.StickerName}`"
                       >
                       </v-img
@@ -56,7 +56,7 @@
               </v-card>
               </dialog-item>
             </v-col>
-                        <v-col
+            <v-col
               v-for="(item, index) in itemInventory"
               :key="index+'s'"
               cols="12"

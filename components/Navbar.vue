@@ -10,10 +10,10 @@
           v-if="!this.$nuxt.$auth.loggedIn"
         >
           <v-tabs-slider color="red darken-4"></v-tabs-slider>
-          <v-tab class="red--text text--darken-4" href="#tab-1">
+          <v-tab class="red--text text--darken-4  font-weight-medium" href="#tab-1">
             BlackCarrack
           </v-tab>
-          <v-tab to="/" nuxt class="red--text text--darken-4" href="#tab-2">
+          <v-tab to="/" nuxt class="red--text text--darken-4 " href="#tab-2">
             MARKET
           </v-tab>
 
@@ -117,36 +117,39 @@
     </div>
     <div class="d-block d-sm-none d-md-none">
       <v-card max-width="600">
-        <v-app-bar color="red" dark>
+        <v-app-bar color="black" dark>
           <v-app-bar-nav-icon
             @click.stop="drawer = !drawer"
           ></v-app-bar-nav-icon>
           <v-spacer></v-spacer>
-            <p>BlackCarrack</p>
+          <v-app-bar-title class="red--text text--darken-4 headline  font-weight-regular">BlackCarrack</v-app-bar-title>
+          <v-spacer></v-spacer>
+            
         </v-app-bar>
-        <v-navigation-drawer v-model="drawer" absolute app>
+        <v-navigation-drawer v-model="drawer" color="black" absolute app>
           <v-list nav dense>
+            <p class="red--text text--darken-4 text-center title font-weight-regular">BlackCarrack</p>
             <v-list-item-group v-if="!this.$nuxt.$auth.loggedIn"
               v-model="group"
               active-class="red--text text--darken-4"
             >
               <v-list-item  to="/" nuxt class="red--text text--darken-4" >
-                <v-list-item-title>HOME</v-list-item-title>
+                <v-list-item-title class="subtitle-1">HOME</v-list-item-title>
               </v-list-item>
 
               <v-list-item  to="/user/inventory" nuxt class="red--text text--darken-4">
-                <v-list-item-title>INVENTORY</v-list-item-title>
+                <v-list-item-title class="subtitle-1 ">INVENTORY</v-list-item-title>
               </v-list-item>
 
               <v-list-item  to="/user/sell" nuxt class="red--text text--darken-4">
-                <v-list-item-title>SELL</v-list-item-title>
+                <v-list-item-title class="subtitle-1">SELL</v-list-item-title>
               </v-list-item>
 
               <v-list-item  to="/user/login" nuxt class="red--text text--darken-4">
-                <v-list-item-title>LOGIN</v-list-item-title>
+                <v-list-item-title class="subtitle-1">LOGIN</v-list-item-title>
               </v-list-item>
               <v-list-item  to="/user/register" nuxt class="red--text text--darken-4">
-                <v-list-item-title>REGISTER</v-list-item-title>
+                <v-list-item-title class="subtitle-1">REGISTER</v-list-item-title>
               </v-list-item>
             </v-list-item-group>
 
@@ -155,22 +158,21 @@
               v-else
               active-class="red--text text--darken-4"
             >
-              <v-list-item  to="/" nuxt class="red--text text--darken-4" >
-                <v-list-item-title>HOME</v-list-item-title>
+              <v-list-item  to="/" nuxt class="red--text text--darken-4 " >
+                <v-list-item-title class="subtitle-1">HOME</v-list-item-title>
               </v-list-item>
-
               <v-list-item  to="/user/inventory" nuxt class="red--text text--darken-4">
-                <v-list-item-title>INVENTORY</v-list-item-title>
+                <v-list-item-title class="subtitle-1">INVENTORY</v-list-item-title>
               </v-list-item>
 
               <v-list-item  to="/user/sell" nuxt class="red--text text--darken-4">
-                <v-list-item-title>SELL</v-list-item-title>
+                <v-list-item-title class="subtitle-1">SELL</v-list-item-title>
               </v-list-item>
               <v-list-item  to="/user/proflie" nuxt class="red--text text--darken-4">
-                <v-list-item-title>PROFILE</v-list-item-title>
+                <v-list-item-title class="subtitle-1">PROFILE</v-list-item-title>
               </v-list-item>
-              <v-list-item nuxt class="red--text text--darken-4" @click="logout">
-                <v-list-item-title>LOGOUT</v-list-item-title>
+              <v-list-item nuxt class="red--text text--darken-4 subtitle-1" @click="logout">
+                <v-list-item-title class="subtitle-1">LOGOUT</v-list-item-title>
               </v-list-item>
             </v-list-item-group>
           </v-list>
