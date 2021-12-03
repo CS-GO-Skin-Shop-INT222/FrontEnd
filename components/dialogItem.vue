@@ -36,7 +36,7 @@
                       :rules="[rules.required, validateDescriptionCheck]"
                     ></v-textarea>
                     <v-card-text>
-                      User : {{ detailData.Users.Name }}
+                      Owner : {{ detailData.Users.Name }}
                     </v-card-text>
                     <v-row justify="center" class="px-10">
                       <v-col
@@ -68,6 +68,7 @@
                         v-model.number="editPrice"
                         label="Price"
                         type="number"
+                        class="ma-auto"
                         outlined
                         :rules="[
                           rules.numberCheck,
@@ -76,6 +77,7 @@
                           validateNumberCheck,
                         ]"
                       ></v-text-field>
+                      <v-col cols="auto">
                       <v-btn
                         v-if="stateItem === 'index'"
                         class="justify-center"
@@ -132,6 +134,7 @@
                       >
                         Cancel Sell
                       </v-btn>
+                      </v-col>
                     </v-row>
                   </v-col>
                 </v-row>

@@ -2,7 +2,7 @@ import colors from 'vuetify/es5/util/colors'
 require('dotenv').config()
 export default {
     env: {
-        urlserver: 'https://api.blackcarrack.tech/api'
+        urlserver: 'http://localhost:5000/api'
     },
     // Disable server-side rendering: http://go.nuxtjs.dev/ssr-mode
     ssr: true,
@@ -59,7 +59,7 @@ export default {
   auth: {
     redirect: {
       login: '/user/login',
-      logout: '/',
+      logout: '/dummy',
       callback: '/login',
       home: '/dummy',
       admin:'/admin/management'
@@ -76,9 +76,9 @@ export default {
           autoFetch:true
         },
         endpoints: {
-          login: { url: 'https://api.blackcarrack.tech/api/user/login', method: 'post', propertyName:'token' },
-          logout: { url: 'https://api.blackcarrack.tech/api/user/logout', method: 'delete' },
-          user: { url: 'https://api.blackcarrack.tech/api/user/profile', method: 'get',propertyName:'user'}
+          login: { url: 'http://localhost:5000/api/user/login', method: 'post', propertyName:'token' },
+          logout: { url: 'http://localhost:5000/api/user/logout', method: 'delete' },
+          user: { url: 'http://localhost:5000/api/user/profile', method: 'get',propertyName:'user'}
         }
         , tokenName:'auth-token'
       },
@@ -96,9 +96,9 @@ export default {
           // autoFetch: true
         },
         endpoints: {
-          login: { url: 'https://api.blackcarrack.tech/api/admins/login', method: 'post', propertyName:'token' },
-          logout: { url: 'https://api.blackcarrack.tech/api/admins/logout', method: 'delete' },
-          user: { url: 'https://api.blackcarrack.tech/api/admins/admin', method: 'get',propertyName:false}
+          login: { url: 'http://localhost:5000/api/admins/login', method: 'post', propertyName:'token' },
+          logout: { url: 'http://localhost:5000/api/admins/logout', method: 'delete' },
+          user: { url: 'http://localhost:5000/api/admins/admin', method: 'get',propertyName:false}
         }
         , tokenName:'auth-token'
       },
@@ -115,7 +115,7 @@ export default {
   },
     // Axios module configuration: http://go.nuxtjs.dev/config-axios
     axios: {
-        baseURL: 'https://api.blackcarrack.tech/api',
+        baseURL: 'http://localhost:5000/api',
         proxyHeaders: false,
         credentials: false 
     },

@@ -103,7 +103,7 @@
             nuxt
             class="red--text text--darken-4"
             href="#tab-6"
-            @click="logout"
+            @click="logoutClick"
           >
             <v-icon left> mdi-exit-to-app </v-icon>
             Logout
@@ -171,7 +171,7 @@
               <v-list-item  to="/user/proflie" nuxt class="red--text text--darken-4">
                 <v-list-item-title class="subtitle-1">PROFILE</v-list-item-title>
               </v-list-item>
-              <v-list-item nuxt class="red--text text--darken-4 subtitle-1" @click="logout">
+              <v-list-item nuxt class="red--text text--darken-4 subtitle-1" @click="logoutClick">
                 <v-list-item-title class="subtitle-1">LOGOUT</v-list-item-title>
               </v-list-item>
             </v-list-item-group>
@@ -198,10 +198,11 @@ export default {
     }
   },
   methods: {
-    logout() {
+    logoutClick() {
       try {
-        this.$nuxt.$user.logout()
-      } catch {}
+        this.$nuxt.$auth.logout()
+      } catch {
+      }
     },
   },
   watch: {

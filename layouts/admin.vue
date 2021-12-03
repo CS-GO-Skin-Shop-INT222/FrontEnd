@@ -8,13 +8,14 @@
         fixed-tabs
         v-if="this.$nuxt.$auth.loggedIn"
       >
-        <v-tabs-slider color="blue darken-1"></v-tabs-slider>
-        <v-tab  class="blue--text text--darken-1" href="#tab-1">
+      <v-tabs-slider color="blue darken-1"></v-tabs-slider>
+        <v-tab  class="blue--text text--darken-1" to="/admin/management" href="#tab-1">
           Black Carrack
         </v-tab>
-
-
-
+        <v-tab  class="blue--text text--darken-1" to="/admin/team" href="#tab-2">
+          Team Member
+        </v-tab>
+        <v-tabs-slider color="blue darken-1"></v-tabs-slider>
         <v-tab
           nuxt
           class="blue--text text--darken-1"
@@ -25,22 +26,14 @@
           Logout
         </v-tab>
       </v-tabs>
-
       <v-tabs-items v-model="tab">
-        <v-tab-item v-for="i in 6" :key="i" :value="'tab-' + i"> </v-tab-item>
+        <v-tab-item v-for="i in 2" :key="i" :value="'tab-' + i"> </v-tab-item>
       </v-tabs-items>
     </v-card>
-
     <nuxt />
   </v-app>
 </template>
 
-
-<style scoped>
-.v-application {
-  background-color: #fff;
-}
-</style>
 <script>
 export default {
   data() {
@@ -78,3 +71,9 @@ export default {
   },
 }
 </script>
+
+<style scoped>
+.v-application {
+  background-color: #fff;
+}
+</style>
