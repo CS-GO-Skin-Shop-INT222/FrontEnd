@@ -1,5 +1,5 @@
 <template>
-  <show-item :stateItem="inventory"></show-item>
+  <show-item :statepage="inventory"></show-item>
 </template>
 
 <script>

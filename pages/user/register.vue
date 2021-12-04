@@ -88,9 +88,8 @@
     </v-container>
     <div class="text-center">
       <v-snackbar v-model="snackbar" :timeout="timeout">
-        <v-icon dark right> mdi-checkbox-marked-circle </v-icon>
-        Register completed
-
+        <v-icon dark right> {{icon}} </v-icon>
+        {{word}}
         <template v-slot:action="{ attrs }">
           <v-btn color="blue" text v-bind="attrs" @click="snackbar = false">
             Close
@@ -106,6 +105,8 @@ export default {
   middleware: 'statusLogin',
   data() {
     return {
+      word:'',
+      icon:'',
       snackbar: false,
       timeout: 2000,
       urlserver: process.env.urlserver,
@@ -170,14 +171,15 @@ export default {
         this.password === this.ConfirmPassword,
         this.checkbox,
       ]
-      console.log(ArrayCheck)
       for (let index = 0; index < ArrayCheck.length; index++) {
         if (Boolean(ArrayCheck[index]) === false) {
           this.CheckTrue = false
         }
       }
       if (this.CheckTrue === false) {
-        alert('Please check your data')
+        this.word = 'Please check your data'
+        this.icon = 'mdi-cancel'
+        this.snackbar = true
         this.CheckTrue = true
       } else {
         const UserData = {
@@ -188,8 +190,9 @@ export default {
           Credit: 1,
         }
         this.sendDataUser(UserData)
+        this.word = 'Register Complete'
+        this.icon = 'mdi-checkbox-marked-circle'
         this.snackbar = true
-        console.log(UserData)
         setTimeout(() => this.$router.replace({ name: 'user-login' }), 2000)
       }
     },

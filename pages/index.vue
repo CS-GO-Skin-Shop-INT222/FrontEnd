@@ -32,7 +32,7 @@
             </v-col>
             <v-col sm="4" md="12" cols="4">
               <h4>Page</h4>
-              <select-page :pageNumber="totalpage" @numberPage="changePage" />
+              <select-page :pagenumber="totalpage" @numberPage="changePage" />
             </v-col>
             <v-col sm="12" md="12" cols="12">
               <v-btn @click="resetButton">Reset</v-btn></v-col
@@ -48,13 +48,14 @@
               md="4"
               sm="6"
             >
-            <dialog-item :stateItem="'index'" :detailData="detailData">
+            <dialog-item :state-item="'index'" :detail-data="detailData" @buy="buyItem">
                 <v-card
                   outlined
                   hover
+                  justify="center"
                   :disabled="item.Description === ''"
                   @click="getDetailItem(item)"
-                  justify="center"
+                  
                 >
                   <v-img
                     :src="`${item.WeaponSkin.imageURL}`"
@@ -90,73 +91,8 @@
         </v-col>
       </v-row>
     </v-container>
-    <!-- <div class="text-center">
-      <v-row justify="center" class="ma-10">
-        <v-dialog v-model="dialog" dark max-width="1200px" max-height="500px">
-          <v-card>
-            <v-container>
-              <v-row dense class="ma-5">
-                <v-col cols="12" md="8" sm="12">
-                  <v-img
-                    v-if="detailData.Description !== ''"
-                    :src="`${detailData.WeaponSkin.imageURL}`"
-                    class="white--text align-end"
-                    gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
-                    max-height="600px"
-                    max-width="700px"
-                  />
-                </v-col>
-                <v-col cols="12" xs="12" md="4" sm="12">
-                  <v-card-subtitle class="text-h5 pl-2 py-0">{{
-                    detailData.WeaponSkin.Weapon.WeaponName
-                  }}</v-card-subtitle>
-                  <v-card-title class="text-h4 pl-2 py-0">{{
-                    detailData.WeaponSkin.Skin.SkinName
-                  }}</v-card-title>
-                  <v-card-text>
-                    {{ detailData.Description }}
-                  </v-card-text>
-                  <v-card-text>
-                    User : {{ detailData.Users.Name }}
-                  </v-card-text>
-                  <v-row justify="center" class="px-10">
-                    <v-col
-                      v-for="(stickerincol, index) in detailData.Item_Sticker"
-                      :key="index"
-                      cols="4"
-                    >
-                      <v-img
-                        v-if="stickerincol !== undefined"
-                        height="80px"
-                        width="80px"
-                        :src="`https://api.blackcarrack.tech/api/stickeritem/stickerimage/${stickerincol.Sticker.StickerName}`"
-                      >
-                      </v-img>
-                    </v-col>
-                  </v-row>
-                  <v-row justify="center">
-                    <v-card-text class="text-center text-h5">
-                      $ {{ detailData.Price }}
-                    </v-card-text>
-                    <v-btn
-                      class="justify-center"
-                      color="primary"
-                      dark
-                      elevation="2"
-                      @click="buyItem"
-                      >Buy Item</v-btn
-                    >
-                  </v-row>
-                </v-col>
-              </v-row>
-            </v-container>
-          </v-card>
-        </v-dialog>
-      </v-row>
-    </div> -->
-    <dialog-item :check="dialog" :detailData="detailData"></dialog-item>
     <v-snackbar v-model="snackbar" :timeout="timeout">
-      <v-icon dark right> mdi-checkbox-marked-circle </v-icon>
+      <v-icon dark right> {{icon}}</v-icon>
       {{ snackbarWord }}
 
       <template v-slot:action="{ attrs }">
@@ -223,6 +159,7 @@ export default {
       },
 
       snackbarWord: '',
+      icon:'',
       stateFilter: 'market',
       idWeapon: '',
     }
@@ -372,8 +309,6 @@ export default {
           dataset = await this.$axios.$get(`/marketitem/allmarket/${number}`)
           this.itemMarket = dataset.data
           this.totalpage = Array.from(Array(dataset.totalpage).keys())
-          // this.totalpage.splice(dataset.totalpage)
-          // this.totalpage = dataset.totalpage
           break
         case 'type':
           dataset = await this.$axios.$get(
@@ -391,17 +326,19 @@ export default {
           break
       }
     },
-    async buyItem() {
+    async buyItem(number) {
       if (this.$nuxt.$auth.loggedIn === false) {
-        alert('Please Login')
+        this.icon = 'mdi-cancel'
+        this.snackbarWord = 'Please Login'
+        this.snackbar = true
       } else {
         try {
-          await this.$axios.put(`/marketitem/buyItem/${this.detailData.ItemID}`)
+          await this.$axios.put(`/marketitem/buyItem/${number}`)
           this.snackbarWord = 'Buy item completed'
+          this.icon = 'mdi-checkbox-marked-circle'
           this.snackbar = true
-          this.dialog = false
-          // location.reload()
         } catch (errore) {
+          this.icon = 'mdi-cancel'
           if (errore.response.data.msg === 'Credit is not enough') {
             this.snackbarWord = 'Credit is not enough'
             this.snackbar = true
@@ -422,12 +359,12 @@ export default {
         this.itemMarket = data.data
 
         this.totalpage = Array.from(Array(data.totalpage).keys())
-        // this.setArrayItem(1)
         this.selectWeapon = ''
         this.selectType = ''
         this.stateFilter = 'market'
         this.changePage(1)
       } else {
+        this.icon = 'mdi-cancel'
         this.snackbarWord = 'This is default'
         this.snackbar = true
       }

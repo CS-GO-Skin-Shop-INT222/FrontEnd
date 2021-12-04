@@ -36,7 +36,7 @@
       </v-row>
       <v-row  justify="center">
         <p v-if="Userpassword" class="red--text text--darken-4">
-          NOT CORRECT USER AND PASSWORD
+          {{word}}
         </p>
       </v-row>
       <div class="text-center">
@@ -68,6 +68,7 @@ export default {
       password: '',
       Userpassword: false,
       password2: false,
+      word:'',
     }
   },
   methods: {
@@ -81,7 +82,7 @@ export default {
           data: { Email: this.userEmail, Password: this.password },
         })
       } catch (errore) {
-        console.log(errore)
+        this.word = errore.response.data.msg
         this.Userpassword = true
       }
     },

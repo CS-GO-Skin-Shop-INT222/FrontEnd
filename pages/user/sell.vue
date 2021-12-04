@@ -1,5 +1,5 @@
 <template>
-  <show-item :stateItem="sell"/>
+  <show-item :statepage="sell"/>
 </template>
 
 

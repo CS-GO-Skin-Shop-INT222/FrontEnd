@@ -1,7 +1,7 @@
 <template>
   <v-select
     v-model="selectPage"
-    :items="pageNumber"
+    :items="pagenumber"
     label="Page"
     outlined
     @change="sendBack"
@@ -11,7 +11,7 @@
 <script>
 export default {
     props: {
-    pageNumber: {
+    pagenumber: {
         default: () => [0]
     }
 },

@@ -81,9 +81,10 @@
                       <v-btn
                         v-if="stateItem === 'index'"
                         class="justify-center"
-                        color="primary"
+                        color="green"
                         dark
                         elevation="2"
+                        @click="sendNumberBuy"
                         >Buy Item</v-btn
                       >
                       <v-btn
@@ -96,7 +97,7 @@
                       </v-btn>
                       <v-btn
                         v-if="stateItem === 'inventory' && editState !== true"
-                        color="primary"
+                        color="black"
                         dark
                         @click="sendNumberSell"
                       >
@@ -104,7 +105,7 @@
                       </v-btn>
                       <v-btn
                         v-if="stateItem === 'inventory' && editState !== true"
-                        color="primary"
+                        color="red"
                         dark
                         @click="sendNumberDelete"
                       >
@@ -112,7 +113,7 @@
                       </v-btn>
                       <v-btn
                         v-if="stateItem === 'inventory' && editState === true"
-                        color="primary"
+                        color="green"
                         dark
                         @click="sendNumberEdit"
                       >
@@ -120,7 +121,7 @@
                       </v-btn>
                       <v-btn
                         v-if="stateItem === 'inventory' && editState === true"
-                        color="primary"
+                        color="red"
                         dark
                         @click="editState = !editState"
                       >
@@ -128,7 +129,7 @@
                       </v-btn>
                       <v-btn
                         v-if="stateItem === 'sell' && editState !== true"
-                        color="primary"
+                        color="red"
                         dark
                         @click="sendNumberCancelSell"
                       >
@@ -149,12 +150,12 @@
 
 <script>
 export default {
-  props: ['detailData', 'stateItem'],
+  props: ['detail-data', 'state-item'],
   data() {
     return {
       dialog: false,
       editState: false,
-            editDescription: '',
+      editDescription: '',
       editPrice: '',
       rules: {
         required: (v) => !!v || 'Required.',
@@ -177,9 +178,6 @@ export default {
       }
       return false
     },
-    clickcheck() {
-      console.log('this.dialog ' + this.dialog)
-    },
     sendNumberSell() {
       this.$emit('sell', this.detailData.ItemID)
     },
@@ -192,6 +190,9 @@ export default {
     sendNumberCancelSell() {
       this.$emit('cancelsellitem', this.detailData.ItemID)
     },
+    sendNumberBuy(){
+      this.$emit('buy',this.detailData.ItemID)
+    }
   },
 }
 </script>

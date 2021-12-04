@@ -13,10 +13,10 @@
               cols="12"
               md="4"
               sm="6"
-              @click="setData(item)"
               class="d-sm-block d-md-none"
+              @click="setData(item)"
             >
-            <dialog-item :detailData="data" :stateItem="stateItem" @sell="sellItem" @edit="editItem" @cancelsellitem="cancelsalesItem" @delete="deleteItem">
+            <dialog-item :detail-data="data" :state-item="statepage" @sell="sellItem" @edit="editItem" @cancelsellitem="cancelsalesItem" @delete="deleteItem">
               <v-card outlined>
                 <v-img
                   v-if="item.Description !== ''"
@@ -62,8 +62,8 @@
               cols="12"
               md="4"
               sm="6"
-              @click="setData(item)"
               class="d-none d-sm-none d-md-inline-block "
+                            @click="setData(item)"
             >
               <v-card outlined>
                 <v-img
@@ -106,7 +106,7 @@
             <v-col class="d-flex justify-center" cols="12">
               <v-col cols="6" sm="2" md="2">
                 <select-page
-                  :pageNumber="totalpage"
+                  :pagenumber="totalpage"
                   @numberPage="changeItemPage"
                 />
               </v-col>
@@ -156,7 +156,7 @@
             ]"
           ></v-text-field>
           <v-btn
-            v-if="stateItem === 'inventory' && editState !== true"
+            v-if="statepage === 'inventory' && editState !== true"
             color="primary"
             dark
             @click="editState = !editState"
@@ -164,32 +164,32 @@
             Edit
           </v-btn>
           <v-btn
-            v-if="stateItem === 'inventory' && editState !== true"
-            color="primary"
+            v-if="statepage === 'inventory' && editState !== true"
+            color="black"
             dark
             @click="sellItem(data.ItemID)"
           >
             Sell
           </v-btn>
           <v-btn
-            v-if="stateItem === 'inventory' && editState !== true"
-            color="primary"
+            v-if="statepage === 'inventory' && editState !== true"
+            color="red"
             dark
             @click="deleteItem(data.ItemID)"
           >
             Delete
           </v-btn>
           <v-btn
-            v-if="stateItem === 'inventory' && editState === true"
-            color="primary"
+            v-if="statepage === 'inventory' && editState === true"
+            color="green"
             dark
             @click="editItem({id:data.ItemID,description:editDescription,price:editPrice})"
           >
             Confirm
           </v-btn>
           <v-btn
-            v-if="stateItem === 'inventory' && editState === true"
-            color="primary"
+            v-if="statepage === 'inventory' && editState === true"
+            color="red"
             dark
             @click="editState = !editState"
           >
@@ -197,8 +197,8 @@
           </v-btn>
 
           <v-btn
-            v-if="stateItem === 'sell' && editState !== true"
-            color="primary"
+            v-if="statepage === 'sell' && editState !== true"
+            color="red"
             dark
             @click="cancelsalesItem(data.ItemID)"
           >
@@ -226,11 +226,7 @@
 
 <script>
 export default {
-  //   async asyncData({ $axios }) {
-  //   const ip = await $axios.$get(`/inventory/getitem/${this.$nuxt.$auth.user.UserID}`)
-  //   return { ip }
-  // },
-  props: ['stateItem'],
+  props: ['statepage'],
   data() {
     return {
       editState: false,
@@ -263,7 +259,7 @@ export default {
     }
   },
   async fetch() {
-    if (this.stateItem === 'inventory') {
+    if (this.statepage === 'inventory') {
       const dataset = await this.$axios.$get(
         `/inventory/MyItem/${this.$nuxt.$auth.user.UserID}/1`
       )
@@ -277,7 +273,7 @@ export default {
         this.check = false
       }
       this.setArrayItem()
-    } else if (this.stateItem === 'sell') {
+    } else if (this.statepage === 'sell') {
       this.topic = 'Sell Item'
       const dataset = await this.$axios.$get(
         `/inventory/MyItemselling/${this.$nuxt.$auth.user.UserID}/1`
@@ -364,14 +360,14 @@ export default {
       }
     },
     async changeItemPage(number) {
-      if (this.stateItem === 'inventory') {
+      if (this.statepage === 'inventory') {
         const dataset = await this.$axios.$get(
           `/inventory/MyItem/${this.$nuxt.$auth.user.UserID}/${number}`
         )
         this.itemInventory = dataset.data
         this.totalpage = Array.from(Array(dataset.totalpage).keys())
       }
-      if (this.stateItem === 'sell') {
+      if (this.statepage === 'sell') {
         const dataset = await this.$axios.$get(
           `/inventory/MyItemselling/${this.$nuxt.$auth.user.UserID}/${number}`
         )
@@ -380,7 +376,6 @@ export default {
       }
     },
     editItem(arrayget) {
-      console.log(arrayget)
       if (
         this.validateNumber(arrayget.price) === true &&
         this.description !== '' &&

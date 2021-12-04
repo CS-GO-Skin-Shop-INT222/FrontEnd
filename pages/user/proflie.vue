@@ -178,9 +178,6 @@ export default {
   },
 
   methods: {
-    // async getImage(){
-    //   return await this.$axios.$get('/imageusers/getImage')
-    // },
     validateTelephone(tel) {
       if (Number.isInteger(Number(tel)) && tel.length === 10) {
         return true

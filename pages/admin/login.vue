@@ -6,9 +6,9 @@
         <v-spacer></v-spacer>
         <v-col xs="2" sm="8" md="4">
           <v-text-field
+            v-model="userEmail"
             background-color="blue darken-1"
             color="light-blue darken-4"
-            v-model="userEmail"
             label="Email"
             outlined
           ></v-text-field>
@@ -19,9 +19,9 @@
         <v-spacer></v-spacer>
         <v-col xs="2" sm="8" md="4">
           <v-text-field
+            v-model="password"
             background-color="blue darken-1"
             color="light-blue darken-4"
-            v-model="password"
             :append-icon="password2 ? 'mdi-eye' : 'mdi-eye-off'"
             label="Password"
             outlined
@@ -35,6 +35,11 @@
         <v-btn class="py-5" x-large tile color="success" @click="userLogin">
           Login
         </v-btn>
+      </v-row>
+      <v-row justify="center">
+        <nuxt-link to="/user/login" class="ma-2">
+          <v-btn class="py-5" tile color="primary"> User </v-btn>
+        </nuxt-link>
       </v-row>
       <v-row align="center" justify="space-around">
         <p v-if="Userpassword" class="blue--text text--darken-1">
@@ -60,11 +65,6 @@
 <script>
 export default {
   layout: 'admin',
-  //    async asyncData({ $axios }) {
-  //   const PATH_API = '/user/users'
-  //   const ip = await $axios.$get(`${PATH_API}`)
-  //   return { ip }
-  // },
   data() {
     return {
       snackbar: false,
