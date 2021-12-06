@@ -127,13 +127,6 @@ export default {
         Match: (v) => v === this.password || 'Password not match',
         telnumber: (v) =>
           Number.isInteger(Number(v)) || 'The value must be an integer',
-        emailRules: [
-          (v) => !!v || 'E-mail is required',
-          (v) =>
-            /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(
-              v
-            ) || 'E-mail must be valid',
-        ],
       },
     }
   },

@@ -3,23 +3,25 @@
     <div class="d-none d-sm-block d-md-block">
       <v-card>
         <v-tabs
+                  v-if="!$nuxt.$auth.loggedIn"
           v-model="tab"
           background-color="black"
           height="70"
           fixed-tabs
-          v-if="!this.$nuxt.$auth.loggedIn"
+
         >
           <v-tabs-slider color="red darken-4"></v-tabs-slider>
           <v-tab class="red--text text--darken-4  font-weight-medium" href="#tab-1">
             BlackCarrack
           </v-tab>
-          <v-tab to="/" nuxt class="red--text text--darken-4 " href="#tab-2">
+          <v-tab nuxt to="/"  class="red--text text--darken-4 " href="#tab-2">
             MARKET
           </v-tab>
 
           <v-tab
+          nuxt
             to="/user/inventory"
-            nuxt
+            
             class="red--text text--darken-4"
             href="#tab-3"
           >
@@ -57,25 +59,27 @@
         </v-tabs-items>
       </v-card>
 
-      <v-card>
+      <v-card >
         <v-tabs
+                  v-if="$nuxt.$auth.loggedIn"
           v-model="tab"
           background-color="black"
           height="70"
           fixed-tabs
-          v-if="this.$nuxt.$auth.loggedIn"
+
         >
           <v-tabs-slider color="red darken-4"></v-tabs-slider>
           <v-tab class="red--text text--darken-4" href="#tab-1">
             BlackCarrack
           </v-tab>
-          <v-tab to="/" nuxt class="red--text text--darken-4" href="#tab-2">
+          <v-tab nuxt to="/"  class="red--text text--darken-4" href="#tab-2">
             MARKET
           </v-tab>
 
           <v-tab
+          nuxt
             to="/user/inventory"
-            nuxt
+            
             class="red--text text--darken-4"
             href="#tab-3"
           >
@@ -129,7 +133,7 @@
         <v-navigation-drawer v-model="drawer" color="black" absolute app>
           <v-list nav dense>
             <p class="red--text text--darken-4 text-center title font-weight-regular">BlackCarrack</p>
-            <v-list-item-group v-if="!this.$nuxt.$auth.loggedIn"
+            <v-list-item-group v-if="!$nuxt.$auth.loggedIn"
               v-model="group"
               active-class="red--text text--darken-4"
             >
@@ -154,8 +158,8 @@
             </v-list-item-group>
 
             <v-list-item-group 
+                          v-else
               v-model="group"
-              v-else
               active-class="red--text text--darken-4"
             >
               <v-list-item  to="/" nuxt class="red--text text--darken-4 " >
@@ -197,17 +201,17 @@ export default {
       group: null,
     }
   },
+    watch: {
+    group() {
+      this.drawer = false
+    },
+  },
   methods: {
     logoutClick() {
       try {
         this.$nuxt.$auth.logout()
       } catch {
       }
-    },
-  },
-  watch: {
-    group() {
-      this.drawer = false
     },
   },
 }

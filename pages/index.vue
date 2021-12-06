@@ -1,5 +1,5 @@
 <template>
-  <v-app>
+  <div>
     <h1 class="text-center ma-6">Market</h1>
     <v-container class="mb-10">
       <v-row>
@@ -101,15 +101,16 @@
         </v-btn>
       </template>
     </v-snackbar>
-  </v-app>
+  </div>
 </template>
 
 <script>
 import DialogItem from '~/components/dialogItem.vue'
 import selectPage from '~/components/selectPage.vue'
 export default {
+
   components: { selectPage, DialogItem },
-  middleware: 'adminCant',
+    middleware:'adminCant',
   async asyncData({ $axios }) {
     const ip = await $axios.$get('/marketitem/allmarket/1')
     return { ip }

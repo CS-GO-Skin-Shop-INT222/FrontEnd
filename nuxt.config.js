@@ -59,16 +59,15 @@ export default {
   auth: {
     redirect: {
       login: '/user/login',
-      logout: '/dummy',
+      logout: '/',
       callback: '/login',
-      home: '/dummy',
-      admin:'/admin/management'
+      home: '/',
     },
     strategies: {
       local: {
         scheme: 'local',
         token: {
-          maxAge:3600,
+          maxAge:0,
           property: 'token',
           global: true,
         },
