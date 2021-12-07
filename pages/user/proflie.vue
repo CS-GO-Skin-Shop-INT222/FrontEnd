@@ -271,6 +271,7 @@ export default {
         const newData = {
         Name: this.UserData.Name,
         Tel: this.UserData.Tel,
+        Password:this.UserData.Password
       }
       await this.$axios.$put(
         `/user/edituser/${this.UserData.UserID}`,
