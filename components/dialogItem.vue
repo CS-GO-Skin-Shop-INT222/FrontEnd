@@ -153,6 +153,7 @@ export default {
   props: ['detail-data', 'state-item'],
   data() {
     return {
+      
       dialog: false,
       editState: false,
       editDescription: '',

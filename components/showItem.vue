@@ -4,7 +4,7 @@
       {{ topic }}<bottom-sheet v-if="topic === 'Inventory'"></bottom-sheet>
     </h1>
     <v-container class="my-0">
-      <v-row>
+      <v-row justify="center">
         <v-col class="justify-sm-center" md="8" sm="12" cols="auto">
           <v-row>
             <v-col
@@ -235,16 +235,25 @@ export default {
 
       topic: '',
       totalpage: [0],
-      itemInventory: '',
+      itemInventory: [],
       dialog: false,
       data: {
-        WeaponSkin: {
-          Weapon: { WeaponName: '' },
-          Skin: { SkinName: '' },
-        },
-        Description: '',
-        Users: { Name: '' },
+        ItemID: 'Simple',
         Price: '',
+        Description: '',
+        Date: '',
+        WeaponSkinID: '',
+        UserID: '',
+        Publish: '',
+        WeaponSkin: {
+          WeaponSkinID: '',
+          SkinID: '',
+          WeaponID: '',
+          Skin: { SkinName: '' },
+          Weapon: { WeaponName: '' },
+        },
+        Users: { Name: '', Email: '' },
+        Item_Sticker: [],
       },
       snackbar: false,
       snackbartext: '',
@@ -266,10 +275,10 @@ export default {
       this.topic = 'Inventory'
       this.itemInventory = dataset.data
       this.totalpage = Array.from(Array(dataset.totalpage).keys())
-      this.data = this.itemInventory[0]
-      if (this.data !== undefined) {
+      if (this.itemInventory[0] !== undefined) {
         this.check = true
-      } else {
+         this.data = this.itemInventory[0]
+      }else{
         this.check = false
       }
       this.setArrayItem()
@@ -280,13 +289,13 @@ export default {
       )
       this.itemInventory = dataset.data
       this.totalpage = Array.from(Array(dataset.totalpage).keys())
-      this.data = this.itemInventory[0]
-      if (this.data !== undefined) {
+      if (this.itemInventory[0] !== undefined) {
         this.check = true
-      } else {
+         this.data = this.itemInventory[0]
+      }else{
         this.check = false
       }
-      this.setArrayItem()
+           this.setArrayItem()
     }
   },
   methods: {
@@ -311,24 +320,26 @@ export default {
     setArrayItem() {
       for (let index = 0; index < 9; index++) {
         if (this.itemInventory[index] === undefined) {
-          this.setForItem.push({
-            ItemID: '',
-            Price: '',
-            Description: '',
-            Date: '',
-            WeaponSkinID: '',
-            UserID: '',
-            Publish: '',
-            WeaponSkin: {
+            const blankdata = {
+              ItemID: index,
+              Price: '',
+              Description: '',
+              Date: '',
               WeaponSkinID: '',
-              SkinID: '',
-              WeaponID: '',
-              Skin: { SkinName: '' },
-              Weapon: { WeaponName: '' },
-            },
-            Users: { Name: '', Email: '' },
-            Item_Sticker: [],
-          })
+              UserID: '',
+              Publish: '',
+              WeaponSkin: {
+                WeaponSkinID: '',
+                SkinID: '',
+                WeaponID: '',
+                Skin: { SkinName: '' },
+                Weapon: { WeaponName: '' },
+                imageURL: '',
+              },
+              Users: { Name: '', Email: '' },
+              Item_Sticker: [],
+            }
+            this.setForItem.push(blankdata)
         } else {
           this.setForItem.push(this.itemInventory[index])
         }

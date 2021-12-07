@@ -140,7 +140,7 @@ export default {
 
       dialog: false,
 
-      detailData: {
+      detailData: [{
         ItemID: '',
         Price: '',
         Description: '',
@@ -157,7 +157,7 @@ export default {
         },
         Users: { Name: '', Email: '' },
         Item_Sticker: [],
-      },
+      }],
 
       snackbarWord: '',
       icon:'',
