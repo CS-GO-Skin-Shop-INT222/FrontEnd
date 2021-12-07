@@ -24,8 +24,6 @@
               max-width="400"
             />
           </div>
-          <!-- <input @change="onFileChanged" id="upload-photo" type="file" />
-          <label for="upload-photo">Upload File</label> -->
           <v-file-input
             accept="image/png, image/jpeg, image/bmp"
             placeholder="Pick an avatar"
@@ -216,7 +214,7 @@ export default {
 
   methods: {
     validatePassword(password) {
-      const re = /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{10,20}$/
+      const re = /^(?=.*[\d])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{10,20}$/
       return (
         re.test(String(password).toLowerCase()) ||
         'Password must English letters, numbers, and special characters'

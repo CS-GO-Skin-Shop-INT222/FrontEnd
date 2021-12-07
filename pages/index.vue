@@ -14,7 +14,7 @@
                 item-text="TypeName"
                 label="Type weapons"
                 outlined
-                @click="clearData(1)"
+                @click="clearData()"
                 @change="filterWeapons()"
               ></v-select>
             </v-col>
@@ -255,13 +255,10 @@ export default {
         this.itemMarket2 = this.setForItem
       }
     },
-    clearData(number) {
-      switch (number) {
-        case 1:
+    clearData() {
           this.selectWeapon = ''
           this.selectSkin = ''
-          break
-      }
+      
     },
     checkType() {
       const dataSelect = this.selectType

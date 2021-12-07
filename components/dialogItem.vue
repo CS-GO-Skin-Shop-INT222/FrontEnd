@@ -169,9 +169,9 @@ export default {
   methods: {
     validateDescriptionCheck(description) {
       if (description.length > 100) {
-        return 'Please decrease text'
+        return false || 'Please decrease text'
       }
-      return true
+      return true || 'Ok'
     },
     validateNumberCheck(num) {
       if (Number.isInteger(Number(num)) && num > 0) {

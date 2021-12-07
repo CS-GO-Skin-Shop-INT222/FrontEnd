@@ -77,6 +77,8 @@ export default {
       this.snackbar = true
     },
     async userLogin() {
+      console.log(this.userEmail)
+      console.log(this.password)
       try {
         await this.$auth.loginWith('local', {
           data: { Email: this.userEmail, Password: this.password },

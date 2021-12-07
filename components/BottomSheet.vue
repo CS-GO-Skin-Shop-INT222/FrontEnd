@@ -220,11 +220,11 @@ export default {
   }),
   methods: {
     setArray(data) {
-      const ArrayEiEi = []
+      const ArrayItem = []
       for (let index = 0; index < data.Type.length; index++) {
-        ArrayEiEi.push(data.Type[index])
+        ArrayItem.push(data.Type[index])
       }
-      this.typeSet = ArrayEiEi
+      this.typeSet = ArrayItem
     },
 
     async test1() {
@@ -277,9 +277,9 @@ export default {
     },
     validateDescription(description) {
       if (description.length > 100) {
-        return 'Please decrease text'
+        return false || 'Please decrease text'
       }
-      return true
+      return true || 'Ok'
     },
     validateNumber(num) {
       if (Number.isInteger(Number(num)) && num > 0) {
