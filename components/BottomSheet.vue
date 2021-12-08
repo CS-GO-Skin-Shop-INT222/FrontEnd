@@ -277,6 +277,7 @@ export default {
       })
       console.log(id)
       this.skinId = id[0].WeaponSkinID
+      console.log(this.skinId)
     },
     validateDescription(description) {
       if (description.length > 100) {
@@ -303,6 +304,7 @@ export default {
     },
     async changeImage() {
       this.checkSkin()
+      console.log(this.skinId)
       const dataWeaponSkin = await this.$axios.$get(
         `/item/showskin/${this.skinId}`
       )
