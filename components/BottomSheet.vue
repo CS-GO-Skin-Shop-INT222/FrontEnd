@@ -269,7 +269,6 @@ export default {
     checkSkin() {
       const dataSkinSelect = this.selectSkin
       const filterType = this.skinFilter
-      console.log(filterType)
       const id = filterType.filter(function (item) {
         return item.Skin.SkinName === dataSkinSelect
       })
@@ -303,6 +302,7 @@ export default {
       const dataWeaponSkin = await this.$axios.$get(
         `/item/showskin/${this.skinId}`
       )
+      console.log(dataWeaponSkin)
       this.imageURL = dataWeaponSkin.Weapon[0].imageURL
     },
     stickerImage(number) {

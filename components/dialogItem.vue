@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div @click="dialog = !dialog">
+    <div @click="checkDialogItem">
       <slot> </slot>
       <div>
         <v-row justify="center" class="text-center" dense>
@@ -167,6 +167,14 @@ export default {
     }
   },
   methods: {
+    checkDialogItem(){
+      if (this.detailData.Description !== '') {
+        this.dialog = true
+      }else{
+        this.dialog = false
+      }
+    },
+
     validateDescriptionCheck(description) {
       if (description.length > 100) {
         return false || 'Please decrease text'

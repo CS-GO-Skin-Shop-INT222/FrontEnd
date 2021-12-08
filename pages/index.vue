@@ -53,7 +53,6 @@
                   outlined
                   hover
                   justify="center"
-                  :disabled="item.Description === ''"
                   @click="getDetailItem(item)"
                   
                 >
@@ -335,6 +334,7 @@ export default {
           this.snackbarWord = 'Buy item completed'
           this.icon = 'mdi-checkbox-marked-circle'
           this.snackbar = true
+          location.reload()
         } catch (errore) {
           this.icon = 'mdi-cancel'
           if (errore.response.data.msg === 'Credit is not enough') {

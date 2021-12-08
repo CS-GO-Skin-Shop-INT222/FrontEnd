@@ -14,10 +14,9 @@
               md="4"
               sm="6"
               class="d-sm-block d-md-none"
-              @click="setData(item)"
             >
             <dialog-item :detail-data="data" :state-item="statepage" @sell="sellItem" @edit="editItem" @cancelsellitem="cancelsalesItem" @delete="deleteItem">
-              <v-card outlined>
+              <v-card outlined               @click="setData(item)">
                 <v-img
                   v-if="item.Description !== ''"
                   :src="`${item.WeaponSkin.imageURL}`"
@@ -63,9 +62,9 @@
               md="4"
               sm="6"
               class="d-none d-sm-none d-md-inline-block "
-                            @click="setData(item)"
+            
             >
-              <v-card outlined>
+              <v-card outlined :disabled="item.Description === ''" @click="setData(item)">
                 <v-img
                   v-if="item.Description !== ''"
                   :src="`${item.WeaponSkin.imageURL}`"
@@ -312,10 +311,8 @@ export default {
       return false
     },
     setData(data1) {
-      if (data1.ItemID !== '') {
         this.data = data1
         this.check = true
-      }
     },
     setArrayItem() {
       for (let index = 0; index < 9; index++) {
@@ -351,7 +348,7 @@ export default {
         this.$axios.$delete(`/inventory/deleteItem/${number}`)
         this.snackbartext = 'Delete item completed'
         this.snackbar = true
-        location.reload()
+       // location.reload()
       }
     },
     sellItem(number) {
@@ -359,7 +356,7 @@ export default {
         this.$axios.$put(`/inventory/sellItem/${number}`)
         this.snackbar = true
         this.snackbartext = 'Sell completed'
-        location.reload()
+      //  location.reload()
       }
     },
     cancelsalesItem(number) {
@@ -367,7 +364,7 @@ export default {
         this.$axios.$put(`/inventory/cancelsales/${number}`)
         this.snackbar = true
         this.snackbartext = 'Cancel sell completed'
-        location.reload()
+      //  location.reload()
       }
     },
     async changeItemPage(number) {
@@ -400,7 +397,7 @@ export default {
           this.$axios.$put(`/inventory/editItem/${arrayget.id}`, data)
           this.snackbartext = 'Edit item completed'
           this.snackbar = true
-          location.reload()
+       //   location.reload()
         }
       } else {
         alert('Check Data')
