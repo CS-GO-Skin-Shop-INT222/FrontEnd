@@ -348,7 +348,7 @@ export default {
         this.$axios.$delete(`/inventory/deleteItem/${number}`)
         this.snackbartext = 'Delete item completed'
         this.snackbar = true
-       // location.reload()
+       location.reload()
       }
     },
     sellItem(number) {
@@ -356,7 +356,7 @@ export default {
         this.$axios.$put(`/inventory/sellItem/${number}`)
         this.snackbar = true
         this.snackbartext = 'Sell completed'
-      //  location.reload()
+       location.reload()
       }
     },
     cancelsalesItem(number) {
@@ -364,7 +364,7 @@ export default {
         this.$axios.$put(`/inventory/cancelsales/${number}`)
         this.snackbar = true
         this.snackbartext = 'Cancel sell completed'
-      //  location.reload()
+       location.reload()
       }
     },
     async changeItemPage(number) {
@@ -397,7 +397,7 @@ export default {
           this.$axios.$put(`/inventory/editItem/${arrayget.id}`, data)
           this.snackbartext = 'Edit item completed'
           this.snackbar = true
-       //   location.reload()
+         location.reload()
         }
       } else {
         alert('Check Data')
