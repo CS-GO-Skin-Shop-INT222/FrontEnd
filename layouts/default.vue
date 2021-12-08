@@ -1,30 +1,20 @@
 <template>
-  <v-app dark>
-
-        <Nuxt />
-
+  <v-app class="white">
+    <Navbar/>
+    <nuxt/>
   </v-app>
 </template>
 
 <script>
+import Navbar from '~/components/Navbar.vue'
 export default {
+  components: { Navbar },
   data () {
     return {
+      tab: null,
       clipped: false,
       drawer: false,
       fixed: false,
-      items: [
-        {
-          icon: 'mdi-apps',
-          title: 'Welcome',
-          to: '/'
-        },
-        {
-          icon: 'mdi-chart-bubble',
-          title: 'Inspire',
-          to: '/inspire'
-        }
-      ],
       miniVariant: false,
       right: true,
       rightDrawer: false,
