@@ -250,7 +250,6 @@ export default {
       this.checkType()
       const typeId = this.typeId
       const weaponSet = await this.$axios.$get(`/item/weapon/${typeId}`)
-      console.log(weaponSet)
       this.weaponsFilter = weaponSet.Weapon
     },
     checkWeapons() {
@@ -259,14 +258,12 @@ export default {
       const id = filterType.filter(function (item) {
         return item.WeaponName === dataWeaponSelect
       })
-      console.log(id)
       this.weaponsId = id[0].WeaponID
     },
     async filterSkin() {
       this.checkWeapons()
       const weaponsId = this.weaponsId
       const skinSet = await this.$axios.$get(`/item/showweapon/${weaponsId}`)
-      console.log(skinSet)
       this.skinFilter = skinSet.Weapon
     },
     checkSkin() {
@@ -275,9 +272,7 @@ export default {
       const id = filterType.filter(function (item) {
         return item.Skin.SkinName === dataSkinSelect
       })
-      console.log(id)
       this.skinId = id[0].WeaponSkinID
-      console.log(this.skinId)
     },
     validateDescription(description) {
       if (description.length > 100) {
@@ -304,11 +299,9 @@ export default {
     },
     async changeImage() {
       this.checkSkin()
-      console.log(this.skinId)
       const dataWeaponSkin = await this.$axios.$get(
         `/item/showskin/${this.skinId}`
       )
-      console.log(dataWeaponSkin)
       this.imageURL = dataWeaponSkin.Weapon[0].imageURL
     },
     stickerImage(number) {
