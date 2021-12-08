@@ -66,7 +66,7 @@
         <v-col sm="8" md="8" lg="4" class="text-md-center">
           <v-text-field
             v-model="Tel"
-            :rules="[rules.required, rules.telnumber]"
+            :rules="[rules.required, rules.telnumber,validateTelephone]"
             label="Tel"
             outlined
           ></v-text-field>
@@ -147,7 +147,7 @@ export default {
       if (Number.isInteger(Number(tel)) && tel.length === 10) {
         return true
       }
-      return false
+      return false || 'Only 10 number '
     },
     validateName(name) {
       const re = /^[A-Za-z]+$/
@@ -193,7 +193,7 @@ export default {
         this.icon = 'mdi-checkbox-marked-circle'
         this.snackbar = true
         setTimeout(() => this.$router.replace({ name: 'user-login' }), 2000)
-      }catch(error){
+      }catch(errore){
         this.word = errore.response.data.msg
         this.icon = 'mdi-cancel'
         this.snackbar = true
