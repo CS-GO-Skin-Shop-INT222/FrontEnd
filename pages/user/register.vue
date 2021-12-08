@@ -183,10 +183,6 @@ export default {
           Credit: 1,
         }
         this.sendDataUser(UserData)
-        this.word = 'Register Complete'
-        this.icon = 'mdi-checkbox-marked-circle'
-        this.snackbar = true
-
       }
     },
     async sendDataUser(UserData) {
