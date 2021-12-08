@@ -186,13 +186,22 @@ export default {
         this.word = 'Register Complete'
         this.icon = 'mdi-checkbox-marked-circle'
         this.snackbar = true
-        setTimeout(() => this.$router.replace({ name: 'user-login' }), 2000)
+
       }
     },
     async sendDataUser(UserData) {
+      try{
       const PATH_API = '/user/register'
-      const ip = await this.$axios.$post(`${PATH_API}`, UserData)
-      return { ip }
+      await this.$axios.$post(`${PATH_API}`, UserData)
+        this.word = 'Register Complete'
+        this.icon = 'mdi-checkbox-marked-circle'
+        this.snackbar = true
+        setTimeout(() => this.$router.replace({ name: 'user-login' }), 2000)
+      }catch(error){
+        this.word = errore.response.data.msg
+        this.icon = 'mdi-cancel'
+        this.snackbar = true
+      }
     },
   },
 }
